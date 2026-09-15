@@ -816,6 +816,45 @@ export const PLATFORMS_INFO = {
     description: 'DeepMind 연구원들이 설립한 고음질 음악 생성 AI. 사실적인 보컬과 풍부한 악기 세션 제공.',
     features: ['Udio v1.5 최신', '스튜디오급 고음질 보컬', '가사 및 장르 세부 제어'],
     siteUrl: 'https://www.udio.com/'
+  },
+  arena: {
+    id: 'arena',
+    name: 'Arena (Chatbot Arena)',
+    country: 'US',
+    countryLabel: '미국/글로벌',
+    flag: '🌐',
+    type: 'aggregator',
+    typeLabel: '모델 평가/라우팅 플랫폼',
+    badgeClass: 'aggregator',
+    description: '글로벌 1위 AI 모델 블라인드 벤치마크 및 파레토 최적 가성비 라우팅 플랫폼.',
+    features: ['Pareto Frontier 최적화', 'Arena Direct Chat', '프론티어 모델 실시간 랭킹'],
+    siteUrl: 'https://arena.ai/'
+  },
+  byteplus: {
+    id: 'byteplus',
+    name: 'BytePlus (ModelArk)',
+    country: 'CN',
+    countryLabel: '중국/글로벌',
+    flag: '🇨🇳',
+    type: 'official',
+    typeLabel: '공식 개발사/클라우드',
+    badgeClass: 'official',
+    description: '바이트댄스(ByteDance)의 글로벌 클라우드 플랫폼. Doubao(Seed), Seedream, Seedance 등 서빙.',
+    features: ['Doubao Pro 최저가', 'OpenAI 호환 API', 'Seedream/Seedance 멀티모달'],
+    siteUrl: 'https://www.byteplus.com/'
+  },
+  genspark: {
+    id: 'genspark',
+    name: 'Genspark (AI Agent)',
+    country: 'US',
+    countryLabel: '미국/글로벌',
+    flag: '🇺🇸',
+    type: 'official',
+    typeLabel: '공식 개발사/에이전트',
+    badgeClass: 'official',
+    description: '차세대 AI 슈퍼 에이전트 및 멀티 LLM 통합 지능형 리서치 엔진.',
+    features: ['Super Agent 리서치', '다중 LLM 통합 라우팅', '고품질 보고서 생성'],
+    siteUrl: 'https://www.genspark.ai/'
   }
 };
 
@@ -823,6 +862,233 @@ export const PLATFORMS_INFO = {
  * 모델별 원시 가격 데이터셋 (KIE API 실측 스크린샷 데이터 포함)
  */
 export const RAW_MODELS = [
+  // =================================================================
+  // [신규 등록 모델: BytePlus, Genspark, Arena.ai]
+  // =================================================================
+  {
+    id: 'doubao-1-5-pro',
+    name: 'Doubao 1.5 Pro (Seed)',
+    creator: 'ByteDance',
+    country: 'CN',
+    countryLabel: '중국',
+    flagEmoji: '🇨🇳',
+    category: 'High Performance',
+    contextWindow: '128K',
+    description: '바이트댄스(ByteDance)의 플래그십 LLM. 중국어/영어 뛰어난 성능과 파격적인 가성비 제공.',
+    offers: [
+      {
+        provider: 'BytePlus (공식)',
+        providerKey: 'byteplus',
+        isOfficial: true,
+        inputPer1M: 0.12,
+        outputPer1M: 0.24,
+        cacheReadPer1M: 0.03,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://www.byteplus.com/',
+        note: '바이트댄스 글로벌 공식 단가 ($0.12 / $0.24)'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.08,
+        outputPer1M: 0.16,
+        cacheReadPer1M: 0.02,
+        discountPercent: 33,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://kie.ai',
+        note: 'KIE 글로벌 파트너 할인 (-33%)'
+      }
+    ]
+  },
+  {
+    id: 'doubao-1-5-lite',
+    name: 'Doubao 1.5 Lite (Seed Lite)',
+    creator: 'ByteDance',
+    country: 'CN',
+    countryLabel: '중국',
+    flagEmoji: '🇨🇳',
+    category: 'Fast & Lightweight',
+    contextWindow: '32K',
+    description: '바이트댄스의 초고속 경량 모델. 100만 토큰당 $0.02~$0.04의 초저비용 실시간 응답.',
+    offers: [
+      {
+        provider: 'BytePlus (공식)',
+        providerKey: 'byteplus',
+        isOfficial: true,
+        inputPer1M: 0.04,
+        outputPer1M: 0.06,
+        cacheReadPer1M: 0.01,
+        discountPercent: 0,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://www.byteplus.com/',
+        note: '초경량 초고속 공식 서빙 ($0.04 / $0.06)'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.02,
+        outputPer1M: 0.04,
+        cacheReadPer1M: 0.005,
+        discountPercent: 50,
+        latency: 'Realtime',
+        siteUrl: 'https://kie.ai',
+        note: 'KIE 초가성비 할인 (-50%)'
+      }
+    ]
+  },
+  {
+    id: 'doubao-seedream-3-0',
+    name: 'Doubao Seedream 3.0',
+    creator: 'ByteDance',
+    country: 'CN',
+    countryLabel: '중국',
+    flagEmoji: '🇨🇳',
+    category: 'High Performance',
+    mediaType: 'Image',
+    pricePerUnit: 0.02,
+    priceUnit: '장',
+    contextWindow: 'Native Image',
+    description: '바이트댄스의 고화질 이미지 생성 파운데이션 모델. 미적 완성도와 정교한 텍스트 렌더링.',
+    offers: [
+      {
+        provider: 'BytePlus (공식)',
+        providerKey: 'byteplus',
+        isOfficial: true,
+        pricePerUnit: 0.02,
+        priceUnit: '장',
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://www.byteplus.com/',
+        note: '공식 이미지 생성 단가 ($0.02/장)'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        pricePerUnit: 0.012,
+        priceUnit: '장',
+        discountPercent: 40,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://kie.ai',
+        note: 'KIE 할인 렌더링 (-40%)'
+      }
+    ]
+  },
+  {
+    id: 'doubao-seedance-2-0',
+    name: 'Doubao Seedance 2.0',
+    creator: 'ByteDance',
+    country: 'CN',
+    countryLabel: '중국',
+    flagEmoji: '🇨🇳',
+    category: 'High Performance',
+    mediaType: 'Video',
+    pricePerUnit: 0.05,
+    priceUnit: '생성회차',
+    contextWindow: 'Native Video',
+    description: '바이트댄스의 AI 비디오 및 모션 생성 모델. 자연스러운 카메라 무빙과 피사체 일관성.',
+    offers: [
+      {
+        provider: 'BytePlus (공식)',
+        providerKey: 'byteplus',
+        isOfficial: true,
+        pricePerUnit: 0.05,
+        priceUnit: '생성회차',
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://www.byteplus.com/',
+        note: '공식 비디오 생성 ($0.05/회)'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        pricePerUnit: 0.035,
+        priceUnit: '생성회차',
+        discountPercent: 30,
+        latency: 'Fast',
+        siteUrl: 'https://kie.ai',
+        note: 'KIE 비디오 생성 할인 (-30%)'
+      }
+    ]
+  },
+  {
+    id: 'genspark-super-agent',
+    name: 'Genspark Super Agent',
+    creator: 'Genspark',
+    country: 'US',
+    countryLabel: '미국/글로벌',
+    flagEmoji: '🌐',
+    category: 'Reasoning',
+    contextWindow: '200K',
+    description: '차세대 AI 슈퍼 에이전트. 다중 LLM 라우팅과 실시간 교차 검증으로 심층 리서치 보고서 생성.',
+    offers: [
+      {
+        provider: 'Genspark (공식)',
+        providerKey: 'genspark',
+        isOfficial: true,
+        inputPer1M: 0.25,
+        outputPer1M: 0.75,
+        cacheReadPer1M: 0.05,
+        discountPercent: 0,
+        latency: 'Normal',
+        siteUrl: 'https://www.genspark.ai/',
+        note: '공식 슈퍼 에이전트 리서치 쿼리 단가'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.15,
+        outputPer1M: 0.45,
+        cacheReadPer1M: 0.03,
+        discountPercent: 40,
+        latency: 'Fast',
+        siteUrl: 'https://kie.ai',
+        note: 'KIE 통합 라우팅 단가 (-40%)'
+      }
+    ]
+  },
+  {
+    id: 'arena-pareto-router',
+    name: 'Arena Pareto Router',
+    creator: 'Arena.ai',
+    country: 'US',
+    countryLabel: '미국/글로벌',
+    flagEmoji: '🌐',
+    category: 'High Performance',
+    contextWindow: '128K',
+    description: 'LMSYS Chatbot Arena 블라인드 벤치마크 기반, 프롬프트 난이도별 파레토 가성비 자동 최적 라우팅.',
+    offers: [
+      {
+        provider: 'Arena (공식)',
+        providerKey: 'arena',
+        isOfficial: true,
+        inputPer1M: 0.15,
+        outputPer1M: 0.60,
+        cacheReadPer1M: 0.03,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://arena.ai/',
+        note: 'LMSYS Arena Pareto Frontier 공식 라우팅'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.10,
+        outputPer1M: 0.40,
+        cacheReadPer1M: 0.02,
+        discountPercent: 33,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://kie.ai',
+        note: 'KIE 파레토 라우팅 서빙 (-33%)'
+      }
+    ]
+  },
   // =================================================================
   // [KIE API 실측 가격표 모델들 (스크린샷 기반)]
   // =================================================================

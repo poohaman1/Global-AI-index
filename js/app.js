@@ -797,7 +797,12 @@ const BRAND_DOMAINS = {
   'PixVerse': 'pixverse.ai',
   'Viggle': 'viggle.ai',
   'Kuaishou': 'kuaishou.com',
-  'Minimax': 'minimaxi.com',
+  // 아시아 & 기타 글로벌 플랫폼 (Arena, BytePlus, Genspark 등)
+  'Arena': 'arena.ai',
+  'Arena.ai': 'arena.ai',
+  'BytePlus': 'byteplus.com',
+  'ByteDance': 'bytedance.com',
+  'Genspark': 'genspark.ai',
 
   // 일본 & 아시아 (🇯🇵 🇸🇬 🇮🇳)
   'RIKEN / Tokyo Tech': 'riken.jp',
