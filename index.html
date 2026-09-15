@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- 보안 강화: Content Security Policy (외부 인젝션 차단) -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self';">
+  
+  <title>LLM 최저가 찾기 | 글로벌·한국·중국 실시간 API 가격비교 및 할인율</title>
+  <meta name="description" content="OpenAI, Anthropic, Google뿐만 아니라 네이버 하이퍼클로바X, 업스테이지 Solar, 알리바바 Qwen, DeepSeek 등 한국 및 중국 주요 LLM의 가격과 최저가를 비교하세요.">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="app-container header-inner">
+      <div class="logo-area">
+        <span class="logo-badge">Global Index</span>
+        <h1 class="logo-title">LLM <span>최저가</span> 찾기</h1>
+      </div>
+
+      <div class="header-right">
+        <!-- 우측 상단: 국가별 국기 필터 툴바 (아시아 🌏 추가) -->
+        <div class="flag-filter-bar" id="flagFilterBar" title="국가 및 지역을 선택하여 해당 지역의 AI 모델만 필터링합니다.">
+          <button class="flag-btn active" data-country="ALL" title="전 세계 모든 국가 모델 보기">
+            <span class="flag-emoji">🌐</span>
+            <span class="flag-label">전체</span>
+          </button>
+          <button class="flag-btn asia" data-country="ASIA" title="아시아(한국, 중국, 일본, 싱가포르, 인도 등) 모델 모아보기">
+            <span class="flag-emoji">🌏</span>
+            <span class="flag-label">아시아</span>
+          </button>
+          <button class="flag-btn kr" data-country="KR" title="대한민국 국내 모델만 보기">
+            <span class="flag-emoji">🇰🇷</span>
+            <span class="flag-label">한국</span>
+          </button>
+          <button class="flag-btn cn" data-country="CN" title="중국 AI 모델만 보기">
+            <span class="flag-emoji">🇨🇳</span>
+            <span class="flag-label">중국</span>
+          </button>
+          <button class="flag-btn us" data-country="US" title="미국 프론티어 AI 모델만 보기">
+            <span class="flag-emoji">🇺🇸</span>
+            <span class="flag-label">미국</span>
+          </button>
+          <button class="flag-btn eu" data-country="EU" title="유럽 AI 모델만 보기">
+            <span class="flag-emoji">🇪🇺</span>
+            <span class="flag-label">유럽</span>
+          </button>
+        </div>
+
+        <!-- 데이터 기준 일시 및 새로고침 -->
+        <div class="status-pill" id="lastUpdatedContainer" title="가격 데이터 등록 기준일입니다.">
+          <span class="status-dot"></span>
+          <span>기준: <strong id="lastUpdatedText" class="mono">2026.09.15</strong></span>
+        </div>
+
+        <button id="btnSyncData" class="btn-action" title="최신 가격 시세 데이터 동기화">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+          </svg>
+          <span>새로고침</span>
+        </button>
+
+        <!-- 다크/라이트 테마 토글 -->
+        <button id="btnThemeToggle" class="btn-action" aria-label="테마 변경">
+          <span id="themeIcon">☀️</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="app-container">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-content">
+        <div class="hero-badge">⚡ 아시아 🌏 · 한국 🇰🇷 · 중국 🇨🇳 · 글로벌 🇺🇸🇪🇺 152+ AI 모델 실시간 인덱스</div>
+        <h2 class="hero-title">글로벌 AI 최저가 비교</h2>
+        <p class="hero-subtitle">
+          공식 개발사 및 오픈 호스팅·KIE API 등 전 세계 주요 플랫폼의 실시간 단가와 할인율을 투명하게 비교합니다.
+        </p>
+
+        <!-- Quick Summary Stats -->
+        <div class="hero-stats">
+          <div class="stat-card clickable-stat" id="cardStatModels" role="button" tabindex="0" title="클릭하여 152개 전체 LLM 모델을 로고와 함께 확인합니다.">
+            <div class="stat-card-top">
+              <div class="stat-label" id="statModelLabel">비교 모델 수 (전체 🌐)</div>
+              <span class="stat-badge-hint">모델 보기 ↗</span>
+            </div>
+            <div id="statTotalModels" class="stat-val mono">152</div>
+          </div>
+          <div class="stat-card clickable-stat" id="cardStatProviders" role="button" tabindex="0" title="클릭하여 57개 등록 공급 사이트를 로고와 함께 확인합니다.">
+            <div class="stat-card-top">
+              <div class="stat-label" id="statProviderLabel">등록 공급 사이트</div>
+              <span class="stat-badge-hint">사이트 보기 ↗</span>
+            </div>
+            <div id="statTotalProviders" class="stat-val mono">57개 사이트</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-top">
+              <div class="stat-label" id="statDiscountLabel">최대 할인율 (KIE)</div>
+            </div>
+            <div id="statMaxDiscount" class="stat-val green mono">72% OFF</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI 맞춤 추천기 (스마트 AI 매칭) -->
+    <section class="ai-recommend-section" id="aiRecommendSection">
+      <div class="recommend-card">
+        <div class="recommend-header">
+          <div class="recommend-title-wrap">
+            <span class="recommend-icon">✨</span>
+            <div>
+              <h3 class="recommend-title">AI 맞춤 추천 — 내 작업에 꼭 맞는 AI 찾기</h3>
+              <p class="recommend-subtitle">수행하고자 하는 작업(코딩, 고난도 추론, 한국어 문서, 영상/이미지 생성, 초저비용 등)을 입력하시면 최적의 모델과 최저가 제공처를 안내해 드립니다.</p>
+            </div>
+          </div>
+          <div class="security-badge" title=".env 파일에서 API 키를 안전하게 관리하며 외부에 절대 노출되지 않습니다.">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span>API Key .env 안전보호</span>
+          </div>
+        </div>
+
+        <div class="recommend-form">
+          <div class="recommend-input-box">
+            <input type="text" id="inputUserTask" placeholder="내가 하고자 하는 작업 내용을 입력하세요 (예: 파이썬 코드 디버깅, 가성비 좋은 챗봇, 쇼츠 비디오 제작)..." autocomplete="off">
+            <button type="button" id="btnGetAiRecommend" class="btn-recommend-submit">
+              <span>AI 추천받기</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+
+          <div class="recommend-quick-chips">
+            <span class="chips-label">빠른 예시:</span>
+            <button type="button" class="quick-chip" data-prompt="파이썬 알고리즘 코딩 및 복잡한 코드 디버깅">💻 코딩/디버깅</button>
+            <button type="button" class="quick-chip" data-prompt="가장 저렴하고 빠른 초가성비 온디바이스 챗봇">⚡ 초저비용 & 경량</button>
+            <button type="button" class="quick-chip" data-prompt="수학 증명 및 고난도 논리 심층 추론">🧠 심층 추론 (o1/R1)</button>
+            <button type="button" class="quick-chip" data-prompt="한국 공공기관 행정 서식 및 법률 보고서 작성">🇰🇷 한국어 공공/문서</button>
+            <button type="button" class="quick-chip" data-prompt="고화질 시네마틱 숏폼 비디오 생성">🎬 영상 생성</button>
+            <button type="button" class="quick-chip" data-prompt="고해상도 일러스트 및 상업용 그래픽 이미지 생성">🖼️ 이미지 생성</button>
+          </div>
+        </div>
+
+        <!-- 추천 결과 카드 (동적 렌더링) -->
+        <div id="recommendResultBox" class="recommend-result-box" style="display: none;"></div>
+      </div>
+    </section>
+
+    <!-- Token Cost Calculator (Minimized by Default, Click to Expand) -->
+    <section class="calc-section compact-calc collapsible-calc" id="calcSection">
+      <div class="calc-header" id="calcToggleHeader" role="button" tabindex="0" aria-expanded="false" title="클릭하여 내 예상 사용량(Input/Output/Cache 토큰)을 직접 입력하고 실시간 청구액을 시뮬레이션합니다.">
+        <div class="calc-title">
+          <svg class="calc-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <rect x="4" y="2" width="16" height="20" rx="2"/>
+            <line x1="8" y1="6" x2="16" y2="6"/>
+            <line x1="16" y1="14" x2="16" y2="18"/>
+            <path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/>
+          </svg>
+          <span class="calc-title-text">내 예상 토큰 사용량 기준 요금 시뮬레이터</span>
+          <span class="calc-summary-pill mono" id="calcSummaryPill">현재 기준: In 10M / Out 2M / Cache 5M</span>
+        </div>
+        <div class="calc-actions">
+          <button type="button" id="btnToggleCalc" class="btn-calc-toggle">
+            <span id="calcToggleText">사용량 입력 펼치기</span>
+            <svg id="calcToggleChevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="transition: transform 0.2s ease;">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Collapsible Body (Hidden by default) -->
+      <div class="calc-body" id="calcBody" style="display: none;">
+        <div class="calc-inputs-grid">
+          <div class="input-group">
+            <label for="inputCalcInput">예상 입력(Input) 토큰</label>
+            <div class="input-wrapper">
+              <input type="number" id="inputCalcInput" class="input-control mono" value="10" min="0" step="1">
+              <span class="input-unit">M (백만)</span>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="inputCalcOutput">예상 출력(Output) 토큰</label>
+            <div class="input-wrapper">
+              <input type="number" id="inputCalcOutput" class="input-control mono" value="2" min="0" step="1">
+              <span class="input-unit">M (백만)</span>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="inputCalcCache">캐시 읽기(Cache) 토큰</label>
+            <div class="input-wrapper">
+              <input type="number" id="inputCalcCache" class="input-control mono" value="5" min="0" step="1">
+              <span class="input-unit">M (백만)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-body-footer">
+          <span class="calc-guide-text">* 사용량을 변경하면 모델별 청구 예상액($)과 절감액이 실시간으로 재계산됩니다.</span>
+          <button id="btnResetCalc" class="btn-action" style="font-size: 0.75rem; padding: 0.25rem 0.65rem;">기본값(10M/2M) 초기화</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Controls Bar -->
+    <section class="controls-bar">
+      <!-- Search Input -->
+      <div class="search-box">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="text" id="searchInput" placeholder="모델명, 제공사, 국가/지역 검색 (예: PixVerse, Kimi, 후가쿠, 네이버, 아시아)..." autocomplete="off">
+      </div>
+
+      <!-- 카테고리 필터 -->
+      <div class="filters-group">
+        <button class="filter-btn active" data-filter="all">전체 모델</button>
+        <button class="filter-btn" data-filter="discounted">할인 제공 모델만</button>
+        <button class="filter-btn" data-filter="High Performance">High Performance</button>
+        <button class="filter-btn" data-filter="Fast & Lightweight">Fast / 경량</button>
+        <button class="filter-btn" data-filter="Reasoning">추론 (o1/R1/Kimi)</button>
+        <button class="filter-btn" data-filter="Open Weights">오픈 가중치</button>
+        <button class="filter-btn" data-filter="Image Generation">이미지 생성</button>
+        <button class="filter-btn" data-filter="Video Generation">영상 생성</button>
+        <button class="filter-btn" data-filter="Music Generation">음악/오디오</button>
+      </div>
+
+      <!-- 3단 뷰 스위처 & 정렬 컨트롤 & 모델별 최저가만 보기 토글 -->
+      <div class="view-and-filter-wrapper">
+        <!-- 모델별 최저가만 보기 토글 -->
+        <button id="btnToggleLowestOnly" class="lowest-toggle-btn" title="각 모델의 단일 최저가(Best Offer) 제공처 1곳만 필터링하여 보기">
+          <span class="lowest-star">⭐</span>
+          <span>모델별 최저가만 보기</span>
+        </button>
+
+        <!-- 가격 정렬 선택: 없음 / 최저가 순 / 최고가 순 -->
+        <div class="sort-toggle-group" id="sortToggleGroup" role="group" aria-label="가격 정렬 선택">
+          <span class="sort-prefix-label">정렬:</span>
+          <button type="button" class="sort-btn active" data-sort="none" title="기본 정렬 순서">
+            없음
+          </button>
+          <button type="button" class="sort-btn" data-sort="lowest" title="예상 비용 최저가부터 오름차순">
+            <span class="sort-arrow">▲</span> 최저가 순
+          </button>
+          <button type="button" class="sort-btn" data-sort="highest" title="예상 비용 최고가부터 내림차순">
+            <span class="sort-arrow">▼</span> 최고가 순
+          </button>
+        </div>
+
+        <!-- 3단 뷰 스위처 -->
+        <div class="view-toggle">
+          <button id="btnViewTable" class="view-btn active" title="전체 종합 비교 테이블 뷰 (기본 보기)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            테이블 뷰
+          </button>
+          <button id="btnViewCards" class="view-btn" title="모델별 상세 비교 뷰">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            모델별 보기
+          </button>
+          <button id="btnViewSites" class="view-btn" title="제공 사이트/플랫폼별 그룹 뷰">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            사이트별 보기
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1. Models Card View Container -->
+    <section id="modelsCardContainer" class="models-grid" style="display: none;">
+      <!-- JavaScript로 동적 렌더링 -->
+    </section>
+
+    <!-- 2. Sites (Platform) View Container -->
+    <section id="modelsSitesContainer" class="sites-grid" style="display: none;">
+      <!-- JavaScript로 동적 렌더링 -->
+    </section>
+
+    <!-- 3. Models Full Table View Container (기본 보기 모드) -->
+    <section id="modelsTableContainer" class="full-table-view active" style="display: block;">
+      <div id="tableToolbar" class="table-toolbar">
+        <div class="table-toolbar-left">
+          <span class="table-count-info" id="tableCountInfo">비교 모델 총 <strong>152개</strong></span>
+          <span class="table-lowest-notice" id="tableLowestNotice" style="display: none;">⭐ 각 모델별 단일 최저가(Best Offer) 제공처만 표시 중</span>
+        </div>
+        <div class="table-toolbar-right">
+          <span class="table-hint-text">입력·출력·캐시 단가는 1M(100만) 토큰 기준입니다.</span>
+        </div>
+      </div>
+      <div class="table-scroll-wrap">
+        <table class="offers-table">
+          <thead>
+            <tr>
+              <th class="col-model">국가 / 모델명</th>
+              <th class="col-provider">공급사 / 플랫폼</th>
+              <th class="col-type">구분</th>
+              <th class="col-price">입력 (1M)</th>
+              <th class="col-price">출력 (1M)</th>
+              <th class="col-price">캐시 (1M)</th>
+              <th class="col-cost th-sortable" id="thCostSort" title="클릭하여 가격 정렬 순서 전환 (최저가 순 ↔ 최고가 순 ↔ 없음)">
+                <span>기준 사용량 예상비용</span>
+                <span class="sort-header-icon" id="costHeaderSortIcon">⇅</span>
+              </th>
+              <th class="col-discount">공식 대비 할인</th>
+              <th class="col-latency">속도/지연</th>
+              <th class="col-link">바로가기</th>
+            </tr>
+          </thead>
+          <tbody id="fullTableBody">
+            <!-- JavaScript로 동적 렌더링 -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Empty State -->
+    <div id="emptyState" class="empty-state" style="display: none;">
+      <div class="empty-title">조건에 맞는 결과가 없습니다</div>
+      <p>다른 국가 국기나 검색어, 필터를 선택해 보세요.</p>
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="app-container footer-inner">
+      <div class="footer-note">
+        <p><strong>글로벌 AI 최저가 인덱스 (Global AI Price Index)</strong></p>
+        <p>Text(LLM), Image, Video, Music/Audio — 152+ 모델 × 57+ 사이트의 가격 비교. 아시아 🌏(한국 🇰🇷: 네이버, 업스테이지, 카카오, LG, KT / 중국 🇨🇳: 알리바바, 지푸AI, DeepSeek, PixVerse, 바이두, 텐센트, 문샷 Kimi, 상탕, 바이트댄스, 미니맥스 / 일본 🇯🇵: 후가쿠, 라쿠텐, 사이버에이전트, NEC / 싱가포르 🇸🇬: SEA-LION / 인도 🇮🇳: Krutrim, Sarvam), 미국 🇺🇸(OpenAI, Anthropic, Google, xAI, Meta), 유럽 🇪🇺(Mistral, Black Forest Labs) 및 KIE API 등 통합 플랫폼의 공개 가격 정책을 수집합니다.</p>
+      </div>
+      <div>
+        <p class="mono" style="font-size: 0.8rem;">아시아·국가별 맞춤 필터 • 실시간 단가 연동</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================================================================= -->
+  <!-- 1. LLM 공급 사이트 목록 모달 (57개 사이트 로고 & 사이트명) -->
+  <!-- ================================================================= -->
+  <div id="modalProviders" class="site-modal" role="dialog" aria-modal="true" aria-labelledby="modalProvidersTitle" style="display: none;">
+    <div class="modal-backdrop" id="backdropProviders"></div>
+    <div class="modal-window">
+      <div class="modal-header">
+        <div class="modal-header-left">
+          <div class="modal-icon-badge">🌐</div>
+          <div>
+            <h3 class="modal-title" id="modalProvidersTitle">LLM 공급 사이트 목록</h3>
+            <p class="modal-subtitle" id="modalProvidersSubtitle">총 57개 공식 개발사, 오픈소스 호스팅 및 할인 공급 사이트</p>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" id="btnCloseProvidersModal" aria-label="모달 닫기">&times;</button>
+      </div>
+      <div class="modal-search-bar">
+        <div class="modal-search-box">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="inputFilterProvidersModal" placeholder="사이트명, 국가, 특징 검색 (예: OpenAI, 알리바바, 네이버, KIE)..." autocomplete="off">
+        </div>
+        <span class="modal-count-badge" id="modalProvidersCountBadge">57개</span>
+      </div>
+      <div class="modal-body" id="modalProvidersBody">
+        <!-- JS로 동적 렌더링 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- 2. 전체 비교 모델 목록 모달 (152개 모델 로고 & LLM명) -->
+  <!-- ================================================================= -->
+  <div id="modalModels" class="site-modal" role="dialog" aria-modal="true" aria-labelledby="modalModelsTitle" style="display: none;">
+    <div class="modal-backdrop" id="backdropModels"></div>
+    <div class="modal-window">
+      <div class="modal-header">
+        <div class="modal-header-left">
+          <div class="modal-icon-badge">🤖</div>
+          <div>
+            <h3 class="modal-title" id="modalModelsTitle">전체 비교 LLM 모델 목록</h3>
+            <p class="modal-subtitle" id="modalModelsSubtitle">총 152개 글로벌·아시아·한국·중국 파운데이션 모델 실시간 인덱스</p>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" id="btnCloseModelsModal" aria-label="모달 닫기">&times;</button>
+      </div>
+      <div class="modal-search-bar">
+        <div class="modal-search-box">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="inputFilterModelsModal" placeholder="LLM 모델명, 제작사, 국가 검색 (예: Claude, GPT, Qwen, Solar, DeepSeek)..." autocomplete="off">
+        </div>
+        <span class="modal-count-badge" id="modalModelsCountBadge">152개</span>
+      </div>
+      <div class="modal-body" id="modalModelsBody">
+        <!-- JS로 동적 렌더링 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- App Logic (ES Modules) -->
+  <script type="module" src="js/app.js?v=modals_v1"></script>
+</body>
+</html>
