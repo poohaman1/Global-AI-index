@@ -282,6 +282,48 @@ def fallback_smart_recommend(user_prompt):
             ]
         }
 
+# Google Gemini API 호출 (GEMINI_API_KEY 활용)
+def call_gemini_api(prompt, api_key):
+    try:
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
+        headers = {"Content-Type": "application/json"}
+        system_instruction = (
+            "당신은 글로벌 LLM 및 AI 모델 최저가 컨설턴트입니다. "
+            "사용자가 하고자 하는 작업 내용을 정밀 분석하여 가장 적합한 AI 모델(OpenAI, Anthropic, Google, DeepSeek, Naver, Upstage, Alibaba 등)을 1개 선정하고 대안 모델 2개를 추천하세요. "
+            "반드시 순수한 JSON 형식으로만 응답해야 합니다. 마크다운 따옴표나 기타 텍스트를 포함하지 마세요. "
+            "포맷: "
+            "{\"intent\": \"작업의도\", \"primary\": {\"name\": \"모델명\", \"creator\": \"개발사\", \"reason\": \"선정이유(한국어)\", \"bestProvider\": \"추천공급처\", \"costEst\": \"예상비용\"}, \"alternatives\": [{\"name\": \"대안1\", \"reason\": \"이유\"}, {\"name\": \"대안2\", \"reason\": \"이유\"}]}"
+        )
+        body = {
+            "contents": [
+                {
+                    "parts": [
+                        {"text": f"{system_instruction}\n\n사용자 작업: {prompt}"}
+                    ]
+                }
+            ],
+            "generationConfig": {
+                "temperature": 0.3,
+                "responseMimeType": "application/json"
+            }
+        }
+        req = urllib.request.Request(url, data=json.dumps(body).encode('utf-8'), headers=headers, method='POST')
+        with urllib.request.urlopen(req, timeout=10) as response:
+            res_data = json.loads(response.read().decode('utf-8'))
+            candidate = res_data.get('candidates', [{}])[0]
+            part = candidate.get('content', {}).get('parts', [{}])[0]
+            text = part.get('text', '').strip()
+            # 혹시 마크다운 ```json 으로 감싸진 경우 제거
+            if text.startswith('```'):
+                text = text.split('```')[1]
+                if text.startswith('json'):
+                    text = text[4:]
+                text = text.strip()
+            return json.loads(text)
+    except Exception as e:
+        print(f"[Gemini API fallback] 구글 제미나이 API 호출 오류: {e}")
+        return None
+
 # 외부 LLM API 호출 (OpenAI 키가 있을 경우 심층 분석 지원)
 def call_external_llm_api(prompt, api_key):
     try:
@@ -335,12 +377,26 @@ class LLMProxyRequestHandler(SimpleHTTPRequestHandler):
                 self.wfile.write(json.dumps({"error": "추천을 위한 작업 내용을 입력해 주세요."}).encode('utf-8'))
                 return
 
-            openai_key = ENV.get('OPENAI_API_KEY', '').strip()
+            # 매 요청 시 .env 최신 상태 실시간 리로드
+            current_env = load_env_file()
+            gemini_key = current_env.get('GEMINI_API_KEY', '').strip()
+            openai_key = current_env.get('OPENAI_API_KEY', '').strip()
+
             result = None
-            if openai_key and len(openai_key) > 10:
+            
+            # 1. Google Gemini API 우선 호출
+            if gemini_key and len(gemini_key) > 10:
+                print(f"[AI Recommender] Gemini API 호출 시도...")
+                result = call_gemini_api(user_prompt, gemini_key)
+
+            # 2. OpenAI API 호출
+            if not result and openai_key and len(openai_key) > 10:
+                print(f"[AI Recommender] OpenAI API 호출 시도...")
                 result = call_external_llm_api(user_prompt, openai_key)
             
+            # 3. 오프라인/에러 시 스마트 내장 엔진 폴백
             if not result:
+                print(f"[AI Recommender] 내장 지능형 추천 엔진 활성화")
                 result = fallback_smart_recommend(user_prompt)
 
             self.send_response(200)
