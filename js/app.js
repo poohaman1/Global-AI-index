@@ -856,19 +856,10 @@ function renderProvidersModal(query = '') {
   }
 
   const cardsHtml = filteredSites.map(site => {
-    const domain = getDomainFromUrl(site.siteUrl) || BRAND_DOMAINS[site.name] || `${site.id}.com`;
-    const logoUrl = getLogoUrl(domain);
-    const initialChar = (site.name || 'AI').charAt(0).toUpperCase();
-
     return `
       <div class="provider-modal-card">
         <div>
           <div class="provider-card-top">
-            <div class="provider-logo-wrap">
-              <img src="${escapeHtml(logoUrl)}" alt="${escapeHtml(site.name)}" class="provider-logo-img" loading="lazy"
-                   onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-              <div class="provider-logo-fallback" style="display: none;">${escapeHtml(initialChar)}</div>
-            </div>
             <div class="provider-card-info">
               <div class="provider-card-name-row">
                 <span class="provider-card-flag">${site.flag || '🌐'}</span>
@@ -969,10 +960,6 @@ function renderModelsModal(query = '') {
   }
 
   const cardsHtml = filteredModels.map(model => {
-    const creatorDomain = BRAND_DOMAINS[model.creator] || BRAND_DOMAINS[model.name] || 'openai.com';
-    const logoUrl = getLogoUrl(creatorDomain);
-    const initialChar = (model.name || 'AI').charAt(0).toUpperCase();
-
     // 단일 최저가 산출
     const comp = compareProvidersForModel(model, state.calcInputM, state.calcOutputM, state.calcCacheM);
     const bestOffer = comp.bestOffer;
@@ -984,11 +971,6 @@ function renderModelsModal(query = '') {
       <div class="model-modal-card" data-model-name="${escapeHtml(model.name)}" title="클릭하여 메인 화면에서 이 모델을 검색">
         <div>
           <div class="model-card-top">
-            <div class="model-logo-wrap">
-              <img src="${escapeHtml(logoUrl)}" alt="${escapeHtml(model.creator)}" class="model-logo-img" loading="lazy"
-                   onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-              <div class="model-logo-fallback" style="display: none;">${escapeHtml(initialChar)}</div>
-            </div>
             <div class="model-card-info">
               <div class="model-card-name-row">
                 <span class="model-card-flag">${model.flagEmoji || '🌐'}</span>
