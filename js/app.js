@@ -1608,6 +1608,59 @@ function initEvents() {
 }
 
 /**
+ * 개발자 실행 환경 감지 및 localhost 전용 UI 제어
+ * - 도메인 사이트(GitHub Pages 등) 접속 시에는 'API Key .env 안전보호' 및 개발환경 인디케이터가 일체 표시되지 않습니다.
+ * - localhost / 127.0.0.1 환경에서만 실행환경 정보와 보안 배지를 표시합니다.
+ */
+async function setupDevEnvironment() {
+  const hostname = window.location.hostname;
+  const isLocalhost = Boolean(
+    hostname === 'localhost' ||
+    hostname === '127.0.0.1' ||
+    hostname === '[::1]' ||
+    window.location.protocol === 'file:'
+  );
+
+  const devLocalWrapper = document.getElementById('devLocalWrapper');
+  const devEnvBadge = document.getElementById('devEnvBadge');
+  const devEnvText = document.getElementById('devEnvText');
+  const securityBadgeEnv = document.getElementById('securityBadgeEnv');
+
+  if (!isLocalhost) {
+    // 도메인 사이트(프로덕션)인 경우: 일체 노출하지 않음
+    if (devLocalWrapper) devLocalWrapper.style.display = 'none';
+    if (securityBadgeEnv) securityBadgeEnv.style.display = 'none';
+    if (devEnvBadge) devEnvBadge.style.display = 'none';
+    return;
+  }
+
+  // localhost 환경인 경우에만 활성화 표시
+  if (devLocalWrapper) {
+    devLocalWrapper.style.display = 'inline-flex';
+  }
+  if (securityBadgeEnv) {
+    securityBadgeEnv.style.display = 'inline-flex';
+  }
+
+  // 로컬 프록시 서버(/api/env-info)에서 개발환경 상세 정보 조회 시도
+  try {
+    const res = await fetch('/api/env-info');
+    if (res.ok) {
+      const data = await res.json();
+      if (devEnvText) {
+        const keyInfo = data.keys?.gemini ? 'Gemini 연동' : (data.keys?.openai ? 'OpenAI 연동' : '키 미설정');
+        devEnvText.textContent = `DEV (포트:${data.port || 8088} · ${keyInfo})`;
+      }
+      console.log('🛠️ [Local Dev Environment]', data);
+    }
+  } catch (e) {
+    if (devEnvText) {
+      devEnvText.textContent = `DEV · Localhost`;
+    }
+  }
+}
+
+/**
  * 초기화 진입점
  */
 function init() {
@@ -1615,6 +1668,7 @@ function init() {
   elLastUpdated.textContent = getLastUpdatedTimestamp();
   updateHeroStats();
   initEvents();
+  setupDevEnvironment();
   render();
 }
 

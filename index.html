@@ -119,9 +119,16 @@
               <p class="recommend-subtitle">수행하고자 하는 작업(코딩, 고난도 추론, 한국어 문서, 영상/이미지 생성, 초저비용 등)을 입력하시면 최적의 모델과 최저가 제공처를 안내해 드립니다.</p>
             </div>
           </div>
-          <div class="security-badge" title=".env 파일에서 API 키를 안전하게 관리하며 외부에 절대 노출되지 않습니다.">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            <span>API Key .env 안전보호</span>
+          <!-- 로컬 개발 환경(localhost) 전용 인디케이터 & 보안 배지 (도메인 사이트에서는 완벽 숨김) -->
+          <div class="dev-local-wrapper" id="devLocalWrapper" style="display: none;">
+            <div class="dev-env-badge" id="devEnvBadge" title="로컬 개발 환경 전용 인디케이터 (.env 환경 설정)">
+              <span class="dev-pulse-dot"></span>
+              <span id="devEnvText" class="mono">DEV · Local</span>
+            </div>
+            <div class="security-badge" id="securityBadgeEnv" title=".env 파일에서 API 키를 안전하게 관리하며 외부에 절대 노출되지 않습니다.">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <span>API Key .env 안전보호</span>
+            </div>
           </div>
         </div>
 

@@ -408,6 +408,33 @@ class LLMProxyRequestHandler(SimpleHTTPRequestHandler):
             self.send_response(404)
             self.end_headers()
 
+    def do_GET(self):
+        if self.path == '/api/env-info':
+            current_env = load_env_file()
+            gemini_configured = bool(current_env.get('GEMINI_API_KEY', '').strip())
+            openai_configured = bool(current_env.get('OPENAI_API_KEY', '').strip())
+            
+            info = {
+                "isLocal": True,
+                "appEnv": current_env.get('APP_ENV', 'development'),
+                "debugMode": current_env.get('DEV_DEBUG_MODE', 'true').lower() == 'true',
+                "port": int(current_env.get('DEV_SERVER_PORT', PORT)),
+                "host": current_env.get('DEV_SERVER_HOST', 'localhost'),
+                "keys": {
+                    "gemini": gemini_configured,
+                    "openai": openai_configured
+                }
+            }
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json; charset=utf-8')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.send_header('Cache-Control', 'no-store, no-cache, must-revalidate')
+            self.end_headers()
+            self.wfile.write(json.dumps(info, ensure_ascii=False).encode('utf-8'))
+            return
+        
+        super().do_GET()
+
     def do_OPTIONS(self):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')

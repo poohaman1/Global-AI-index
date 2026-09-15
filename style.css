@@ -2104,6 +2104,41 @@ button, input, select {
   max-width: 680px;
 }
 
+.dev-local-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.dev-env-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.12);
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-full);
+  user-select: none;
+}
+
+.dev-pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fbbf24;
+  box-shadow: 0 0 8px #fbbf24;
+  animation: pulseDot 1.5s infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.5; }
+}
+
 .security-badge {
   display: inline-flex;
   align-items: center;
@@ -2117,6 +2152,7 @@ button, input, select {
   border-radius: var(--radius-full);
   user-select: none;
 }
+
 
 .recommend-form {
   display: flex;
