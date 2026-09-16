@@ -5,7 +5,7 @@
  */
 
 const STORAGE_KEY_TIMESTAMP = 'llm_price_last_updated';
-const DEFAULT_TIMESTAMP = '2026.09.15';
+const DEFAULT_TIMESTAMP = '2026.09.16';
 
 export const COUNTRIES = {
   KR: { code: 'KR', name: '한국', flag: '🇰🇷', region: 'Asia' },
@@ -1375,6 +1375,1038 @@ export const RAW_MODELS = [
       }
     ]
   },
+  // -----------------------------------------------------------------
+  // [KIE API 공식 엔드포인트 지원 신규 추가 모델군]
+  // -----------------------------------------------------------------
+  {
+    id: 'gpt-5-2',
+    name: 'GPT 5.2',
+    creator: 'OpenAI',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'High Performance',
+    mediaType: 'Text',
+    contextWindow: '256K',
+    description: 'OpenAI의 차세대 고성능 다중 모달 모델. 실시간 웹 검색 그라운딩 및 조절 가능한 추론 강도 지원.',
+    offers: [
+      {
+        provider: 'OpenAI (공식)',
+        providerKey: 'openai',
+        isOfficial: true,
+        inputPer1M: 5.00,
+        outputPer1M: 20.00,
+        cacheReadPer1M: 0.50,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://openai.com/api/pricing/',
+        note: '공식 표준 단가 ($5.00 / $20.00)'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 1.75,
+        outputPer1M: 7.00,
+        cacheReadPer1M: 0.175,
+        discountPercent: 65,
+        latency: 'Very Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '실측 -65% 파격 할인 (Input $1.75 / Output $7.00)'
+      },
+      {
+        provider: 'OpenRouter',
+        providerKey: 'openrouter',
+        isOfficial: false,
+        inputPer1M: 5.00,
+        outputPer1M: 20.00,
+        cacheReadPer1M: 0.50,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://openrouter.ai',
+        note: '공식 연동'
+      }
+    ]
+  },
+  {
+    id: 'gpt-5-4',
+    name: 'GPT 5.4',
+    creator: 'OpenAI',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'High Performance',
+    mediaType: 'Text',
+    contextWindow: '256K',
+    description: '구조화된 배열 입력 및 고급 도구 호출/함수 연동에 최적화된 프론티어 다중 모달 모델.',
+    offers: [
+      {
+        provider: 'OpenAI (공식)',
+        providerKey: 'openai',
+        isOfficial: true,
+        inputPer1M: 6.00,
+        outputPer1M: 24.00,
+        cacheReadPer1M: 0.60,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://openai.com/api/pricing/',
+        note: '공식 표준 단가 ($6.00 / $24.00)'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 2.10,
+        outputPer1M: 8.40,
+        cacheReadPer1M: 0.21,
+        discountPercent: 65,
+        latency: 'Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '실측 -65% 즉시 할인 (Input $2.10 / Output $8.40)'
+      }
+    ]
+  },
+  {
+    id: 'gpt-5-5',
+    name: 'GPT 5.5',
+    creator: 'OpenAI',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'Reasoning',
+    mediaType: 'Text',
+    contextWindow: '256K',
+    description: '에이전틱 코딩, 지식 작업, 과학 연구 및 복합 다단계 태스크를 위해 설계된 최상위 추론 모델.',
+    offers: [
+      {
+        provider: 'OpenAI (공식)',
+        providerKey: 'openai',
+        isOfficial: true,
+        inputPer1M: 8.00,
+        outputPer1M: 32.00,
+        cacheReadPer1M: 0.80,
+        discountPercent: 0,
+        latency: 'Standard',
+        siteUrl: 'https://openai.com/api/pricing/',
+        note: '공식 단가 ($8.00 / $32.00)'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 2.80,
+        outputPer1M: 11.20,
+        cacheReadPer1M: 0.28,
+        discountPercent: 65,
+        latency: 'Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '실측 -65% 할인 (Input $2.80 / Output $11.20)'
+      }
+    ]
+  },
+  {
+    id: 'gpt-5-6-terra',
+    name: 'GPT 5.6 Terra',
+    creator: 'OpenAI',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'High Performance',
+    mediaType: 'Text',
+    contextWindow: '256K',
+    description: 'OpenAI 5.6 세대 대규모 멀티모달 프론티어. 웹 검색 그라운딩 및 광범위 데이터 분석 특화.',
+    offers: [
+      {
+        provider: 'OpenAI (공식)',
+        providerKey: 'openai',
+        isOfficial: true,
+        inputPer1M: 4.50,
+        outputPer1M: 22.50,
+        cacheReadPer1M: 0.45,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://openai.com/api/pricing/',
+        note: '공식 프로모션 가격 ($4.50 / $22.50)'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 1.575,
+        outputPer1M: 7.875,
+        cacheReadPer1M: 0.158,
+        discountPercent: 65,
+        latency: 'Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '실측 -65% 즉시 할인 (Input $1.575 / Output $7.875)'
+      }
+    ]
+  },
+  {
+    id: 'gpt-codex',
+    name: 'GPT Codex',
+    creator: 'OpenAI',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'Coding Special',
+    mediaType: 'Text',
+    contextWindow: '128K',
+    description: '소프트웨어 개발, 리팩터링, 단위 테스트 작성 및 코드 리뷰 전용 고속 엔드포인트.',
+    offers: [
+      {
+        provider: 'OpenAI (공식)',
+        providerKey: 'openai',
+        isOfficial: true,
+        inputPer1M: 2.00,
+        outputPer1M: 8.00,
+        cacheReadPer1M: 0.20,
+        discountPercent: 0,
+        latency: 'Very Fast',
+        siteUrl: 'https://openai.com/api/pricing/',
+        note: '공식 코딩 전용 API 단가'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.70,
+        outputPer1M: 2.80,
+        cacheReadPer1M: 0.07,
+        discountPercent: 65,
+        latency: 'Very Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '실측 -65% 할인 (Input $0.70 / Output $2.80)'
+      }
+    ]
+  },
+  {
+    id: 'claude-opus-4-8',
+    name: 'Claude Opus 4.8',
+    creator: 'Anthropic',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'High Performance',
+    mediaType: 'Text',
+    contextWindow: '200K',
+    description: 'Anthropic의 최첨단 Opus 4.8 모델. 복잡한 논리 설계와 다단계 연구 분석에서 압도적 성능.',
+    offers: [
+      {
+        provider: 'Anthropic (공식)',
+        providerKey: 'anthropic',
+        isOfficial: true,
+        inputPer1M: 4.50,
+        outputPer1M: 22.50,
+        cacheReadPer1M: 0.45,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://www.anthropic.com/pricing',
+        note: '공식 단가 ($4.50 / $22.50)'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 1.80,
+        outputPer1M: 9.00,
+        cacheReadPer1M: 0.18,
+        discountPercent: 60,
+        latency: 'Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '실측 -60% 즉시 할인 (Input $1.80 / Output $9.00)'
+      }
+    ]
+  },
+  {
+    id: 'claude-opus-4-7',
+    name: 'Claude Opus 4.7',
+    creator: 'Anthropic',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'High Performance',
+    mediaType: 'Text',
+    contextWindow: '200K',
+    description: 'Anthropic 차세대 플래그십 Opus 4.7. 엔터프라이즈 코딩 및 방대한 문서 분석 특화.',
+    offers: [
+      {
+        provider: 'Anthropic (공식)',
+        providerKey: 'anthropic',
+        isOfficial: true,
+        inputPer1M: 4.00,
+        outputPer1M: 20.00,
+        cacheReadPer1M: 0.40,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://www.anthropic.com/pricing',
+        note: '공식 단가 ($4.00 / $20.00)'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 1.60,
+        outputPer1M: 8.00,
+        cacheReadPer1M: 0.16,
+        discountPercent: 60,
+        latency: 'Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '실측 -60% 즉시 할인 (Input $1.60 / Output $8.00)'
+      }
+    ]
+  },
+  {
+    id: 'claude-opus-4-6',
+    name: 'Claude Opus 4.6',
+    creator: 'Anthropic',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'High Performance',
+    mediaType: 'Text',
+    contextWindow: '200K',
+    description: '심층 사고 추론과 창의적 문서 작성을 안정적으로 처리하는 Opus 4.6 버전.',
+    offers: [
+      {
+        provider: 'Anthropic (공식)',
+        providerKey: 'anthropic',
+        isOfficial: true,
+        inputPer1M: 3.80,
+        outputPer1M: 19.00,
+        cacheReadPer1M: 0.38,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://www.anthropic.com/pricing',
+        note: '공식 단가 ($3.80 / $19.00)'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 1.52,
+        outputPer1M: 7.60,
+        cacheReadPer1M: 0.152,
+        discountPercent: 60,
+        latency: 'Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '실측 -60% 할인 (Input $1.52 / Output $7.60)'
+      }
+    ]
+  },
+  {
+    id: 'claude-opus-4-5',
+    name: 'Claude Opus 4.5',
+    creator: 'Anthropic',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'High Performance',
+    mediaType: 'Text',
+    contextWindow: '200K',
+    description: 'Opus 4 세대의 베이스라인 모델로 정밀한 추론력과 높은 안정성을 자랑합니다.',
+    offers: [
+      {
+        provider: 'Anthropic (공식)',
+        providerKey: 'anthropic',
+        isOfficial: true,
+        inputPer1M: 3.50,
+        outputPer1M: 17.50,
+        cacheReadPer1M: 0.35,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://www.anthropic.com/pricing',
+        note: '공식 단가 ($3.50 / $17.50)'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 1.40,
+        outputPer1M: 7.00,
+        cacheReadPer1M: 0.14,
+        discountPercent: 60,
+        latency: 'Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '실측 -60% 할인 (Input $1.40 / Output $7.00)'
+      }
+    ]
+  },
+  {
+    id: 'claude-sonnet-4-6',
+    name: 'Claude Sonnet 4.6',
+    creator: 'Anthropic',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'High Performance',
+    mediaType: 'Text',
+    contextWindow: '200K',
+    description: '코딩과 인터랙티브 대화에서 최상의 반응성과 정확도를 발휘하는 Sonnet 4.6 모델.',
+    offers: [
+      {
+        provider: 'Anthropic (공식)',
+        providerKey: 'anthropic',
+        isOfficial: true,
+        inputPer1M: 1.80,
+        outputPer1M: 9.00,
+        cacheReadPer1M: 0.18,
+        discountPercent: 0,
+        latency: 'Very Fast',
+        siteUrl: 'https://www.anthropic.com/pricing',
+        note: '공식 표준 요금'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.72,
+        outputPer1M: 3.60,
+        cacheReadPer1M: 0.072,
+        discountPercent: 60,
+        latency: 'Very Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '실측 -60% 즉시 할인 (Input $0.72 / Output $3.60)'
+      }
+    ]
+  },
+  {
+    id: 'claude-sonnet-4-5',
+    name: 'Claude Sonnet 4.5',
+    creator: 'Anthropic',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'High Performance',
+    mediaType: 'Text',
+    contextWindow: '200K',
+    description: '높은 속도와 탁월한 문맥 추론을 저렴한 비용으로 서비스하는 Sonnet 4.5.',
+    offers: [
+      {
+        provider: 'Anthropic (공식)',
+        providerKey: 'anthropic',
+        isOfficial: true,
+        inputPer1M: 1.50,
+        outputPer1M: 7.50,
+        cacheReadPer1M: 0.15,
+        discountPercent: 0,
+        latency: 'Very Fast',
+        siteUrl: 'https://www.anthropic.com/pricing',
+        note: '공식 표준 요금'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.60,
+        outputPer1M: 3.00,
+        cacheReadPer1M: 0.06,
+        discountPercent: 60,
+        latency: 'Very Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '실측 -60% 즉시 할인 (Input $0.60 / Output $3.00)'
+      }
+    ]
+  },
+  {
+    id: 'gemini-3-1-pro',
+    name: 'Gemini 3.1 Pro',
+    creator: 'Google',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'High Performance',
+    mediaType: 'Text',
+    contextWindow: '2M',
+    description: 'Google의 최신 3.1 Pro 모델. 200만 토큰의 초대용량 컨텍스트와 멀티모달 추론 역량.',
+    offers: [
+      {
+        provider: 'Google (공식)',
+        providerKey: 'google',
+        isOfficial: true,
+        inputPer1M: 1.50,
+        outputPer1M: 6.00,
+        cacheReadPer1M: 0.375,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://ai.google.dev/pricing',
+        note: '공식 단가 ($1.50 / $6.00)'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.45,
+        outputPer1M: 1.80,
+        cacheReadPer1M: 0.113,
+        discountPercent: 70,
+        latency: 'Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '실측 -70% 즉시 할인 (Input $0.45 / Output $1.80)'
+      }
+    ]
+  },
+  {
+    id: 'gemini-3-pro',
+    name: 'Gemini 3 Pro',
+    creator: 'Google',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'High Performance',
+    mediaType: 'Text',
+    contextWindow: '2M',
+    description: '구글 3세대 플래그십 프로 모델. 심층 다국어 이해 및 코딩 분석 최적화.',
+    offers: [
+      {
+        provider: 'Google (공식)',
+        providerKey: 'google',
+        isOfficial: true,
+        inputPer1M: 1.25,
+        outputPer1M: 5.00,
+        cacheReadPer1M: 0.312,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://ai.google.dev/pricing',
+        note: '공식 단가 ($1.25 / $5.00)'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.375,
+        outputPer1M: 1.50,
+        cacheReadPer1M: 0.094,
+        discountPercent: 70,
+        latency: 'Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '실측 -70% 즉시 할인 (Input $0.375 / Output $1.50)'
+      }
+    ]
+  },
+  {
+    id: 'gemini-3-6-flash',
+    name: 'Gemini 3.6 Flash',
+    creator: 'Google',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'Fast & Lightweight',
+    mediaType: 'Text',
+    contextWindow: '1M',
+    description: 'Google의 3.6 세대 초경량 실시간 고속 멀티모달 모델. 대용량 요청 최적화.',
+    offers: [
+      {
+        provider: 'Google (공식)',
+        providerKey: 'google',
+        isOfficial: true,
+        inputPer1M: 0.50,
+        outputPer1M: 2.50,
+        cacheReadPer1M: 0.125,
+        discountPercent: 0,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://ai.google.dev/pricing',
+        note: '공식 단가 ($0.50 / $2.50)'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.15,
+        outputPer1M: 0.75,
+        cacheReadPer1M: 0.038,
+        discountPercent: 70,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '실측 -70% 즉시 할인 (Input $0.15 / Output $0.75)'
+      }
+    ]
+  },
+  {
+    id: 'gemini-3-5-flash',
+    name: 'Gemini 3.5 Flash',
+    creator: 'Google',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'Fast & Lightweight',
+    mediaType: 'Text',
+    contextWindow: '1M',
+    description: '저지연성과 경제적인 가격을 완벽하게 결합한 Gemini 3.5 플래시 모델.',
+    offers: [
+      {
+        provider: 'Google (공식)',
+        providerKey: 'google',
+        isOfficial: true,
+        inputPer1M: 0.40,
+        outputPer1M: 2.00,
+        cacheReadPer1M: 0.10,
+        discountPercent: 0,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://ai.google.dev/pricing',
+        note: '공식 단가 ($0.40 / $2.00)'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.12,
+        outputPer1M: 0.60,
+        cacheReadPer1M: 0.03,
+        discountPercent: 70,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '실측 -70% 즉시 할인 (Input $0.12 / Output $0.60)'
+      }
+    ]
+  },
+  {
+    id: 'gemini-3-flash',
+    name: 'Gemini 3 Flash',
+    creator: 'Google',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'Fast & Lightweight',
+    mediaType: 'Text',
+    contextWindow: '1M',
+    description: 'Google의 3세대 기본 플래시 모델. 100만 토큰 컨텍스트와 빠른 응답 속도.',
+    offers: [
+      {
+        provider: 'Google (공식)',
+        providerKey: 'google',
+        isOfficial: true,
+        inputPer1M: 0.35,
+        outputPer1M: 1.75,
+        cacheReadPer1M: 0.088,
+        discountPercent: 0,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://ai.google.dev/pricing',
+        note: '공식 단가 ($0.35 / $1.75)'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.105,
+        outputPer1M: 0.525,
+        cacheReadPer1M: 0.026,
+        discountPercent: 70,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '실측 -70% 즉시 할인 (Input $0.105 / Output $0.525)'
+      }
+    ]
+  },
+  {
+    id: 'gemini-omni-flash-1-1',
+    name: 'Gemini Omni 1.1 Flash',
+    creator: 'Google',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'High Performance',
+    mediaType: 'Video',
+    contextWindow: '128K',
+    description: '실시간 음성, 오디오, 비디오, 텍스트가 모두 통합된 네이티브 옴니 플래시 모델.',
+    offers: [
+      {
+        provider: 'Google (공식)',
+        providerKey: 'google',
+        isOfficial: true,
+        inputPer1M: 1.00,
+        outputPer1M: 4.00,
+        cacheReadPer1M: 0.25,
+        discountPercent: 0,
+        latency: 'Realtime',
+        siteUrl: 'https://ai.google.dev/pricing',
+        note: '옴니 네이티브 공식 단가'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.35,
+        outputPer1M: 1.40,
+        cacheReadPer1M: 0.088,
+        discountPercent: 65,
+        latency: 'Realtime',
+        siteUrl: 'https://kie.ai/pricing',
+        note: 'KIE 실측 -65% 옴니 스트리밍 할인'
+      }
+    ]
+  },
+  {
+    id: 'grok-4-5',
+    name: 'Grok 4.5',
+    creator: 'xAI (Grok)',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'High Performance',
+    mediaType: 'Text',
+    contextWindow: '128K',
+    description: 'xAI의 프론티어 Grok 4.5. 실시간 X 플랫폼 지식 및 강화된 코딩/수학 추론력.',
+    offers: [
+      {
+        provider: 'xAI (공식)',
+        providerKey: 'grok_platform',
+        isOfficial: true,
+        inputPer1M: 1.80,
+        outputPer1M: 5.40,
+        cacheReadPer1M: 0.45,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://x.ai/api',
+        note: '공식 표준 단가 ($1.80 / $5.40)'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.72,
+        outputPer1M: 2.16,
+        cacheReadPer1M: 0.18,
+        discountPercent: 60,
+        latency: 'Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '실측 -60% 즉시 할인 (Input $0.72 / Output $2.16)'
+      }
+    ]
+  },
+  {
+    id: 'grok-4-3',
+    name: 'Grok 4.3',
+    creator: 'xAI (Grok)',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'High Performance',
+    mediaType: 'Text',
+    contextWindow: '128K',
+    description: '빠른 응답 속도와 최신 실시간 웹 정보를 결합한 고효율 Grok 모델.',
+    offers: [
+      {
+        provider: 'xAI (공식)',
+        providerKey: 'grok_platform',
+        isOfficial: true,
+        inputPer1M: 1.20,
+        outputPer1M: 3.60,
+        cacheReadPer1M: 0.30,
+        discountPercent: 0,
+        latency: 'Very Fast',
+        siteUrl: 'https://x.ai/api',
+        note: '공식 표준 단가 ($1.20 / $3.60)'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.48,
+        outputPer1M: 1.44,
+        cacheReadPer1M: 0.12,
+        discountPercent: 60,
+        latency: 'Very Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '실측 -60% 즉시 할인 (Input $0.48 / Output $1.44)'
+      }
+    ]
+  },
+  {
+    id: 'seedream-5-0-pro',
+    name: 'Seedream 5.0 Pro',
+    creator: 'ByteDance',
+    country: 'CN',
+    countryLabel: '중국',
+    flagEmoji: '🇨🇳',
+    category: 'Image Generation',
+    mediaType: 'Image',
+    contextWindow: '-',
+    description: '바이트댄스의 최신 Seedream 5.0 프로 이미지 생성/편집 모델. 포토리얼리즘 및 다층 레이어 분리 지원.',
+    offers: [
+      {
+        provider: 'BytePlus (공식)',
+        providerKey: 'byteplus',
+        isOfficial: true,
+        inputPer1M: null,
+        outputPer1M: null,
+        cacheReadPer1M: null,
+        pricePerUnit: 0.035,
+        priceUnit: '장',
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://www.byteplus.com/',
+        note: '글로벌 공식 요금 ($0.035/장)'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: null,
+        outputPer1M: null,
+        cacheReadPer1M: null,
+        pricePerUnit: 0.018,
+        priceUnit: '장',
+        discountPercent: 49,
+        latency: 'Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '실측 -49% 즉시 할인 ($0.018/장)'
+      }
+    ]
+  },
+  {
+    id: 'seedream-5-0-lite',
+    name: 'Seedream 5.0 Lite',
+    creator: 'ByteDance',
+    country: 'CN',
+    countryLabel: '중국',
+    flagEmoji: '🇨🇳',
+    category: 'Image Generation',
+    mediaType: 'Image',
+    contextWindow: '-',
+    description: '바이트댄스의 5.0 세대 초고속 이미지 생성/편집 라이트 모델. 대량 생성에 최적화된 단가.',
+    offers: [
+      {
+        provider: 'BytePlus (공식)',
+        providerKey: 'byteplus',
+        isOfficial: true,
+        inputPer1M: null,
+        outputPer1M: null,
+        cacheReadPer1M: null,
+        pricePerUnit: 0.015,
+        priceUnit: '장',
+        discountPercent: 0,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://www.byteplus.com/',
+        note: '글로벌 공식 요금 ($0.015/장)'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: null,
+        outputPer1M: null,
+        cacheReadPer1M: null,
+        pricePerUnit: 0.008,
+        priceUnit: '장',
+        discountPercent: 47,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '실측 -47% 즉시 할인 ($0.008/장)'
+      }
+    ]
+  },
+  {
+    id: 'seedream-4-5',
+    name: 'Seedream 4.5',
+    creator: 'ByteDance',
+    country: 'CN',
+    countryLabel: '중국',
+    flagEmoji: '🇨🇳',
+    category: 'Image Generation',
+    mediaType: 'Image',
+    contextWindow: '-',
+    description: '안정적인 인물 묘사와 스타일 제어가 강화된 바이트댄스 4.5 세대 이미지 생성 모델.',
+    offers: [
+      {
+        provider: 'BytePlus (공식)',
+        providerKey: 'byteplus',
+        isOfficial: true,
+        inputPer1M: null,
+        outputPer1M: null,
+        cacheReadPer1M: null,
+        pricePerUnit: 0.025,
+        priceUnit: '장',
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://www.byteplus.com/',
+        note: '글로벌 공식 단가 ($0.025/장)'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: null,
+        outputPer1M: null,
+        cacheReadPer1M: null,
+        pricePerUnit: 0.013,
+        priceUnit: '장',
+        discountPercent: 48,
+        latency: 'Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '실측 -48% 할인 ($0.013/장)'
+      }
+    ]
+  },
+  {
+    id: 'wan-3-0',
+    name: 'Wan 3.0 Video (Prime)',
+    creator: 'Alibaba',
+    country: 'CN',
+    countryLabel: '중국',
+    flagEmoji: '🇨🇳',
+    category: 'Video Generation',
+    mediaType: 'Video',
+    contextWindow: '-',
+    description: '알리바바의 3세대 최신 비디오 생성 모델. 고해상도 물리 법칙 반영 및 비디오 편집 기능 탑재.',
+    offers: [
+      {
+        provider: '알리바바 클라우드 (공식)',
+        providerKey: 'alibaba',
+        isOfficial: true,
+        inputPer1M: null,
+        outputPer1M: null,
+        cacheReadPer1M: null,
+        pricePerUnit: 0.09,
+        priceUnit: '초 (1080p)',
+        discountPercent: 0,
+        latency: 'Standard',
+        siteUrl: 'https://www.alibabacloud.com/',
+        note: '공식 1080p 단가 ($0.09/초)'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: null,
+        outputPer1M: null,
+        cacheReadPer1M: null,
+        pricePerUnit: 0.05,
+        priceUnit: '초 (1080p)',
+        discountPercent: 45,
+        latency: 'Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: 'KIE 실측 단가 ($0.05/초, 1080p 10크레딧/초)'
+      }
+    ]
+  },
+  {
+    id: 'wan-2-7',
+    name: 'Wan 2.7 Video',
+    creator: 'Alibaba',
+    country: 'CN',
+    countryLabel: '중국',
+    flagEmoji: '🇨🇳',
+    category: 'Video Generation',
+    mediaType: 'Video',
+    contextWindow: '-',
+    description: '텍스트-비디오, 이미지-비디오, 레퍼런스-비디오 및 영상 편집까지 전방위 지원하는 알리바바 Wan 2.7.',
+    offers: [
+      {
+        provider: '알리바바 클라우드 (공식)',
+        providerKey: 'alibaba',
+        isOfficial: true,
+        inputPer1M: null,
+        outputPer1M: null,
+        cacheReadPer1M: null,
+        pricePerUnit: 0.07,
+        priceUnit: '초 (720p)',
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://www.alibabacloud.com/',
+        note: '공식 720p 단가 ($0.07/초)'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: null,
+        outputPer1M: null,
+        cacheReadPer1M: null,
+        pricePerUnit: 0.04,
+        priceUnit: '초 (720p)',
+        discountPercent: 43,
+        latency: 'Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: 'KIE 실측 단가 ($0.04/초, 720p 8크레딧/초)'
+      }
+    ]
+  },
+  {
+    id: 'pixverse-v6',
+    name: 'PixVerse V6',
+    creator: 'PixVerse',
+    country: 'US',
+    countryLabel: '미국/글로벌',
+    flagEmoji: '🌐',
+    category: 'Video Generation',
+    mediaType: 'Video',
+    contextWindow: '-',
+    description: 'PixVerse 6세대 AI 비디오. 첫 프레임과 마지막 프레임 제어, 트랜지션, 퓨전 레퍼런스 영상 생성.',
+    offers: [
+      {
+        provider: 'PixVerse (공식)',
+        providerKey: 'pixverse',
+        isOfficial: true,
+        inputPer1M: null,
+        outputPer1M: null,
+        cacheReadPer1M: null,
+        pricePerUnit: 0.08,
+        priceUnit: '초',
+        discountPercent: 0,
+        latency: 'Standard',
+        siteUrl: 'https://pixverse.ai/',
+        note: '공식 크레딧 환산 약 $0.08/초'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: null,
+        outputPer1M: null,
+        cacheReadPer1M: null,
+        pricePerUnit: 0.045,
+        priceUnit: '초',
+        discountPercent: 44,
+        latency: 'Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '실측 -44% 할인 공급 ($0.045/초)'
+      }
+    ]
+  },
+  {
+    id: 'hailuo-2-3-pro',
+    name: 'Hailuo 2.3 Pro',
+    creator: 'MiniMax',
+    country: 'CN',
+    countryLabel: '중국',
+    flagEmoji: '🇨🇳',
+    category: 'Video Generation',
+    mediaType: 'Video',
+    contextWindow: '-',
+    description: 'MiniMax의 2.3 Pro 세대 비디오 생성 모델. 사실적인 카메라 무빙과 자연스러운 인물 애니메이션.',
+    offers: [
+      {
+        provider: 'MiniMax (공식)',
+        providerKey: 'minimax',
+        isOfficial: true,
+        inputPer1M: null,
+        outputPer1M: null,
+        cacheReadPer1M: null,
+        pricePerUnit: 0.07,
+        priceUnit: '초',
+        discountPercent: 0,
+        latency: 'Standard',
+        siteUrl: 'https://hailuoai.video/',
+        note: '공식 2.3 Pro 요금'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: null,
+        outputPer1M: null,
+        cacheReadPer1M: null,
+        pricePerUnit: 0.038,
+        priceUnit: '초',
+        discountPercent: 46,
+        latency: 'Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: 'KIE 실측 -46% 할인 ($0.038/초)'
+      }
+    ]
+  },
+
 
   // =================================================================
   // [한국 모델 🇰🇷]
