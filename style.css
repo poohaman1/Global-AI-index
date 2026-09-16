@@ -2196,7 +2196,8 @@ button, input, select {
   color: var(--text-subtle);
   margin-top: 0.25rem;
   line-height: 1.45;
-  max-width: 680px;
+  max-width: none;
+  white-space: nowrap;
 }
 
 .dev-local-wrapper {
