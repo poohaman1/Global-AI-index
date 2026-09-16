@@ -50,6 +50,7 @@ const state = {
   searchQuery: '',
   activeFilter: 'all',
   activeCountry: 'ALL', // 'ALL' | 'KR' | 'US' | 'CN' | 'EU'
+  modalProviderCountry: 'ALL', // 모달 공급 사이트 지역 필터 ('ALL' | 'ASIA' | 'EU' | 'US' | 'CN' | 'KR')
   activeMediaType: 'all', // 'all' | 'Text' | 'Image' | 'Video' | 'Music'
   viewMode: 'table',    // 'table' (기본 보기) | 'cards' | 'sites'
   sortOrder: 'none',    // 'none' (기본) | 'lowest' (최저가 순) | 'highest' (최고가 순)
@@ -117,6 +118,7 @@ const modalProviders = document.getElementById('modalProviders');
 const backdropProviders = document.getElementById('backdropProviders');
 const btnCloseProvidersModal = document.getElementById('btnCloseProvidersModal');
 const inputFilterProvidersModal = document.getElementById('inputFilterProvidersModal');
+const modalProvidersCountryTabs = document.getElementById('modalProvidersCountryTabs');
 const modalProvidersCountBadge = document.getElementById('modalProvidersCountBadge');
 const modalProvidersBody = document.getElementById('modalProvidersBody');
 
@@ -275,10 +277,15 @@ function getFilteredModels() {
       return false;
     }
 
-    // 1. 국가 / 아시아 필터
+    // 1. 국가 / 아시아 / 유럽 필터
     if (state.activeCountry !== 'ALL') {
       if (state.activeCountry === 'ASIA') {
         if (!asianCountries.includes(model.country) && model.region !== 'Asia') {
+          return false;
+        }
+      } else if (state.activeCountry === 'EU') {
+        const euCountries = ['EU', 'FR', 'DE', 'GB', 'UK'];
+        if (!euCountries.includes(model.country) && model.region !== 'Europe' && !(model.countryLabel && model.countryLabel.includes('유럽'))) {
           return false;
         }
       } else if (model.country !== state.activeCountry) {
@@ -337,12 +344,21 @@ function getFilteredSites() {
   const query = state.searchQuery.trim().toLowerCase();
   const allSites = getSiteGroupedData(state.models);
   const asianCountries = ['KR', 'CN', 'JP', 'SG', 'IN', 'ASIA'];
+  const euCountries = ['EU', 'FR', 'DE', 'GB', 'UK'];
 
   return allSites.map(site => {
     // 사이트 자체 국가 검사 또는 사이트 내 모델의 국가 매칭
-    const isSiteAsian = asianCountries.includes(site.country);
-    const siteMatchesCountry = state.activeCountry === 'ALL' || 
-      (state.activeCountry === 'ASIA' ? isSiteAsian : site.country === state.activeCountry);
+    const isSiteAsian = asianCountries.includes(site.country) || /아시아|한국|중국|일본|싱가포르|인도/.test(site.countryLabel || '');
+    const isSiteEu = euCountries.includes(site.country) || /유럽|프랑스|독일|영국/.test(site.countryLabel || '');
+    
+    let siteMatchesCountry = true;
+    if (state.activeCountry === 'ASIA') {
+      siteMatchesCountry = isSiteAsian;
+    } else if (state.activeCountry === 'EU') {
+      siteMatchesCountry = isSiteEu;
+    } else if (state.activeCountry !== 'ALL') {
+      siteMatchesCountry = (site.country === state.activeCountry);
+    }
 
     const matchSiteName = site.name.toLowerCase().includes(query);
     const matchSiteDesc = site.description.toLowerCase().includes(query);
@@ -353,8 +369,11 @@ function getFilteredSites() {
       // 국가 필터 적용
       if (state.activeCountry !== 'ALL') {
         const isItemAsian = asianCountries.includes(item.country);
+        const isItemEu = euCountries.includes(item.country) || (item.countryLabel && item.countryLabel.includes('유럽'));
         if (state.activeCountry === 'ASIA') {
           if (!isItemAsian && !isSiteAsian) return false;
+        } else if (state.activeCountry === 'EU') {
+          if (!isItemEu && !isSiteEu) return false;
         } else if (item.country !== state.activeCountry && site.country !== state.activeCountry) {
           return false;
         }
@@ -830,14 +849,54 @@ function getLogoUrl(domain) {
 }
 
 /**
- * 1. 등록 공급 사이트 모달 렌더링
+ * 모달 공급 사이트의 지역/국가 필터 일치 여부 판별
+ */
+function isSiteMatchingRegion(site, regionKey) {
+  if (!regionKey || regionKey === 'ALL') return true;
+  const asianCountries = ['KR', 'CN', 'JP', 'SG', 'IN', 'ASIA'];
+  const euCountries = ['EU', 'FR', 'DE', 'GB', 'UK'];
+  const usCountries = ['US', 'CA'];
+
+  const cCode = (site.country || '').toUpperCase();
+  const cLabel = (site.countryLabel || '').toLowerCase();
+
+  if (regionKey === 'ASIA') {
+    return asianCountries.includes(cCode) || 
+      /아시아|한국|중국|일본|싱가포르|인도/.test(cLabel);
+  }
+  if (regionKey === 'EU') {
+    return euCountries.includes(cCode) || 
+      /유럽|프랑스|독일|영국/.test(cLabel);
+  }
+  if (regionKey === 'US') {
+    return usCountries.includes(cCode) || 
+      /미국|북미|캐나다/.test(cLabel);
+  }
+  if (regionKey === 'CN') {
+    return cCode === 'CN' || cLabel.includes('중국');
+  }
+  if (regionKey === 'KR') {
+    return cCode === 'KR' || cLabel.includes('한국');
+  }
+  return true;
+}
+
+/**
+ * 1. 등록 공급 사이트 모달 렌더링 (지역 필터 + 검색어 지원)
  */
 function renderProvidersModal(query = '') {
   if (!modalProvidersBody) return;
   const q = query.trim().toLowerCase();
   const allSites = getSiteGroupedData(state.models);
+  const activeRegion = state.modalProviderCountry || 'ALL';
 
   const filteredSites = allSites.filter(site => {
+    // 1. 지역/국가 필터
+    if (!isSiteMatchingRegion(site, activeRegion)) {
+      return false;
+    }
+
+    // 2. 검색어 필터
     if (!q) return true;
     const matchName = site.name.toLowerCase().includes(q);
     const matchDesc = (site.description || '').toLowerCase().includes(q);
@@ -851,10 +910,21 @@ function renderProvidersModal(query = '') {
   }
 
   if (filteredSites.length === 0) {
+    const regionNames = {
+      ALL: '전체',
+      ASIA: '아시아',
+      EU: '유럽',
+      US: '미국',
+      CN: '중국',
+      KR: '한국'
+    };
+    const regionLabel = regionNames[activeRegion] || activeRegion;
+    const queryMsg = q ? `'${escapeHtml(query)}' 검색 결과가 없습니다.` : `${regionLabel} 지역에 해당하는 공급 사이트가 없습니다.`;
+
     modalProvidersBody.innerHTML = `
       <div style="text-align: center; padding: 3rem 1rem; color: var(--text-muted);">
-        <p style="font-size: 1.1rem; font-weight: 700;">'${escapeHtml(query)}' 검색 결과가 없습니다.</p>
-        <p style="font-size: 0.85rem; margin-top: 0.35rem;">다른 사이트명이나 국가명(한국, 중국, 미국 등)을 입력해 보세요.</p>
+        <p style="font-size: 1.1rem; font-weight: 700;">${queryMsg}</p>
+        <p style="font-size: 0.85rem; margin-top: 0.35rem;">다른 지역 탭(전체, 아시아, 한국, 미국 등)을 선택하거나 검색어를 변경해 보세요.</p>
       </div>
     `;
     return;
@@ -920,6 +990,17 @@ function openProvidersModal() {
   if (!modalProviders) return;
   modalProviders.style.display = 'flex';
   document.body.style.overflow = 'hidden';
+
+  // 지역 탭 활성 상태 동기화
+  if (modalProvidersCountryTabs) {
+    const activeRegion = state.modalProviderCountry || 'ALL';
+    modalProvidersCountryTabs.querySelectorAll('.modal-country-btn').forEach(btn => {
+      const isMatch = btn.getAttribute('data-country') === activeRegion;
+      btn.classList.toggle('active', isMatch);
+      btn.setAttribute('aria-selected', isMatch ? 'true' : 'false');
+    });
+  }
+
   if (inputFilterProvidersModal) {
     inputFilterProvidersModal.value = '';
     setTimeout(() => inputFilterProvidersModal.focus(), 50);
@@ -1547,6 +1628,25 @@ function initEvents() {
   if (inputFilterProvidersModal) {
     inputFilterProvidersModal.addEventListener('input', (e) => {
       renderProvidersModal(e.target.value);
+    });
+  }
+
+  // 모달 지역/국가 필터 탭 클릭 이벤트 (전체, 아시아, 유럽, 미국, 중국, 한국)
+  if (modalProvidersCountryTabs) {
+    modalProvidersCountryTabs.addEventListener('click', (e) => {
+      const btn = e.target.closest('.modal-country-btn');
+      if (!btn) return;
+      const targetCountry = btn.getAttribute('data-country') || 'ALL';
+      state.modalProviderCountry = targetCountry;
+
+      modalProvidersCountryTabs.querySelectorAll('.modal-country-btn').forEach(b => {
+        const isMatch = (b === btn);
+        b.classList.toggle('active', isMatch);
+        b.setAttribute('aria-selected', isMatch ? 'true' : 'false');
+      });
+
+      const currentQuery = inputFilterProvidersModal ? inputFilterProvidersModal.value : '';
+      renderProvidersModal(currentQuery);
     });
   }
 

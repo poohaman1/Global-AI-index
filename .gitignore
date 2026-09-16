@@ -44,3 +44,5 @@ Thumbs.db
 # Gemini IDE / Antigravity internal
 .gemini/
 scratch/
+
+.vercel
