@@ -21,11 +21,11 @@ import {
 
 const VERSION_HISTORY = [
   {
-    version: "v1.4.0",
+    version: "v1.1.1",
     date: "2026-09-16",
     desc: `
       <ul>
-        <li><strong>📊 웹사이트 접속자 현황 분석 대시보드 추가 (Localhost & 관리자 전용)</strong>:
+        <li><strong>📊 웹사이트 접속자 현황 분석 대시보드 구축 (Localhost & 관리자 전용)</strong>:
           <ul>
             <li>상단 요약 KPI 5종: 누적 페이지뷰(PV), 순 방문자(UV), 오늘/이번주 방문자 수, 24시간 최다 피크 시간대 자동 분석</li>
             <li>6대 인터랙티브 분석 탭: 일별 추이(14일), 주간별(8주), 월별(6개월), 주간 요일별(월~일), 24시간 시간대별, 최근 접속자 25명 상세 로그</li>
@@ -34,50 +34,33 @@ const VERSION_HISTORY = [
         </li>
         <li><strong>🌐 관리자 IP 환경변수(ADMIN_IPS) 기반 도메인 통계 열람 지원</strong>:
           <ul>
-            <li><code>.env</code> 파일의 <code>ADMIN_IPS</code> 환경변수에 등록된 관리자 IP 접속 시, localhost가 아닌 실제 서비스 도메인에서도 접속자 통계 대시보드 접근 허용</li>
-            <li>도메인 접속 환경에서는 가상 시드(데모) 데이터를 완전 배제하고, <strong>실제로 유입된 순수 실시간 접속 데이터만 정밀 필터링하여 표시</strong></li>
+            <li><code>.env</code> 파일의 <code>ADMIN_IPS</code> 환경변수에 등록된 관리자 환경에서 도메인 접속 시에도 접속자 통계 대시보드 접근 허용</li>
+            <li>도메인 접속 환경에서는 가상 시드 데이터를 완전 배제하고, <strong>실제로 유입된 순수 실시간 접속 데이터만 정밀 필터링하여 표시</strong></li>
           </ul>
         </li>
-      </ul>
-    `
-  },
-  {
-    version: "v1.3.0",
-    date: "2026-09-16",
-    desc: `
-      <ul>
         <li><strong>🎨 첫 화면 헤더 & 추천기 UI/UX 최적화</strong>:
           <ul>
-            <li>AI 맞춤 추천 "빠른 예시" 영역 가로 스크롤 제거 및 가장 인기 있는 핵심 6종(코딩, 초가성비, 심층추론, 한국어문서, 영상생성, 이미지생성)으로 단정하게 1줄 압축 정돈</li>
+            <li>AI 맞춤 추천 "빠른 예시" 영역 가로 스크롤을 완전히 제거하고, 핵심 6종(코딩, 초가성비, 심층추론, 한국어문서, 영상생성, 이미지생성)으로 단정하게 1줄 압축 정돈</li>
             <li>추천 설명 서브타이틀("수행하고자 하는 작업...") 줄바꿈 없이 1줄로 시원하게 표시되도록 반응형 레이아웃 개선</li>
           </ul>
         </li>
-        <li><strong>⚡ 서버 안정성 강화</strong>: Windows 환경 콘솔 UTF-8 인코딩 자동 보정(이모지 출력 오류 원천 차단)</li>
-      </ul>
-    `
-  },
-  {
-    version: "v1.2.0",
-    date: "2026-09-16",
-    desc: `
-      <ul>
         <li><strong>👑 브랜드별 최상위 모델만 보기(Best Only) 필터 기능 탑재</strong>:
           <ul>
             <li>OpenAI, Anthropic, Google, DeepSeek 등 각 AI 브랜드별 최고 사양 플래그십 모델 자동 산출 및 원클릭 모아보기 지원</li>
           </ul>
         </li>
-        <li><strong>🇰🇷 국내(KR) 특화 LLM 모델 대규모 업데이트</strong>:
+        <li><strong>🇰🇷 국내(KR) 및 🇪🇺 유럽(EU) AI 모델 대규모 업데이트</strong>:
           <ul>
-            <li>LG Exaone 3.5, Naver HyperCLOVA X, Upstage Solar Pro / Mini 공식 가격 반영</li>
-            <li>국내 인기 KIE API 호스팅 최저가 비교 공급처 연동</li>
-          </ul>
-        </li>
-        <li><strong>🇪🇺 유럽(EU) 최신 프론티어 모델 반영</strong>:
-          <ul>
+            <li>LG Exaone 3.5, Naver HyperCLOVA X, Upstage Solar Pro / Mini 공식 가격 및 KIE API 공급처 연동</li>
             <li>Mistral Large 2411, Codestral 2501, Pixtral Large 및 DeepL 번역 모델 단가 최신화</li>
           </ul>
         </li>
-        <li><strong>🕒 로컬 개발자 전용 버전 이력 관리 모달 신설</strong></li>
+        <li><strong>⚡ 서버 안정성 강화 & 개발자 도구</strong>:
+          <ul>
+            <li>Windows 콘솔 환경 UTF-8 인코딩 자동 보정으로 터미널 이모지 출력 오류 원천 차단</li>
+            <li>버전 이력 관리(0.0.1 단위 및 일자별 통합 릴리즈 관리 체계) 모달 신설</li>
+          </ul>
+        </li>
       </ul>
     `
   },
