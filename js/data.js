@@ -101,6 +101,45 @@ export const PLATFORMS_INFO = {
     features: ['VARCO LLM 13B', '시나리오/대화 생성 특화', '도메인 파인튜닝'],
     siteUrl: 'https://varco.ncsoft.com/'
   },
+  yanolja: {
+    id: 'yanolja',
+    name: '야놀자 (Yanolja)',
+    country: 'KR',
+    countryLabel: '한국',
+    flag: '🇰🇷',
+    type: 'hosting',
+    typeLabel: '오픈소스 프로젝트',
+    badgeClass: 'hosting',
+    description: '야놀자 AI R&D에서 공개한 한국어 특화 대형 언어 모델 (EEVE 시리즈).',
+    features: ['EEVE 10.8B', '한국어 어휘 확장', '오픈 가중치'],
+    siteUrl: 'https://huggingface.co/yanolja'
+  },
+  kullm: {
+    id: 'kullm',
+    name: '고려대/구름 (KULLM)',
+    country: 'KR',
+    countryLabel: '한국',
+    flag: '🇰🇷',
+    type: 'hosting',
+    typeLabel: '오픈소스 프로젝트',
+    badgeClass: 'hosting',
+    description: '고려대학교 NLP&AI 연구실과 구름(goorm)이 공동 개발한 한국어 특화 언어 모델.',
+    features: ['KULLM3', '명령어 튜닝', '한국어 오픈소스'],
+    siteUrl: 'https://huggingface.co/nlpai-lab/kullm-3'
+  },
+  beomi: {
+    id: 'beomi',
+    name: 'Beomi (KoAlpaca / Open-Ko)',
+    country: 'KR',
+    countryLabel: '한국',
+    flag: '🇰🇷',
+    type: 'hosting',
+    typeLabel: '오픈소스 프로젝트',
+    badgeClass: 'hosting',
+    description: 'KoAlpaca, Llama-3-Open-Ko 등 국내 최고 수준의 오픈소스 한국어 모델 연구자.',
+    features: ['Llama-3-Open-Ko', 'KoAlpaca', '오픈 가중치 무료 서빙'],
+    siteUrl: 'https://huggingface.co/beomi'
+  },
   bllossom: {
     id: 'bllossom',
     name: '한국어 오픈소스 커뮤니티 (Bllossom)',
@@ -557,6 +596,32 @@ export const PLATFORMS_INFO = {
     features: ['초대용량 컨텍스트', '네이티브 멀티모달', '무료 테스트 티어', 'Veo 영상 생성'],
     siteUrl: 'https://ai.google.dev/pricing'
   },
+  alephalpha: {
+    id: 'alephalpha',
+    name: '알레프 알파 (Aleph Alpha)',
+    country: 'EU',
+    countryLabel: '유럽(독일)',
+    flag: '🇩🇪',
+    type: 'official',
+    typeLabel: '공식 개발사',
+    badgeClass: 'official',
+    description: '독일의 대표적인 AI 기업. 유럽 데이터 프라이버시 및 소버린 AI 보안 규정을 준수하는 기업용 모델 제공.',
+    features: ['Pharia-1-LLM', 'GDPR 준수', '유럽 문화 특화'],
+    siteUrl: 'https://aleph-alpha.com/'
+  },
+  kyutai: {
+    id: 'kyutai',
+    name: '큐타이 (Kyutai)',
+    country: 'EU',
+    countryLabel: '유럽(프랑스)',
+    flag: '🇫🇷',
+    type: 'official',
+    typeLabel: '공식 개발사',
+    badgeClass: 'official',
+    description: '프랑스의 비영리 AI 오픈 리서치 랩. 음성-텍스트 실시간 네이티브 멀티모달 모델 Moshi 개발.',
+    features: ['Moshi', '초저지연 음성 AI', '오픈 리서치'],
+    siteUrl: 'https://kyutai.org/'
+  },
   mistral: {
     id: 'mistral',
     name: 'Mistral AI (공식)',
@@ -862,6 +927,187 @@ export const PLATFORMS_INFO = {
  * 모델별 원시 가격 데이터셋 (KIE API 실측 스크린샷 데이터 포함)
  */
 export const RAW_MODELS = [
+  // =================================================================
+  // [유럽 추가 모델: Aleph Alpha, Kyutai, Mistral NeMo, Zephyr]
+  // =================================================================
+  {
+    id: 'pharia-1-llm-7b',
+    name: 'Pharia-1-LLM-7B',
+    creator: 'Aleph Alpha',
+    country: 'EU',
+    countryLabel: '유럽(독일)',
+    flagEmoji: '🇩🇪',
+    category: 'Fast & Lightweight',
+    contextWindow: '8K',
+    description: '알레프 알파에서 공개한 최신 7B 다국어/코드 오픈소스 모델. 유럽어 성능과 데이터 소버린 규정을 엄격히 준수.',
+    offers: [
+      {
+        provider: 'Hugging Face Endpoint',
+        providerKey: 'huggingface',
+        isOfficial: false,
+        inputPer1M: 0.00,
+        outputPer1M: 0.00,
+        cacheReadPer1M: 0.00,
+        discountPercent: 0,
+        latency: 'Variable',
+        siteUrl: 'https://huggingface.co/Aleph-Alpha/Pharia-1-LLM-7B-control',
+        note: '엔드포인트 직접 호스팅 요금 필요'
+      }
+    ]
+  },
+  {
+    id: 'moshi',
+    name: 'Moshi (Speech-to-Speech)',
+    creator: 'Kyutai',
+    country: 'EU',
+    countryLabel: '유럽(프랑스)',
+    flagEmoji: '🇫🇷',
+    category: 'Audio',
+    contextWindow: 'Audio Native',
+    description: '프랑스 비영리 연구소 Kyutai에서 개발한 최초의 실시간(Real-time) 네이티브 음성 멀티모달 파운데이션 모델.',
+    offers: [
+      {
+        provider: 'Hugging Face Endpoint',
+        providerKey: 'huggingface',
+        isOfficial: false,
+        inputPer1M: 0.00,
+        outputPer1M: 0.00,
+        cacheReadPer1M: 0.00,
+        discountPercent: 0,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://kyutai.org/',
+        note: '음성 스트리밍 서버리스 구축 필요'
+      }
+    ]
+  },
+  {
+    id: 'mistral-nemo-12b',
+    name: 'Mistral NeMo 12B',
+    creator: 'Mistral AI',
+    country: 'EU',
+    countryLabel: '유럽(프랑스)',
+    flagEmoji: '🇫🇷',
+    category: 'Fast & Lightweight',
+    contextWindow: '128K',
+    description: 'Mistral AI와 NVIDIA가 공동 개발한 12B 모델. 128K의 넓은 컨텍스트 윈도우와 높은 다국어 성능.',
+    offers: [
+      {
+        provider: 'Mistral (공식)',
+        providerKey: 'mistral',
+        isOfficial: true,
+        inputPer1M: 0.15,
+        outputPer1M: 0.15,
+        cacheReadPer1M: 0.00,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://console.mistral.ai/',
+        note: 'open-mistral-nemo 공식 API 요금'
+      }
+    ]
+  },
+  {
+    id: 'zephyr-7b-beta',
+    name: 'Zephyr-7B-Beta',
+    creator: 'Hugging Face',
+    country: 'EU',
+    countryLabel: '유럽(프랑스)',
+    flagEmoji: '🇪🇺',
+    category: 'Fast & Lightweight',
+    contextWindow: '8K',
+    description: 'Hugging Face H4 팀이 Mistral 7B를 기반으로 DPO를 적용해 미세조정한 모델로 챗봇 성능 극대화.',
+    offers: [
+      {
+        provider: 'Hugging Face Endpoint',
+        providerKey: 'huggingface',
+        isOfficial: false,
+        inputPer1M: 0.00,
+        outputPer1M: 0.00,
+        cacheReadPer1M: 0.00,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://huggingface.co/HuggingFaceH4/zephyr-7b-beta',
+        note: '엔드포인트 전용 호스팅'
+      }
+    ]
+  },
+  // =================================================================
+  // [국내 추가 모델: Yanolja, KULLM, Beomi]
+  // =================================================================
+  {
+    id: 'eeve-korean-instruct-10-8b',
+    name: 'EEVE-Korean-Instruct-10.8B',
+    creator: 'Yanolja',
+    country: 'KR',
+    countryLabel: '한국',
+    flagEmoji: '🇰🇷',
+    category: 'Fast & Lightweight',
+    contextWindow: '8K',
+    description: '야놀자 AI R&D에서 개발한 한국어 특화 파인튜닝 모델. 뛰어난 추론과 자연스러운 한국어 구사 능력.',
+    offers: [
+      {
+        provider: 'Hugging Face Endpoint',
+        providerKey: 'huggingface',
+        isOfficial: false,
+        inputPer1M: 0.00,
+        outputPer1M: 0.00,
+        cacheReadPer1M: 0.00,
+        discountPercent: 0,
+        latency: 'Variable',
+        siteUrl: 'https://huggingface.co/yanolja/EEVE-Korean-Instruct-10.8B-v1.0',
+        note: '서버리스 / 엔드포인트 직접 호스팅 요금 필요'
+      }
+    ]
+  },
+  {
+    id: 'kullm3',
+    name: 'KULLM3 (8B)',
+    creator: 'Korea Univ. / goorm',
+    country: 'KR',
+    countryLabel: '한국',
+    flagEmoji: '🇰🇷',
+    category: 'Fast & Lightweight',
+    contextWindow: '8K',
+    description: '고려대 NLP&AI 연구실과 구름이 공동 개발한 명령어 튜닝 기반 한국어 오픈소스 모델.',
+    offers: [
+      {
+        provider: 'Hugging Face Endpoint',
+        providerKey: 'huggingface',
+        isOfficial: false,
+        inputPer1M: 0.00,
+        outputPer1M: 0.00,
+        cacheReadPer1M: 0.00,
+        discountPercent: 0,
+        latency: 'Variable',
+        siteUrl: 'https://huggingface.co/nlpai-lab/kullm-3',
+        note: '서버리스 / 엔드포인트 직접 호스팅 요금 필요'
+      }
+    ]
+  },
+  {
+    id: 'llama-3-open-ko-8b',
+    name: 'Llama-3-Open-Ko-8B',
+    creator: 'Beomi',
+    country: 'KR',
+    countryLabel: '한국',
+    flagEmoji: '🇰🇷',
+    category: 'Fast & Lightweight',
+    contextWindow: '8K',
+    description: '이준범(Beomi) 님이 개발한 Llama 3 기반 한국어 어휘 확장 및 파인튜닝 모델.',
+    offers: [
+      {
+        provider: 'Hugging Face Endpoint',
+        providerKey: 'huggingface',
+        isOfficial: false,
+        inputPer1M: 0.00,
+        outputPer1M: 0.00,
+        cacheReadPer1M: 0.00,
+        discountPercent: 0,
+        latency: 'Variable',
+        siteUrl: 'https://huggingface.co/beomi/Llama-3-Open-Ko-8B',
+        note: '서버리스 / 엔드포인트 직접 호스팅 요금 필요'
+      }
+    ]
+  },
   // =================================================================
   // [신규 등록 모델: BytePlus, Genspark, Arena.ai]
   // =================================================================

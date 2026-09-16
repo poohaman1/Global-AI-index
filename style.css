@@ -2310,7 +2310,20 @@ button, input, select {
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding: 2px 0 4px 0;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.recommend-quick-chips::-webkit-scrollbar {
+  height: 4px;
+}
+
+.recommend-quick-chips::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
 }
 
 .chips-label {
@@ -2318,6 +2331,8 @@ button, input, select {
   color: var(--text-subtle);
   font-weight: 600;
   margin-right: 0.2rem;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .quick-chip {
@@ -2330,6 +2345,8 @@ button, input, select {
   border-radius: var(--radius-full);
   cursor: pointer;
   transition: all 0.15s ease;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .quick-chip:hover {
@@ -2493,6 +2510,63 @@ button, input, select {
 .btn-alt-compare:hover {
   border-color: var(--accent-blue);
   color: var(--text-main);
+}
+
+/* ==========================================================================
+   버전 이력 관리 (Local Only)
+   ========================================================================== */
+.version-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.version-item {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.version-item:last-child {
+  border-bottom: none;
+}
+
+.version-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.version-version {
+  font-weight: 700;
+  color: var(--primary-color);
+  font-size: 1.1rem;
+}
+
+.version-date {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  background: var(--bg-secondary);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.version-desc {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-color);
+  margin-top: 0.2rem;
+}
+
+.version-desc ul {
+  margin-top: 0.5rem;
+  padding-left: 1.2rem;
+}
+
+.version-desc li {
+  margin-bottom: 0.3rem;
 }
 
 

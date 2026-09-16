@@ -19,6 +19,24 @@ import {
   compareProvidersForModel
 } from './calculator.js';
 
+const VERSION_HISTORY = [
+  {
+    version: "v1.2.0",
+    date: "2026-09-16",
+    desc: "<ul><li>브랜드별 최상위 모델만 보기 필터 기능 추가</li><li>한국 및 유럽 오픈소스 특화 모델 추가</li><li>버전 이력 관리 (Local Only) 모달 추가</li></ul>"
+  },
+  {
+    version: "v1.1.0",
+    date: "2026-09-10",
+    desc: "<ul><li>3단 뷰 (테이블/카드/사이트별) 스위처 도입</li><li>모델별 단일 최저가만 보기 토글 추가</li></ul>"
+  },
+  {
+    version: "v1.0.0",
+    date: "2026-09-01",
+    desc: "<ul><li>글로벌 AI 최저가 실시간 비교 플랫폼 초기 런칭</li></ul>"
+  }
+];
+
 // 안전한 HTML 이스케이프 함수 (XSS 방지)
 function escapeHtml(str) {
   if (typeof str !== 'string') return String(str);
@@ -56,6 +74,7 @@ const state = {
   viewMode: 'table',    // 'table' (기본 보기) | 'cards' | 'sites'
   sortOrder: 'none',    // 'none' (기본) | 'lowest' (최저가 순) | 'highest' (최고가 순)
   onlyLowestPrice: false, // 모델별 최저가만 보기 플래그
+  onlyTopTier: false,     // 브랜드별 최상위 모델만 보기 플래그
   isCalcExpanded: false,  // 계산기 펼침 여부 (기본: 최소화)
   calcInputM: 10,       // 백만 토큰
   calcOutputM: 2,
@@ -80,6 +99,7 @@ const thCostSort = document.getElementById('thCostSort');
 const costHeaderSortIcon = document.getElementById('costHeaderSortIcon');
 
 const btnToggleLowestOnly = document.getElementById('btnToggleLowestOnly');
+const btnToggleTopTierOnly = document.getElementById('btnToggleTopTierOnly');
 const btnViewCards = document.getElementById('btnViewCards');
 const btnViewSites = document.getElementById('btnViewSites');
 const btnViewTable = document.getElementById('btnViewTable');
@@ -131,6 +151,12 @@ const inputFilterModelsModal = document.getElementById('inputFilterModelsModal')
 const modalModelsCountryTabs = document.getElementById('modalModelsCountryTabs');
 const modalModelsCountBadge = document.getElementById('modalModelsCountBadge');
 const modalModelsBody = document.getElementById('modalModelsBody');
+
+const btnVersionHistory = document.getElementById('btnVersionHistory');
+const modalVersionHistory = document.getElementById('modalVersionHistory');
+const btnCloseVersionHistoryModal = document.getElementById('btnCloseVersionHistoryModal');
+const backdropVersionHistory = document.getElementById('backdropVersionHistory');
+const versionHistoryList = document.getElementById('versionHistoryList');
 
 // AI 맞춤 추천 요소
 const inputUserTask = document.getElementById('inputUserTask');
@@ -398,6 +424,26 @@ function getFilteredModels() {
     }
     return model.category === state.activeFilter;
   });
+
+  // 브랜드별 최상위 모델만 보기 필터 적용
+  if (state.onlyTopTier) {
+    const creatorMap = new Map();
+    filtered.forEach(model => {
+      const creator = model.creator;
+      const comp = compareProvidersForModel(model, state.calcInputM, state.calcOutputM, state.calcCacheM);
+      const cost = comp.bestOffer && typeof comp.bestOffer.totalCost === 'number' ? comp.bestOffer.totalCost : 0;
+      
+      if (!creatorMap.has(creator)) {
+        creatorMap.set(creator, { model, cost });
+      } else {
+        if (cost > creatorMap.get(creator).cost) {
+          creatorMap.set(creator, { model, cost });
+        }
+      }
+    });
+    const topTierModelIds = new Set(Array.from(creatorMap.values()).map(v => v.model.id));
+    filtered = filtered.filter(m => topTierModelIds.has(m.id));
+  }
 
   // 4. 가격 정렬 (없음: none / 최저가 순: lowest / 최고가 순: highest)
   if (state.sortOrder === 'lowest' || state.sortOrder === 'highest') {
@@ -1258,6 +1304,33 @@ function closeModelsModal() {
   document.body.style.overflow = '';
 }
 
+function renderVersionHistory() {
+  if (!versionHistoryList) return;
+  const html = VERSION_HISTORY.map(item => `
+    <li class="version-item">
+      <div class="version-header">
+        <span class="version-version">${escapeHtml(item.version)}</span>
+        <span class="version-date">${escapeHtml(item.date)}</span>
+      </div>
+      <div class="version-desc">${item.desc}</div>
+    </li>
+  `).join('');
+  versionHistoryList.innerHTML = html;
+}
+
+function openVersionHistoryModal() {
+  if (!modalVersionHistory) return;
+  renderVersionHistory();
+  modalVersionHistory.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeVersionHistoryModal() {
+  if (!modalVersionHistory) return;
+  modalVersionHistory.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
 // ==========================================================================
 // AI 맞춤 추천 엔진 (작업 목적에 어울리는 최적 AI 모델 & 최저가 매칭)
 // ==========================================================================
@@ -1520,6 +1593,9 @@ function render() {
   if (btnToggleLowestOnly) {
     btnToggleLowestOnly.classList.toggle('active', state.onlyLowestPrice);
   }
+  if (btnToggleTopTierOnly) {
+    btnToggleTopTierOnly.classList.toggle('active', state.onlyTopTier);
+  }
   btnViewTable.classList.toggle('active', state.viewMode === 'table');
   btnViewCards.classList.toggle('active', state.viewMode === 'cards');
   btnViewSites.classList.toggle('active', state.viewMode === 'sites');
@@ -1590,6 +1666,22 @@ function render() {
  * 이벤트 리스너 바인딩
  */
 function initEvents() {
+  // Localhost 전용 버전 이력 버튼 표시
+  const isLocalhost = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+  if (isLocalhost && btnVersionHistory) {
+    btnVersionHistory.style.display = 'flex';
+  }
+
+  if (btnVersionHistory) {
+    btnVersionHistory.addEventListener('click', openVersionHistoryModal);
+  }
+  if (btnCloseVersionHistoryModal) {
+    btnCloseVersionHistoryModal.addEventListener('click', closeVersionHistoryModal);
+  }
+  if (backdropVersionHistory) {
+    backdropVersionHistory.addEventListener('click', closeVersionHistoryModal);
+  }
+
   // 0. 좌측 상단 로고 클릭 시 첫 화면으로 모든 설정 완전 초기화
   if (btnLogoHome) {
     btnLogoHome.addEventListener('click', (e) => {
@@ -1693,6 +1785,14 @@ function initEvents() {
   if (btnToggleLowestOnly) {
     btnToggleLowestOnly.addEventListener('click', () => {
       state.onlyLowestPrice = !state.onlyLowestPrice;
+      render();
+    });
+  }
+
+  // 브랜드별 최상위 모델만 보기 토글 버튼
+  if (btnToggleTopTierOnly) {
+    btnToggleTopTierOnly.addEventListener('click', () => {
+      state.onlyTopTier = !state.onlyTopTier;
       render();
     });
   }

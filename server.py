@@ -15,6 +15,14 @@ import urllib.error
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
 
+# Windows 콘솔 출력 시 유니코드/이모지 출력 에러 방지
+if sys.platform == 'win32':
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+        sys.stderr.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
+
 BASE_DIR = Path(__file__).resolve().parent
 
 # .env 파일 로드 함수 (외부 라이브러리 없이 자체 파싱)
