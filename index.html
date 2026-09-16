@@ -401,7 +401,7 @@
           <div class="modal-icon-badge">🤖</div>
           <div>
             <h3 class="modal-title" id="modalModelsTitle">전체 비교 LLM 모델 목록</h3>
-            <p class="modal-subtitle" id="modalModelsSubtitle">총 152개 글로벌·아시아·한국·중국 파운데이션 모델 실시간 인덱스</p>
+            <p class="modal-subtitle" id="modalModelsSubtitle">총 184개 글로벌·아시아·한국·중국 파운데이션 모델 실시간 인덱스</p>
           </div>
         </div>
         <button type="button" class="btn-modal-close" id="btnCloseModelsModal" aria-label="모달 닫기">&times;</button>
@@ -411,7 +411,16 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <input type="text" id="inputFilterModelsModal" placeholder="LLM 모델명, 제작사, 국가 검색 (예: Claude, GPT, Qwen, Solar, DeepSeek)..." autocomplete="off">
         </div>
-        <span class="modal-count-badge" id="modalModelsCountBadge">152개</span>
+        <span class="modal-count-badge" id="modalModelsCountBadge">184개</span>
+      </div>
+      <!-- 지역/국가 선택 필터 탭 (전체, 아시아, 유럽, 미국, 중국, 한국) -->
+      <div class="modal-country-tabs" id="modalModelsCountryTabs" role="tablist" aria-label="LLM 모델 지역 선택">
+        <button type="button" class="modal-country-btn active" data-country="ALL" role="tab" aria-selected="true">🌐 전체</button>
+        <button type="button" class="modal-country-btn asia" data-country="ASIA" role="tab" aria-selected="false">🌏 아시아</button>
+        <button type="button" class="modal-country-btn eu" data-country="EU" role="tab" aria-selected="false">🇪🇺 유럽</button>
+        <button type="button" class="modal-country-btn us" data-country="US" role="tab" aria-selected="false">🇺🇸 미국</button>
+        <button type="button" class="modal-country-btn cn" data-country="CN" role="tab" aria-selected="false">🇨🇳 중국</button>
+        <button type="button" class="modal-country-btn kr" data-country="KR" role="tab" aria-selected="false">🇰🇷 한국</button>
       </div>
       <div class="modal-body" id="modalModelsBody">
         <!-- JS로 동적 렌더링 -->

@@ -51,6 +51,7 @@ const state = {
   activeFilter: 'all',
   activeCountry: 'ALL', // 'ALL' | 'KR' | 'US' | 'CN' | 'EU'
   modalProviderCountry: 'ALL', // 모달 공급 사이트 지역 필터 ('ALL' | 'ASIA' | 'EU' | 'US' | 'CN' | 'KR')
+  modalModelCountry: 'ALL',    // 모달 비교 모델 지역 필터 ('ALL' | 'ASIA' | 'EU' | 'US' | 'CN' | 'KR')
   activeMediaType: 'all', // 'all' | 'Text' | 'Image' | 'Video' | 'Music'
   viewMode: 'table',    // 'table' (기본 보기) | 'cards' | 'sites'
   sortOrder: 'none',    // 'none' (기본) | 'lowest' (최저가 순) | 'highest' (최고가 순)
@@ -126,6 +127,7 @@ const modalModels = document.getElementById('modalModels');
 const backdropModels = document.getElementById('backdropModels');
 const btnCloseModelsModal = document.getElementById('btnCloseModelsModal');
 const inputFilterModelsModal = document.getElementById('inputFilterModelsModal');
+const modalModelsCountryTabs = document.getElementById('modalModelsCountryTabs');
 const modalModelsCountBadge = document.getElementById('modalModelsCountBadge');
 const modalModelsBody = document.getElementById('modalModelsBody');
 
@@ -1015,14 +1017,52 @@ function closeProvidersModal() {
 }
 
 /**
- * 2. 전체 비교 모델 모달 렌더링
+ * 모달 비교 모델의 지역/국가 필터 일치 여부 판별
+ */
+function isModelMatchingRegion(model, regionKey) {
+  if (!regionKey || regionKey === 'ALL') return true;
+  const asianCountries = ['KR', 'CN', 'JP', 'SG', 'IN', 'ASIA'];
+  const euCountries = ['EU', 'FR', 'DE', 'GB', 'UK'];
+  const usCountries = ['US', 'CA'];
+
+  const cCode = (model.country || '').toUpperCase();
+  const cLabel = (model.countryLabel || '').toLowerCase();
+  const region = (model.region || '').toLowerCase();
+
+  if (regionKey === 'ASIA') {
+    return asianCountries.includes(cCode) || region === 'asia' || /아시아|한국|중국|일본|싱가포르|인도/.test(cLabel);
+  }
+  if (regionKey === 'EU') {
+    return euCountries.includes(cCode) || region === 'europe' || /유럽|프랑스|독일|영국/.test(cLabel);
+  }
+  if (regionKey === 'US') {
+    return usCountries.includes(cCode) || region === 'north america' || /미국|북미|캐나다/.test(cLabel);
+  }
+  if (regionKey === 'CN') {
+    return cCode === 'CN' || cLabel.includes('중국');
+  }
+  if (regionKey === 'KR') {
+    return cCode === 'KR' || cLabel.includes('한국');
+  }
+  return true;
+}
+
+/**
+ * 2. 전체 비교 모델 모달 렌더링 (지역 필터 + 검색어 지원)
  */
 function renderModelsModal(query = '') {
   if (!modalModelsBody) return;
   const q = query.trim().toLowerCase();
   const allModels = state.models;
+  const activeRegion = state.modalModelCountry || 'ALL';
 
   const filteredModels = allModels.filter(m => {
+    // 1. 지역/국가 필터
+    if (!isModelMatchingRegion(m, activeRegion)) {
+      return false;
+    }
+
+    // 2. 검색어 필터
     if (!q) return true;
     const matchName = m.name.toLowerCase().includes(q);
     const matchCreator = m.creator.toLowerCase().includes(q);
@@ -1036,10 +1076,21 @@ function renderModelsModal(query = '') {
   }
 
   if (filteredModels.length === 0) {
+    const regionNames = {
+      ALL: '전체',
+      ASIA: '아시아',
+      EU: '유럽',
+      US: '미국',
+      CN: '중국',
+      KR: '한국'
+    };
+    const regionLabel = regionNames[activeRegion] || activeRegion;
+    const queryMsg = q ? `'${escapeHtml(query)}' 검색 결과가 없습니다.` : `${regionLabel} 지역에 해당하는 LLM 모델이 없습니다.`;
+
     modalModelsBody.innerHTML = `
       <div style="text-align: center; padding: 3rem 1rem; color: var(--text-muted);">
-        <p style="font-size: 1.1rem; font-weight: 700;">'${escapeHtml(query)}' 검색 결과가 없습니다.</p>
-        <p style="font-size: 0.85rem; margin-top: 0.35rem;">다른 모델명이나 제작사(OpenAI, Google, 네이버 등)를 입력해 보세요.</p>
+        <p style="font-size: 1.1rem; font-weight: 700;">${queryMsg}</p>
+        <p style="font-size: 0.85rem; margin-top: 0.35rem;">다른 지역 탭(전체, 아시아, 한국, 미국 등)을 선택하거나 검색어를 변경해 보세요.</p>
       </div>
     `;
     return;
@@ -1105,6 +1156,17 @@ function openModelsModal() {
   if (!modalModels) return;
   modalModels.style.display = 'flex';
   document.body.style.overflow = 'hidden';
+
+  // 지역 탭 활성 상태 동기화
+  if (modalModelsCountryTabs) {
+    const activeRegion = state.modalModelCountry || 'ALL';
+    modalModelsCountryTabs.querySelectorAll('.modal-country-btn').forEach(btn => {
+      const isMatch = btn.getAttribute('data-country') === activeRegion;
+      btn.classList.toggle('active', isMatch);
+      btn.setAttribute('aria-selected', isMatch ? 'true' : 'false');
+    });
+  }
+
   if (inputFilterModelsModal) {
     inputFilterModelsModal.value = '';
     setTimeout(() => inputFilterModelsModal.focus(), 50);
@@ -1672,6 +1734,25 @@ function initEvents() {
   if (inputFilterModelsModal) {
     inputFilterModelsModal.addEventListener('input', (e) => {
       renderModelsModal(e.target.value);
+    });
+  }
+
+  // 모델 모달 지역/국가 필터 탭 클릭 이벤트 (전체, 아시아, 유럽, 미국, 중국, 한국)
+  if (modalModelsCountryTabs) {
+    modalModelsCountryTabs.addEventListener('click', (e) => {
+      const btn = e.target.closest('.modal-country-btn');
+      if (!btn) return;
+      const targetCountry = btn.getAttribute('data-country') || 'ALL';
+      state.modalModelCountry = targetCountry;
+
+      modalModelsCountryTabs.querySelectorAll('.modal-country-btn').forEach(b => {
+        const isMatch = (b === btn);
+        b.classList.toggle('active', isMatch);
+        b.setAttribute('aria-selected', isMatch ? 'true' : 'false');
+      });
+
+      const currentQuery = inputFilterModelsModal ? inputFilterModelsModal.value : '';
+      renderModelsModal(currentQuery);
     });
   }
 
