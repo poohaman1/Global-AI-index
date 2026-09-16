@@ -191,9 +191,9 @@ def fallback_smart_recommend(user_prompt):
             ]
         }
 
-    elif any(k in p for k in ['음악', '작곡', '노래', '오디오', 'tts', '음성', '목소리', 'bgm', '사운드']):
+    elif any(k in p for k in ['음악', '작곡', '노래', '오디오', 'tts', '음성', '목소리', 'bgm', '사운드', '성우']):
         return {
-            "intent": "AI 음악 작곡 & 오디오 TTS 생성",
+            "intent": "AI 음악 작곡 & 오디오 TTS 성우 생성",
             "primary": {
                 "id": "suno-v6",
                 "name": "Suno V6",
