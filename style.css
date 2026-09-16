@@ -2309,21 +2309,16 @@ button, input, select {
 .recommend-quick-chips {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.35rem;
   flex-wrap: nowrap;
-  overflow-x: auto;
-  padding: 2px 0 4px 0;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
+  overflow: hidden;
+  padding: 2px 0;
+  scrollbar-width: none; /* Firefox 스크롤바 제거 */
+  -ms-overflow-style: none; /* IE/Edge */
 }
 
 .recommend-quick-chips::-webkit-scrollbar {
-  height: 4px;
-}
-
-.recommend-quick-chips::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: 4px;
+  display: none; /* Chrome/Safari/Webkit 스크롤바 완전 숨김 */
 }
 
 .chips-label {
