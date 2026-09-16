@@ -64,6 +64,7 @@ const state = {
 };
 
 // DOM 요소 참조
+const btnLogoHome = document.getElementById('btnLogoHome') || document.querySelector('.logo-area');
 const elLastUpdated = document.getElementById('lastUpdatedText');
 const btnSync = document.getElementById('btnSyncData');
 const btnThemeToggle = document.getElementById('btnThemeToggle');
@@ -263,6 +264,83 @@ function toggleCalculator() {
   if (calcToggleHeader) {
     calcToggleHeader.setAttribute('aria-expanded', state.isCalcExpanded);
   }
+}
+
+/**
+ * 사이트 접속 후 첫 화면 상태로 모든 필터, 검색어, 모달, 계산기 완전 초기화
+ */
+function resetToHome() {
+  // 1. 상태 객체 초기화
+  state.searchQuery = '';
+  state.activeFilter = 'all';
+  state.activeCountry = 'ALL';
+  state.modalProviderCountry = 'ALL';
+  state.modalModelCountry = 'ALL';
+  state.activeMediaType = 'all';
+  state.viewMode = 'table';
+  state.sortOrder = 'none';
+  state.onlyLowestPrice = false;
+  state.isCalcExpanded = false;
+  state.calcInputM = 10;
+  state.calcOutputM = 2;
+  state.calcCacheM = 5;
+
+  // 2. 검색창 초기화
+  if (searchInput) {
+    searchInput.value = '';
+  }
+
+  // 3. 국기 필터 바 버튼 초기화
+  flagBtns.forEach(btn => {
+    const isAll = btn.getAttribute('data-country') === 'ALL';
+    btn.classList.toggle('active', isAll);
+  });
+
+  // 4. 카테고리 필터 버튼 초기화
+  filterBtns.forEach(btn => {
+    const isAll = btn.getAttribute('data-filter') === 'all';
+    btn.classList.toggle('active', isAll);
+  });
+
+  // 5. 미디어 타입 필터 버튼 초기화
+  if (mediaBtns && mediaBtns.length > 0) {
+    mediaBtns.forEach(btn => {
+      const isAll = btn.getAttribute('data-media') === 'all';
+      btn.classList.toggle('active', isAll);
+    });
+  }
+
+  // 6. 계산기 입력값 및 접힘 상태 초기화
+  if (inputCalcInput) inputCalcInput.value = '10';
+  if (inputCalcOutput) inputCalcOutput.value = '2';
+  if (inputCalcCache) inputCalcCache.value = '5';
+  if (calcBody) calcBody.style.display = 'none';
+  if (calcSection) calcSection.classList.remove('expanded');
+  if (calcToggleText) calcToggleText.textContent = '사용량 입력 펼치기';
+  if (calcToggleChevron) calcToggleChevron.style.transform = 'rotate(0deg)';
+  if (calcToggleHeader) calcToggleHeader.setAttribute('aria-expanded', 'false');
+  if (calcSummaryPill) {
+    calcSummaryPill.textContent = '현재 기준: In 10M / Out 2M / Cache 5M';
+  }
+
+  // 7. AI 맞춤 추천 입력창 및 결과창 초기화
+  if (inputUserTask) {
+    inputUserTask.value = '';
+  }
+  if (recommendResultBox) {
+    recommendResultBox.style.display = 'none';
+    recommendResultBox.innerHTML = '';
+  }
+
+  // 8. 열려 있는 모달 창 모두 닫기
+  closeProvidersModal();
+  closeModelsModal();
+
+  // 9. 전체 화면 재렌더링
+  render();
+
+  // 10. 페이지 최상단으로 부드럽게 스크롤 이동
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 /**
@@ -1512,6 +1590,20 @@ function render() {
  * 이벤트 리스너 바인딩
  */
 function initEvents() {
+  // 0. 좌측 상단 로고 클릭 시 첫 화면으로 모든 설정 완전 초기화
+  if (btnLogoHome) {
+    btnLogoHome.addEventListener('click', (e) => {
+      e.preventDefault();
+      resetToHome();
+    });
+    btnLogoHome.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        resetToHome();
+      }
+    });
+  }
+
   // 테마 토글
   btnThemeToggle.addEventListener('click', () => {
     const nextTheme = state.theme === 'dark' ? 'light' : 'dark';
