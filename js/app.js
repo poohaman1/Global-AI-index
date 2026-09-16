@@ -32,9 +32,9 @@ const VERSION_HISTORY = [
             <li>CSS 기반 고성능 듀얼 바 차트 & 요일별 게이지, 피크 타임 하이라이트 시각화 탑재</li>
           </ul>
         </li>
-        <li><strong>🌐 관리자 IP(61.36.35.11) 환경변수 기반 도메인 통계 열람 지원</strong>:
+        <li><strong>🌐 관리자 IP 환경변수(ADMIN_IPS) 기반 도메인 통계 열람 지원</strong>:
           <ul>
-            <li><code>.env</code> 파일의 <code>ADMIN_IPS</code> 환경변수에 등록된 IP 접속 시, localhost가 아닌 실제 서비스 도메인에서도 접속자 통계 대시보드 접근 허용</li>
+            <li><code>.env</code> 파일의 <code>ADMIN_IPS</code> 환경변수에 등록된 관리자 IP 접속 시, localhost가 아닌 실제 서비스 도메인에서도 접속자 통계 대시보드 접근 허용</li>
             <li>도메인 접속 환경에서는 가상 시드(데모) 데이터를 완전 배제하고, <strong>실제로 유입된 순수 실시간 접속 데이터만 정밀 필터링하여 표시</strong></li>
           </ul>
         </li>
@@ -1486,10 +1486,9 @@ function renderAnalyticsDashboard(data) {
   }
 
   if (badgeAdmin) {
-    const clientIp = data.clientIp || window.__CLIENT_ENV__?.clientIp;
-    if (clientIp) {
+    if (data.isAdmin || window.__CLIENT_ENV__?.isAdmin) {
       badgeAdmin.style.display = 'inline-block';
-      badgeAdmin.textContent = `Admin IP: ${clientIp}`;
+      badgeAdmin.textContent = '관리자 IP 인증됨';
     }
   }
 
@@ -2449,7 +2448,7 @@ async function setupDevEnvironment() {
   const isAdmin = isLocalhost || Boolean(envData && envData.isAdmin);
 
   if (isAdmin) {
-    // Localhost이거나 관리자 IP(61.36.35.11)로 접속한 경우: 접속자 통계 및 버전 이력 버튼 활성화
+    // Localhost이거나 관리자 IP로 접속한 경우: 접속자 통계 및 버전 이력 버튼 활성화
     if (btnVisitorAnalytics) btnVisitorAnalytics.style.display = 'flex';
     if (btnVersionHistory) btnVersionHistory.style.display = 'flex';
 
@@ -2461,7 +2460,7 @@ async function setupDevEnvironment() {
         const keyInfo = envData?.keys?.gemini ? 'Gemini 연동' : (envData?.keys?.openai ? 'OpenAI 연동' : '키 미설정');
         devEnvText.textContent = `DEV (포트:${envData?.port || 8088} · ${keyInfo})`;
       } else {
-        devEnvText.textContent = `ADMIN (IP:${envData?.clientIp || '허용됨'})`;
+        devEnvText.textContent = `ADMIN (관리자 인증됨)`;
       }
     }
   } else {

@@ -737,7 +737,7 @@ class LLMProxyRequestHandler(SimpleHTTPRequestHandler):
         record_visit(client_ip, user_agent, req_path)
 
         current_env = load_env_file()
-        admin_ips_raw = current_env.get('ADMIN_IPS', '61.36.35.11,127.0.0.1')
+        admin_ips_raw = current_env.get('ADMIN_IPS', '127.0.0.1')
         admin_ips = [ip.strip() for ip in admin_ips_raw.split(',') if ip.strip()]
         is_admin = (client_ip in admin_ips) or (client_ip in ['127.0.0.1', 'localhost', '::1'])
         

@@ -73,7 +73,7 @@ class handler(BaseHTTPRequestHandler):
         client_ip = raw_ip.split(',')[0].strip() if raw_ip else self.headers.get('x-real-ip', '127.0.0.1')
         user_agent = self.headers.get('user-agent', '')
 
-        admin_ips_raw = os.environ.get('ADMIN_IPS', '61.36.35.11,127.0.0.1')
+        admin_ips_raw = os.environ.get('ADMIN_IPS', '127.0.0.1')
         admin_ips = [ip.strip() for ip in admin_ips_raw.split(',') if ip.strip()]
         is_admin = (client_ip in admin_ips) or (client_ip in ['127.0.0.1', 'localhost', '::1'])
 
