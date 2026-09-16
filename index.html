@@ -472,11 +472,12 @@
         <div class="modal-header-left">
           <div class="modal-icon-badge">📊</div>
           <div>
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
               <h3 class="modal-title" id="modalAnalyticsTitle">웹사이트 접속자 현황 분석</h3>
-              <span class="badge-local-only">Local Only</span>
+              <span class="badge-local-only" id="badgeAnalyticsType">Localhost</span>
+              <span class="badge-admin-ip" id="badgeAdminIp" style="display: none;">Admin IP 허용</span>
             </div>
-            <p class="modal-subtitle">실시간 방문자 트래픽 및 일별·주간별·월별·요일별·시간대별 접속 통계</p>
+            <p class="modal-subtitle" id="modalAnalyticsSubtitle">실시간 방문자 트래픽 및 일별·주간별·월별·요일별·시간대별 접속 통계</p>
           </div>
         </div>
         <div style="display: flex; align-items: center; gap: 0.5rem;">

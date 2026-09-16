@@ -21,19 +21,96 @@ import {
 
 const VERSION_HISTORY = [
   {
+    version: "v1.4.0",
+    date: "2026-09-16",
+    desc: `
+      <ul>
+        <li><strong>📊 웹사이트 접속자 현황 분석 대시보드 추가 (Localhost & 관리자 전용)</strong>:
+          <ul>
+            <li>상단 요약 KPI 5종: 누적 페이지뷰(PV), 순 방문자(UV), 오늘/이번주 방문자 수, 24시간 최다 피크 시간대 자동 분석</li>
+            <li>6대 인터랙티브 분석 탭: 일별 추이(14일), 주간별(8주), 월별(6개월), 주간 요일별(월~일), 24시간 시간대별, 최근 접속자 25명 상세 로그</li>
+            <li>CSS 기반 고성능 듀얼 바 차트 & 요일별 게이지, 피크 타임 하이라이트 시각화 탑재</li>
+          </ul>
+        </li>
+        <li><strong>🌐 관리자 IP(61.36.35.11) 환경변수 기반 도메인 통계 열람 지원</strong>:
+          <ul>
+            <li><code>.env</code> 파일의 <code>ADMIN_IPS</code> 환경변수에 등록된 IP 접속 시, localhost가 아닌 실제 서비스 도메인에서도 접속자 통계 대시보드 접근 허용</li>
+            <li>도메인 접속 환경에서는 가상 시드(데모) 데이터를 완전 배제하고, <strong>실제로 유입된 순수 실시간 접속 데이터만 정밀 필터링하여 표시</strong></li>
+          </ul>
+        </li>
+      </ul>
+    `
+  },
+  {
+    version: "v1.3.0",
+    date: "2026-09-16",
+    desc: `
+      <ul>
+        <li><strong>🎨 첫 화면 헤더 & 추천기 UI/UX 최적화</strong>:
+          <ul>
+            <li>AI 맞춤 추천 "빠른 예시" 영역 가로 스크롤 제거 및 가장 인기 있는 핵심 6종(코딩, 초가성비, 심층추론, 한국어문서, 영상생성, 이미지생성)으로 단정하게 1줄 압축 정돈</li>
+            <li>추천 설명 서브타이틀("수행하고자 하는 작업...") 줄바꿈 없이 1줄로 시원하게 표시되도록 반응형 레이아웃 개선</li>
+          </ul>
+        </li>
+        <li><strong>⚡ 서버 안정성 강화</strong>: Windows 환경 콘솔 UTF-8 인코딩 자동 보정(이모지 출력 오류 원천 차단)</li>
+      </ul>
+    `
+  },
+  {
     version: "v1.2.0",
     date: "2026-09-16",
-    desc: "<ul><li>브랜드별 최상위 모델만 보기 필터 기능 추가</li><li>한국 및 유럽 오픈소스 특화 모델 추가</li><li>버전 이력 관리 (Local Only) 모달 추가</li></ul>"
+    desc: `
+      <ul>
+        <li><strong>👑 브랜드별 최상위 모델만 보기(Best Only) 필터 기능 탑재</strong>:
+          <ul>
+            <li>OpenAI, Anthropic, Google, DeepSeek 등 각 AI 브랜드별 최고 사양 플래그십 모델 자동 산출 및 원클릭 모아보기 지원</li>
+          </ul>
+        </li>
+        <li><strong>🇰🇷 국내(KR) 특화 LLM 모델 대규모 업데이트</strong>:
+          <ul>
+            <li>LG Exaone 3.5, Naver HyperCLOVA X, Upstage Solar Pro / Mini 공식 가격 반영</li>
+            <li>국내 인기 KIE API 호스팅 최저가 비교 공급처 연동</li>
+          </ul>
+        </li>
+        <li><strong>🇪🇺 유럽(EU) 최신 프론티어 모델 반영</strong>:
+          <ul>
+            <li>Mistral Large 2411, Codestral 2501, Pixtral Large 및 DeepL 번역 모델 단가 최신화</li>
+          </ul>
+        </li>
+        <li><strong>🕒 로컬 개발자 전용 버전 이력 관리 모달 신설</strong></li>
+      </ul>
+    `
   },
   {
     version: "v1.1.0",
     date: "2026-09-10",
-    desc: "<ul><li>3단 뷰 (테이블/카드/사이트별) 스위처 도입</li><li>모델별 단일 최저가만 보기 토글 추가</li></ul>"
+    desc: `
+      <ul>
+        <li><strong>🌏 아시아(ASIA) 필터 탭 신설 & 국가별 툴바 확장</strong>:
+          <ul>
+            <li>전체(ALL), 아시아(ASIA), 한국(KR), 중국(CN), 미국(US), 유럽(EU) 6개 권역 필터 탭 지원</li>
+          </ul>
+        </li>
+        <li><strong>📑 3단 뷰 스위처 도입</strong>: 대시보드 테이블 뷰 / 모델 카드 뷰 / 공급 사이트별 카드 뷰</li>
+        <li><strong>💰 모델별 단일 최저가(Best Price Only) 토글 기능 추가</strong></li>
+        <li><strong>🧮 토큰 사용량 실시간 계산기(Calculator) 접이식 컴팩트 UI 개편</strong></li>
+      </ul>
+    `
   },
   {
     version: "v1.0.0",
     date: "2026-09-01",
-    desc: "<ul><li>글로벌 AI 최저가 실시간 비교 플랫폼 초기 런칭</li></ul>"
+    desc: `
+      <ul>
+        <li><strong>🚀 글로벌 AI 최저가 비교 플랫폼 초기 공식 런칭</strong>:
+          <ul>
+            <li>전 세계 152+개 AI 모델 및 57개 공급 플랫폼 실시간 단가 인덱스 구축</li>
+            <li>공식 개발사(Official) vs 오픈 호스팅 최저가 비교 및 최대 72% 할인율 분석 엔진 탑재</li>
+            <li>다크 / 라이트 테마 전환 및 모바일/태블릿 완전 반응형 웹 지원</li>
+          </ul>
+        </li>
+      </ul>
+    `
   }
 ];
 
@@ -1359,8 +1436,14 @@ function closeAnalyticsModal() {
 }
 
 async function loadAndRenderAnalytics() {
+  const hostname = window.location.hostname;
+  const isLocal = (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '[::1]');
+  const isDomain = !isLocal || Boolean(window.__CLIENT_ENV__ && window.__CLIENT_ENV__.isDomain);
+
+  const endpoint = isDomain ? '/api/analytics?mode=real' : '/api/analytics';
+
   try {
-    const res = await fetch('/api/analytics');
+    const res = await fetch(endpoint);
     if (res.ok) {
       currentAnalyticsData = await res.json();
     } else {
@@ -1376,6 +1459,39 @@ async function loadAndRenderAnalytics() {
 
 function renderAnalyticsDashboard(data) {
   if (!data) return;
+
+  const hostname = window.location.hostname;
+  const isLocal = (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '[::1]');
+  const isDomain = !isLocal || Boolean(window.__CLIENT_ENV__ && window.__CLIENT_ENV__.isDomain) || Boolean(data.isDomainReal || data.isRealMode);
+
+  // 배지 및 헤더 서브타이틀 동적 갱신
+  const badgeType = document.getElementById('badgeAnalyticsType');
+  const badgeAdmin = document.getElementById('badgeAdminIp');
+  const subtitle = document.getElementById('modalAnalyticsSubtitle');
+
+  if (badgeType) {
+    if (isDomain) {
+      badgeType.textContent = '🌐 실시간 도메인 (실제 데이터)';
+      badgeType.className = 'badge-local-only badge-domain-real';
+      if (subtitle) {
+        subtitle.textContent = '실제 웹사이트에 접속한 순수 방문자 트래픽 통계입니다 (가상 시드 데이터 제외).';
+      }
+    } else {
+      badgeType.textContent = '🖥️ Localhost';
+      badgeType.className = 'badge-local-only';
+      if (subtitle) {
+        subtitle.textContent = '실시간 방문자 트래픽 및 일별·주간별·월별·요일별·시간대별 접속 통계';
+      }
+    }
+  }
+
+  if (badgeAdmin) {
+    const clientIp = data.clientIp || window.__CLIENT_ENV__?.clientIp;
+    if (clientIp) {
+      badgeAdmin.style.display = 'inline-block';
+      badgeAdmin.textContent = `Admin IP: ${clientIp}`;
+    }
+  }
 
   // 1. KPI 갱신
   const sum = data.summary || {};
@@ -2318,37 +2434,43 @@ async function setupDevEnvironment() {
   const devEnvText = document.getElementById('devEnvText');
   const securityBadgeEnv = document.getElementById('securityBadgeEnv');
 
-  if (!isLocalhost) {
-    // 도메인 사이트(프로덕션)인 경우: 일체 노출하지 않음
-    if (devLocalWrapper) devLocalWrapper.style.display = 'none';
-    if (securityBadgeEnv) securityBadgeEnv.style.display = 'none';
-    if (devEnvBadge) devEnvBadge.style.display = 'none';
-    return;
-  }
-
-  // localhost 환경인 경우에만 활성화 표시
-  if (devLocalWrapper) {
-    devLocalWrapper.style.display = 'inline-flex';
-  }
-  if (securityBadgeEnv) {
-    securityBadgeEnv.style.display = 'inline-flex';
-  }
-
-  // 로컬 프록시 서버(/api/env-info)에서 개발환경 상세 정보 조회 시도
+  // 로컬 프록시 서버 또는 Vercel 서버리스(/api/env-info)에서 개발/관리자 환경 정보 조회
+  let envData = null;
   try {
     const res = await fetch('/api/env-info');
     if (res.ok) {
-      const data = await res.json();
-      if (devEnvText) {
-        const keyInfo = data.keys?.gemini ? 'Gemini 연동' : (data.keys?.openai ? 'OpenAI 연동' : '키 미설정');
-        devEnvText.textContent = `DEV (포트:${data.port || 8088} · ${keyInfo})`;
-      }
-      console.log('🛠️ [Local Dev Environment]', data);
+      envData = await res.json();
+      window.__CLIENT_ENV__ = envData;
     }
   } catch (e) {
+    console.warn('환경 정보 조회 실패:', e);
+  }
+
+  const isAdmin = isLocalhost || Boolean(envData && envData.isAdmin);
+
+  if (isAdmin) {
+    // Localhost이거나 관리자 IP(61.36.35.11)로 접속한 경우: 접속자 통계 및 버전 이력 버튼 활성화
+    if (btnVisitorAnalytics) btnVisitorAnalytics.style.display = 'flex';
+    if (btnVersionHistory) btnVersionHistory.style.display = 'flex';
+
+    if (devLocalWrapper) devLocalWrapper.style.display = 'inline-flex';
+    if (securityBadgeEnv) securityBadgeEnv.style.display = 'inline-flex';
+
     if (devEnvText) {
-      devEnvText.textContent = `DEV · Localhost`;
+      if (isLocalhost) {
+        const keyInfo = envData?.keys?.gemini ? 'Gemini 연동' : (envData?.keys?.openai ? 'OpenAI 연동' : '키 미설정');
+        devEnvText.textContent = `DEV (포트:${envData?.port || 8088} · ${keyInfo})`;
+      } else {
+        devEnvText.textContent = `ADMIN (IP:${envData?.clientIp || '허용됨'})`;
+      }
     }
+  } else {
+    // 일반 외부 사용자인 경우: 관리자 요소 완전 은닉
+    if (btnVisitorAnalytics) btnVisitorAnalytics.style.display = 'none';
+    if (btnVersionHistory) btnVersionHistory.style.display = 'none';
+    if (devLocalWrapper) devLocalWrapper.style.display = 'none';
+    if (securityBadgeEnv) securityBadgeEnv.style.display = 'none';
+    if (devEnvBadge) devEnvBadge.style.display = 'none';
   }
 }
 

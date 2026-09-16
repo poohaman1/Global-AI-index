@@ -14,6 +14,7 @@ import random
 from datetime import datetime, timedelta
 import urllib.request
 import urllib.error
+import urllib.parse
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
 
@@ -131,7 +132,8 @@ def init_analytics_data():
                 "browser": ua_tuple[1],
                 "os": ua_tuple[2],
                 "device": ua_tuple[3],
-                "path": "/"
+                "path": "/",
+                "is_seed": True
             })
 
     seed_logs.sort(key=lambda x: x["timestamp"], reverse=True)
@@ -167,7 +169,8 @@ def record_visit(ip, user_agent, path):
         "browser": parsed["browser"],
         "os": parsed["os"],
         "device": parsed["device"],
-        "path": path
+        "path": path,
+        "is_seed": False
     }
     
     logs.insert(0, new_entry)
@@ -181,7 +184,7 @@ def record_visit(ip, user_agent, path):
     except Exception as e:
         print(f"[Analytics] 방문 기록 실패: {e}")
 
-def get_analytics_summary():
+def get_analytics_summary(mode='all'):
     logs = []
     if ANALYTICS_FILE.exists():
         try:
@@ -190,8 +193,13 @@ def get_analytics_summary():
         except Exception:
             logs = []
     
-    if not logs:
+    if not logs and mode != 'real':
         logs = init_analytics_data()
+
+    # 도메인 접속 또는 mode == 'real'인 경우: 실제 접속 로그(is_seed == False)만 필터링!
+    is_real_mode = (mode == 'real')
+    if is_real_mode:
+        logs = [l for l in logs if l.get("is_seed") is False]
 
     now = datetime.now()
     today_str = now.strftime("%Y-%m-%d")
@@ -338,7 +346,8 @@ def get_analytics_summary():
         "monthly": monthly_stats,
         "dayOfWeek": day_of_week_stats,
         "hourly": hourly_stats,
-        "recentVisitors": recent_visitors
+        "recentVisitors": recent_visitors,
+        "isRealMode": is_real_mode
     }
 
 # 스마트 내장 AI 추천 알고리즘 (API Key가 없거나 오프라인일 때도 완벽 작동)
@@ -714,7 +723,10 @@ class LLMProxyRequestHandler(SimpleHTTPRequestHandler):
             self.end_headers()
 
     def do_GET(self):
-        req_path = self.path.split('?')[0]
+        parsed_url = urllib.parse.urlparse(self.path)
+        req_path = parsed_url.path
+        query_params = urllib.parse.parse_qs(parsed_url.query)
+
         # 방문자 접속 로깅 (정적 자원 제외)
         client_ip = self.headers.get('X-Forwarded-For')
         if client_ip:
@@ -724,8 +736,23 @@ class LLMProxyRequestHandler(SimpleHTTPRequestHandler):
         user_agent = self.headers.get('User-Agent', '')
         record_visit(client_ip, user_agent, req_path)
 
+        current_env = load_env_file()
+        admin_ips_raw = current_env.get('ADMIN_IPS', '61.36.35.11,127.0.0.1')
+        admin_ips = [ip.strip() for ip in admin_ips_raw.split(',') if ip.strip()]
+        is_admin = (client_ip in admin_ips) or (client_ip in ['127.0.0.1', 'localhost', '::1'])
+        
+        host_hdr = self.headers.get('Host', '').lower()
+        is_domain = not ('localhost' in host_hdr or '127.0.0.1' in host_hdr)
+
         if req_path == '/api/analytics':
-            summary = get_analytics_summary()
+            # 도메인 상태이거나 mode=real 요청인 경우 가상 시드 제외한 실제 데이터만 조회
+            default_mode = 'real' if is_domain else 'all'
+            requested_mode = query_params.get('mode', [default_mode])[0]
+            summary = get_analytics_summary(mode=requested_mode)
+            summary['isAdmin'] = is_admin
+            summary['clientIp'] = client_ip
+            summary['isDomain'] = is_domain
+            
             self.send_response(200)
             self.send_header('Content-Type', 'application/json; charset=utf-8')
             self.send_header('Access-Control-Allow-Origin', '*')
@@ -735,12 +762,14 @@ class LLMProxyRequestHandler(SimpleHTTPRequestHandler):
             return
 
         if req_path == '/api/env-info':
-            current_env = load_env_file()
             gemini_configured = bool(current_env.get('GEMINI_API_KEY', '').strip())
             openai_configured = bool(current_env.get('OPENAI_API_KEY', '').strip())
             
             info = {
-                "isLocal": True,
+                "isLocal": not is_domain,
+                "isAdmin": is_admin,
+                "clientIp": client_ip,
+                "isDomain": is_domain,
                 "appEnv": current_env.get('APP_ENV', 'development'),
                 "debugMode": current_env.get('DEV_DEBUG_MODE', 'true').lower() == 'true',
                 "port": int(current_env.get('DEV_SERVER_PORT', PORT)),
