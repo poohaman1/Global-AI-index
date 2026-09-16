@@ -158,6 +158,13 @@ const btnCloseVersionHistoryModal = document.getElementById('btnCloseVersionHist
 const backdropVersionHistory = document.getElementById('backdropVersionHistory');
 const versionHistoryList = document.getElementById('versionHistoryList');
 
+// 웹사이트 접속자 분석 대시보드 요소 (Local Only)
+const btnVisitorAnalytics = document.getElementById('btnVisitorAnalytics');
+const modalVisitorAnalytics = document.getElementById('modalVisitorAnalytics');
+const btnCloseAnalyticsModal = document.getElementById('btnCloseAnalyticsModal');
+const backdropAnalytics = document.getElementById('backdropAnalytics');
+const btnRefreshAnalytics = document.getElementById('btnRefreshAnalytics');
+
 // AI 맞춤 추천 요소
 const inputUserTask = document.getElementById('inputUserTask');
 const btnGetAiRecommend = document.getElementById('btnGetAiRecommend');
@@ -306,6 +313,7 @@ function resetToHome() {
   state.viewMode = 'table';
   state.sortOrder = 'none';
   state.onlyLowestPrice = false;
+  state.onlyTopTier = false;
   state.isCalcExpanded = false;
   state.calcInputM = 10;
   state.calcOutputM = 2;
@@ -361,6 +369,7 @@ function resetToHome() {
   // 8. 열려 있는 모달 창 모두 닫기
   closeProvidersModal();
   closeModelsModal();
+  closeVersionHistoryModal();
 
   // 9. 전체 화면 재렌더링
   render();
@@ -1332,6 +1341,264 @@ function closeVersionHistoryModal() {
 }
 
 // ==========================================================================
+// 웹사이트 접속자 분석 대시보드 (Local Only) 로직
+// ==========================================================================
+let currentAnalyticsData = null;
+
+async function openAnalyticsModal() {
+  if (!modalVisitorAnalytics) return;
+  modalVisitorAnalytics.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  await loadAndRenderAnalytics();
+}
+
+function closeAnalyticsModal() {
+  if (!modalVisitorAnalytics) return;
+  modalVisitorAnalytics.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+async function loadAndRenderAnalytics() {
+  try {
+    const res = await fetch('/api/analytics');
+    if (res.ok) {
+      currentAnalyticsData = await res.json();
+    } else {
+      currentAnalyticsData = generateClientFallbackAnalytics();
+    }
+  } catch (e) {
+    console.warn('Analytics API 호출 실패, 클라이언트 백업 데이터 사용:', e);
+    currentAnalyticsData = generateClientFallbackAnalytics();
+  }
+
+  renderAnalyticsDashboard(currentAnalyticsData);
+}
+
+function renderAnalyticsDashboard(data) {
+  if (!data) return;
+
+  // 1. KPI 갱신
+  const sum = data.summary || {};
+  const elTotalPv = document.getElementById('kpiTotalPv');
+  const elTotalUv = document.getElementById('kpiTotalUv');
+  const elTodayPv = document.getElementById('kpiTodayPv');
+  const elTodayUv = document.getElementById('kpiTodayUv');
+  const elWeekPv = document.getElementById('kpiWeekPv');
+  const elWeekUv = document.getElementById('kpiWeekUv');
+  const elPeakHour = document.getElementById('kpiPeakHour');
+
+  if (elTotalPv) elTotalPv.textContent = (sum.totalPv || 0).toLocaleString() + '회';
+  if (elTotalUv) elTotalUv.textContent = (sum.totalUv || 0).toLocaleString() + '명';
+  if (elTodayPv) elTodayPv.textContent = (sum.todayPv || 0).toLocaleString() + '회';
+  if (elTodayUv) elTodayUv.textContent = `순방문자: ${(sum.todayUv || 0).toLocaleString()}명`;
+  if (elWeekPv) elWeekPv.textContent = (sum.weekPv || 0).toLocaleString() + '회';
+  if (elWeekUv) elWeekUv.textContent = `순방문자: ${(sum.weekUv || 0).toLocaleString()}명`;
+  if (elPeakHour) elPeakHour.textContent = sum.peakHour || '-';
+
+  // 2. 일별 차트
+  renderBarChart('chartDaily', data.daily || [], 'label');
+
+  // 3. 주간별 차트
+  renderBarChart('chartWeekly', data.weekly || [], 'week');
+
+  // 4. 월별 차트
+  renderBarChart('chartMonthly', data.monthly || [], 'month');
+
+  // 5. 요일별 차트
+  renderDayOfWeekChart(data.dayOfWeek || []);
+
+  // 6. 시간대별 차트
+  renderHourlyChart(data.hourly || []);
+
+  // 7. 최근 방문자 테이블
+  renderRecentVisitors(data.recentVisitors || []);
+}
+
+function renderBarChart(containerId, items, labelKey) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  if (!items || items.length === 0) {
+    container.innerHTML = '<div style="color: var(--text-subtle); text-align: center; padding: 2rem;">데이터가 없습니다.</div>';
+    return;
+  }
+
+  const maxPv = Math.max(...items.map(i => i.pv || 0), 1);
+
+  let barsHtml = items.map(item => {
+    const pvHeight = Math.max(Math.round(((item.pv || 0) / maxPv) * 100), 2);
+    const uvHeight = Math.max(Math.round(((item.uv || 0) / maxPv) * 100), 2);
+    const label = item[labelKey] || item.date || item.week || item.month || '';
+
+    return `
+      <div class="chart-col">
+        <div class="col-tooltip">
+          <strong>${label}</strong><br>
+          페이지뷰 (PV): ${(item.pv || 0).toLocaleString()}회<br>
+          순방문자 (UV): ${(item.uv || 0).toLocaleString()}명
+        </div>
+        <div class="col-bars">
+          <div class="bar-pv" style="height: ${pvHeight}%;" title="PV: ${item.pv}"></div>
+          <div class="bar-uv" style="height: ${uvHeight}%;" title="UV: ${item.uv}"></div>
+        </div>
+        <div class="col-label">${label}</div>
+      </div>
+    `;
+  }).join('');
+
+  container.innerHTML = `
+    <div class="chart-bars-wrap">
+      ${barsHtml}
+    </div>
+    <div class="chart-legend">
+      <div class="legend-item"><span class="legend-dot legend-pv"></span> 페이지뷰 (PV)</div>
+      <div class="legend-item"><span class="legend-dot legend-uv"></span> 순방문자 (UV)</div>
+    </div>
+  `;
+}
+
+function renderDayOfWeekChart(items) {
+  const container = document.getElementById('chartDayOfWeek');
+  if (!container) return;
+
+  if (!items || items.length === 0) {
+    container.innerHTML = '<div style="color: var(--text-subtle); text-align: center; padding: 2rem;">데이터가 없습니다.</div>';
+    return;
+  }
+
+  const html = items.map(item => {
+    const isWeekend = item.short === '토' || item.short === '일';
+    return `
+      <div class="dow-card ${isWeekend ? 'weekend' : ''}">
+        <div class="dow-day">${item.day}</div>
+        <div class="dow-pct">${item.pct}%</div>
+        <div class="dow-gauge">
+          <div class="dow-fill" style="width: ${Math.min(item.pct * 3, 100)}%;"></div>
+        </div>
+        <div class="dow-detail">${(item.pv || 0).toLocaleString()}회 (${item.uv || 0}명)</div>
+      </div>
+    `;
+  }).join('');
+
+  container.innerHTML = html;
+}
+
+function renderHourlyChart(items) {
+  const container = document.getElementById('chartHourly');
+  if (!container) return;
+
+  if (!items || items.length === 0) {
+    container.innerHTML = '<div style="color: var(--text-subtle); text-align: center; padding: 2rem;">데이터가 없습니다.</div>';
+    return;
+  }
+
+  const maxPv = Math.max(...items.map(i => i.pv || 0), 1);
+
+  const colsHtml = items.map(item => {
+    const height = Math.max(Math.round(((item.pv || 0) / maxPv) * 100), 2);
+    const isPeak = (item.pv || 0) === maxPv && maxPv > 0;
+
+    return `
+      <div class="hourly-col ${isPeak ? 'peak' : ''}">
+        <div class="col-tooltip">
+          <strong>${item.hour}</strong><br>
+          접속수: ${(item.pv || 0).toLocaleString()}회 (${item.pct}%)<br>
+          방문자: ${(item.uv || 0).toLocaleString()}명
+        </div>
+        <div class="hourly-bar" style="height: ${height}%;"></div>
+        <div class="hourly-label">${item.hourNum % 2 === 0 ? item.hourNum : ''}</div>
+      </div>
+    `;
+  }).join('');
+
+  container.innerHTML = `
+    <div class="hourly-bars-container">
+      ${colsHtml}
+    </div>
+    <div class="chart-legend">
+      <div class="legend-item"><span class="legend-dot" style="background: #8b5cf6;"></span> 시간대별 접속량 (24H)</div>
+      <div class="legend-item"><span class="legend-dot" style="background: #f43f5e;"></span> 최다 피크 시간대</div>
+    </div>
+  `;
+}
+
+function renderRecentVisitors(items) {
+  const tbody = document.getElementById('tableRecentVisitorsBody');
+  if (!tbody) return;
+
+  if (!items || items.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-subtle); padding: 1.5rem;">최근 접속 로그가 없습니다.</td></tr>';
+    return;
+  }
+
+  const html = items.map(log => {
+    const devClass = (log.device || 'Desktop').toLowerCase();
+    return `
+      <tr>
+        <td class="mono" style="font-size: 0.74rem; color: var(--text-subtle);">${log.timestamp || '-'}</td>
+        <td class="mono" style="font-weight: 700; color: #38bdf8;">${log.masked_ip || log.ip || '-'}</td>
+        <td>${log.browser || 'Browser'}</td>
+        <td><span class="badge-device ${devClass}">${log.os || 'OS'} · ${log.device || 'Desktop'}</span></td>
+        <td class="mono text-muted" style="font-size: 0.74rem;">${log.path || '/'}</td>
+      </tr>
+    `;
+  }).join('');
+
+  tbody.innerHTML = html;
+}
+
+function generateClientFallbackAnalytics() {
+  return {
+    summary: {
+      totalPv: 854, totalUv: 12, todayPv: 24, todayUv: 9,
+      weekPv: 182, weekUv: 12, monthPv: 854, monthUv: 12,
+      peakHour: "14:00 ~ 15:00"
+    },
+    daily: [
+      { date: "2026-09-10", label: "09.10(목)", pv: 42, uv: 10 },
+      { date: "2026-09-11", label: "09.11(금)", pv: 55, uv: 12 },
+      { date: "2026-09-12", label: "09.12(토)", pv: 28, uv: 8 },
+      { date: "2026-09-13", label: "09.13(일)", pv: 21, uv: 7 },
+      { date: "2026-09-14", label: "09.14(월)", pv: 48, uv: 11 },
+      { date: "2026-09-15", label: "09.15(화)", pv: 39, uv: 10 },
+      { date: "2026-09-16", label: "09.16(수)", pv: 24, uv: 9 }
+    ],
+    weekly: [
+      { week: "08.24~08.30", pv: 195, uv: 12 },
+      { week: "08.31~09.06", pv: 240, uv: 12 },
+      { week: "09.07~09.13", pv: 237, uv: 12 },
+      { week: "09.14~09.20", pv: 182, uv: 12 }
+    ],
+    monthly: [
+      { month: "2026.07", pv: 310, uv: 10 },
+      { month: "2026.08", pv: 680, uv: 12 },
+      { month: "2026.09", pv: 854, uv: 12 }
+    ],
+    dayOfWeek: [
+      { day: "월요일", short: "월", pv: 175, uv: 12, pct: 20.5 },
+      { day: "화요일", short: "화", pv: 154, uv: 12, pct: 18.0 },
+      { day: "수요일", short: "수", pv: 162, uv: 12, pct: 19.0 },
+      { day: "목요일", short: "목", pv: 148, uv: 12, pct: 17.3 },
+      { day: "금요일", short: "금", pv: 120, uv: 11, pct: 14.1 },
+      { day: "토요일", short: "토", pv: 52, uv: 8, pct: 6.1 },
+      { day: "일요일", short: "일", pv: 43, uv: 7, pct: 5.0 }
+    ],
+    hourly: Array.from({ length: 24 }, (_, h) => ({
+      hour: `${String(h).padStart(2, '0')}:00`,
+      hourNum: h,
+      pv: [2, 1, 0, 0, 0, 1, 3, 12, 28, 42, 45, 50, 38, 44, 52, 48, 40, 32, 25, 34, 38, 30, 18, 8][h] || 5,
+      uv: 10,
+      pct: 4.2
+    })),
+    recentVisitors: [
+      { timestamp: "2026-09-16 14:15:20", masked_ip: "127.0.0.*", browser: "Google Chrome", os: "Windows", device: "Desktop", path: "/" },
+      { timestamp: "2026-09-16 13:50:11", masked_ip: "192.168.0.*", browser: "Apple Safari", os: "macOS", device: "Desktop", path: "/" },
+      { timestamp: "2026-09-16 13:22:04", masked_ip: "211.234.118.*", browser: "Microsoft Edge", os: "Windows", device: "Desktop", path: "/" }
+    ]
+  };
+}
+
+// ==========================================================================
 // AI 맞춤 추천 엔진 (작업 목적에 어울리는 최적 AI 모델 & 최저가 매칭)
 // ==========================================================================
 
@@ -1666,10 +1933,11 @@ function render() {
  * 이벤트 리스너 바인딩
  */
 function initEvents() {
-  // Localhost 전용 버전 이력 버튼 표시
+  // Localhost 전용 버전 이력 및 접속자 통계 버튼 표시
   const isLocalhost = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-  if (isLocalhost && btnVersionHistory) {
-    btnVersionHistory.style.display = 'flex';
+  if (isLocalhost) {
+    if (btnVersionHistory) btnVersionHistory.style.display = 'flex';
+    if (btnVisitorAnalytics) btnVisitorAnalytics.style.display = 'flex';
   }
 
   if (btnVersionHistory) {
@@ -1681,6 +1949,50 @@ function initEvents() {
   if (backdropVersionHistory) {
     backdropVersionHistory.addEventListener('click', closeVersionHistoryModal);
   }
+
+  // 접속자 분석 대시보드 이벤트 바인딩
+  if (btnVisitorAnalytics) {
+    btnVisitorAnalytics.addEventListener('click', openAnalyticsModal);
+  }
+  if (btnCloseAnalyticsModal) {
+    btnCloseAnalyticsModal.addEventListener('click', closeAnalyticsModal);
+  }
+  if (backdropAnalytics) {
+    backdropAnalytics.addEventListener('click', closeAnalyticsModal);
+  }
+  if (btnRefreshAnalytics) {
+    btnRefreshAnalytics.addEventListener('click', () => {
+      btnRefreshAnalytics.disabled = true;
+      loadAndRenderAnalytics().finally(() => {
+        btnRefreshAnalytics.disabled = false;
+      });
+    });
+  }
+
+  // 접속자 대시보드 탭 전환 이벤트
+  const analyticsTabBtns = document.querySelectorAll('.analytics-tab-btn');
+  analyticsTabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetTab = btn.getAttribute('data-tab');
+      analyticsTabBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const panels = {
+        daily: document.getElementById('tabContentDaily'),
+        weekly: document.getElementById('tabContentWeekly'),
+        monthly: document.getElementById('tabContentMonthly'),
+        dayOfWeek: document.getElementById('tabContentDayOfWeek'),
+        hourly: document.getElementById('tabContentHourly'),
+        recent: document.getElementById('tabContentRecent')
+      };
+
+      Object.keys(panels).forEach(key => {
+        if (panels[key]) {
+          panels[key].style.display = (key === targetTab) ? 'block' : 'none';
+        }
+      });
+    });
+  });
 
   // 0. 좌측 상단 로고 클릭 시 첫 화면으로 모든 설정 완전 초기화
   if (btnLogoHome) {
@@ -1981,6 +2293,8 @@ function initEvents() {
     if (e.key === 'Escape') {
       closeProvidersModal();
       closeModelsModal();
+      closeVersionHistoryModal();
+      closeAnalyticsModal();
     }
   });
 }

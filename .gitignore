@@ -46,3 +46,6 @@ Thumbs.db
 scratch/
 
 .vercel
+
+# Analytics Log Data
+analytics_log.json

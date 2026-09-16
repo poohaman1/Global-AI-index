@@ -10,6 +10,8 @@ LLM 최저가 찾기 - 로컬 통합 서버 & AI 추천 백엔드
 import os
 import sys
 import json
+import random
+from datetime import datetime, timedelta
 import urllib.request
 import urllib.error
 from http.server import HTTPServer, SimpleHTTPRequestHandler
@@ -43,6 +45,301 @@ def load_env_file():
 
 ENV = load_env_file()
 PORT = int(ENV.get('PORT', 8088))
+ANALYTICS_FILE = BASE_DIR / 'analytics_log.json'
+
+def parse_user_agent(ua):
+    ua = ua or ''
+    browser = 'Other'
+    if 'Whale' in ua:
+        browser = 'Naver Whale'
+    elif 'Edg' in ua:
+        browser = 'Microsoft Edge'
+    elif 'Chrome' in ua:
+        browser = 'Google Chrome'
+    elif 'Safari' in ua and 'Chrome' not in ua:
+        browser = 'Apple Safari'
+    elif 'Firefox' in ua:
+        browser = 'Mozilla Firefox'
+
+    os_name = 'Other'
+    if 'Windows' in ua:
+        os_name = 'Windows'
+    elif 'Macintosh' in ua or 'Mac OS' in ua:
+        os_name = 'macOS'
+    elif 'Android' in ua:
+        os_name = 'Android'
+    elif 'iPhone' in ua or 'iPad' in ua:
+        os_name = 'iOS'
+    elif 'Linux' in ua:
+        os_name = 'Linux'
+
+    device = 'Mobile' if ('Mobile' in ua or 'Android' in ua or 'iPhone' in ua) else 'Desktop'
+    return {"browser": browser, "os": os_name, "device": device}
+
+def init_analytics_data():
+    if ANALYTICS_FILE.exists():
+        try:
+            with open(ANALYTICS_FILE, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                if isinstance(data, list) and len(data) > 0:
+                    return data
+        except Exception:
+            pass
+
+    # 초기 데모 및 테스트용 30일 시드 데이터 생성
+    seed_logs = []
+    now = datetime.now()
+    sample_ips = [
+        "127.0.0.1", "192.168.0.15", "211.234.118.23", "175.197.82.44",
+        "121.133.45.67", "58.120.91.10", "220.85.12.89", "182.215.34.78",
+        "112.170.89.12", "14.36.190.25", "106.240.55.33", "221.148.90.11"
+    ]
+    uas = [
+        ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/128.0.0.0 Safari/537.36", "Google Chrome", "Windows", "Desktop"),
+        ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 Safari/17.5", "Apple Safari", "macOS", "Desktop"),
+        ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Edg/128.0.0.0 Safari/537.36", "Microsoft Edge", "Windows", "Desktop"),
+        ("Mozilla/5.0 (Linux; Android 14; SM-S928N) AppleWebKit/537.36 Chrome/128.0.0.0 Mobile Safari/537.36", "Google Chrome", "Android", "Mobile"),
+        ("Mozilla/5.0 (iPhone; CPU iPhone OS 17_6 like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148 Safari/604.1", "Apple Safari", "iOS", "Mobile"),
+        ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Whale/3.28.266.14 Safari/537.36", "Naver Whale", "Windows", "Desktop")
+    ]
+
+    # 지난 30일 동안의 방문자 패턴 생성 (일 10~35회 방문, 주간/시간대 현실적 분포)
+    for day_offset in range(30, -1, -1):
+        target_date = now - timedelta(days=day_offset)
+        # 평일 방문이 주말보다 약간 많도록 가중치
+        is_weekend = target_date.weekday() in [5, 6]
+        visits_count = random.randint(12, 28) if is_weekend else random.randint(25, 55)
+        
+        for _ in range(visits_count):
+            # 시간대 분포 (오전 9시~오후 6시, 저녁 8시~11시 피크)
+            hour_weights = [1, 1, 0, 0, 0, 1, 2, 4, 7, 9, 10, 11, 8, 9, 10, 10, 9, 8, 6, 8, 10, 9, 5, 2]
+            chosen_hour = random.choices(range(24), weights=hour_weights, k=1)[0]
+            chosen_minute = random.randint(0, 59)
+            chosen_second = random.randint(0, 59)
+            
+            visit_time = target_date.replace(hour=chosen_hour, minute=chosen_minute, second=chosen_second)
+            if visit_time > now:
+                continue
+
+            chosen_ip = random.choice(sample_ips)
+            ua_tuple = random.choice(uas)
+            
+            seed_logs.append({
+                "timestamp": visit_time.strftime("%Y-%m-%d %H:%M:%S"),
+                "ip": chosen_ip,
+                "masked_ip": ".".join(chosen_ip.split(".")[:3]) + ".*" if "." in chosen_ip else "127.0.0.*",
+                "browser": ua_tuple[1],
+                "os": ua_tuple[2],
+                "device": ua_tuple[3],
+                "path": "/"
+            })
+
+    seed_logs.sort(key=lambda x: x["timestamp"], reverse=True)
+    try:
+        with open(ANALYTICS_FILE, 'w', encoding='utf-8') as f:
+            json.dump(seed_logs, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f"[Analytics] 시드 로그 저장 실패: {e}")
+    return seed_logs
+
+def record_visit(ip, user_agent, path):
+    # 정적 자원 및 API 요청은 방문 로그에서 제외
+    if path.startswith('/api/') or any(path.endswith(ext) for ext in ['.css', '.js', '.png', '.jpg', '.ico', '.svg', '.json', '.woff', '.woff2']):
+        return
+
+    logs = []
+    if ANALYTICS_FILE.exists():
+        try:
+            with open(ANALYTICS_FILE, 'r', encoding='utf-8') as f:
+                logs = json.load(f)
+        except Exception:
+            logs = []
+    else:
+        logs = init_analytics_data()
+
+    parsed = parse_user_agent(user_agent)
+    masked_ip = ".".join(ip.split(".")[:3]) + ".*" if "." in ip else "127.0.0.*"
+    
+    new_entry = {
+        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "ip": ip,
+        "masked_ip": masked_ip,
+        "browser": parsed["browser"],
+        "os": parsed["os"],
+        "device": parsed["device"],
+        "path": path
+    }
+    
+    logs.insert(0, new_entry)
+    # 최대 3,000건 유지
+    if len(logs) > 3000:
+        logs = logs[:3000]
+
+    try:
+        with open(ANALYTICS_FILE, 'w', encoding='utf-8') as f:
+            json.dump(logs, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f"[Analytics] 방문 기록 실패: {e}")
+
+def get_analytics_summary():
+    logs = []
+    if ANALYTICS_FILE.exists():
+        try:
+            with open(ANALYTICS_FILE, 'r', encoding='utf-8') as f:
+                logs = json.load(f)
+        except Exception:
+            logs = []
+    
+    if not logs:
+        logs = init_analytics_data()
+
+    now = datetime.now()
+    today_str = now.strftime("%Y-%m-%d")
+    week_start = now - timedelta(days=now.weekday())
+    week_start_str = week_start.strftime("%Y-%m-%d")
+    month_start_str = now.strftime("%Y-%m-01")
+
+    total_pv = len(logs)
+    unique_ips = set(log.get("ip", "") for log in logs)
+    total_uv = len(unique_ips)
+
+    today_logs = [l for l in logs if l.get("timestamp", "").startswith(today_str)]
+    today_pv = len(today_logs)
+    today_uv = len(set(l.get("ip", "") for l in today_logs))
+
+    week_logs = [l for l in logs if l.get("timestamp", "")[:10] >= week_start_str]
+    week_pv = len(week_logs)
+    week_uv = len(set(l.get("ip", "") for l in week_logs))
+
+    month_logs = [l for l in logs if l.get("timestamp", "")[:10] >= month_start_str]
+    month_pv = len(month_logs)
+    month_uv = len(set(l.get("ip", "") for l in month_logs))
+
+    # 1. 일별 통계 (최근 14일)
+    daily_stats = []
+    weekday_kor = ["월", "화", "수", "목", "금", "토", "일"]
+    for i in range(13, -1, -1):
+        day_dt = now - timedelta(days=i)
+        d_str = day_dt.strftime("%Y-%m-%d")
+        d_label = day_dt.strftime("%m.%d") + f"({weekday_kor[day_dt.weekday()]})"
+        d_logs = [l for l in logs if l.get("timestamp", "").startswith(d_str)]
+        d_uv = len(set(l.get("ip", "") for l in d_logs))
+        daily_stats.append({
+            "date": d_str,
+            "label": d_label,
+            "pv": len(d_logs),
+            "uv": d_uv
+        })
+
+    # 2. 주간별 통계 (최근 8주)
+    weekly_stats = []
+    for w in range(7, -1, -1):
+        w_end = now - timedelta(weeks=w)
+        w_start = w_end - timedelta(days=w_end.weekday())
+        w_start_str = w_start.strftime("%Y-%m-%d")
+        w_end_str = (w_start + timedelta(days=6)).strftime("%Y-%m-%d")
+        w_label = f"{w_start.strftime('%m.%d')}~{(w_start + timedelta(days=6)).strftime('%m.%d')}"
+        w_logs = [l for l in logs if w_start_str <= l.get("timestamp", "")[:10] <= w_end_str]
+        w_uv = len(set(l.get("ip", "") for l in w_logs))
+        weekly_stats.append({
+            "week": w_label,
+            "pv": len(w_logs),
+            "uv": w_uv
+        })
+
+    # 3. 월별 통계 (최근 6개월)
+    monthly_stats = []
+    for m in range(5, -1, -1):
+        # 대략적인 월 계산
+        year = now.year
+        month = now.month - m
+        while month <= 0:
+            month += 12
+            year -= 1
+        m_str = f"{year:04d}-{month:02d}"
+        m_logs = [l for l in logs if l.get("timestamp", "").startswith(m_str)]
+        m_uv = len(set(l.get("ip", "") for l in m_logs))
+        monthly_stats.append({
+            "month": f"{year}.{month:02d}",
+            "pv": len(m_logs),
+            "uv": m_uv
+        })
+
+    # 4. 주간 요일별 통계 (월~일)
+    dow_counts = [0] * 7
+    dow_uv_sets = [set() for _ in range(7)]
+    for l in logs:
+        ts = l.get("timestamp", "")
+        if ts:
+            try:
+                dt = datetime.strptime(ts, "%Y-%m-%d %H:%M:%S")
+                w_idx = dt.weekday() # 0: 월, 6: 일
+                dow_counts[w_idx] += 1
+                dow_uv_sets[w_idx].add(l.get("ip", ""))
+            except Exception:
+                pass
+    
+    total_dow_pv = sum(dow_counts) or 1
+    day_of_week_stats = []
+    for idx, name in enumerate(["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"]):
+        c = dow_counts[idx]
+        day_of_week_stats.append({
+            "day": name,
+            "short": weekday_kor[idx],
+            "pv": c,
+            "uv": len(dow_uv_sets[idx]),
+            "pct": round((c / total_dow_pv) * 100, 1)
+        })
+
+    # 5. 시간대별 통계 (00시 ~ 23시)
+    hourly_counts = [0] * 24
+    hourly_uv_sets = [set() for _ in range(24)]
+    for l in logs:
+        ts = l.get("timestamp", "")
+        if ts:
+            try:
+                dt = datetime.strptime(ts, "%Y-%m-%d %H:%M:%S")
+                h = dt.hour
+                hourly_counts[h] += 1
+                hourly_uv_sets[h].add(l.get("ip", ""))
+            except Exception:
+                pass
+
+    total_hourly_pv = sum(hourly_counts) or 1
+    peak_hour = hourly_counts.index(max(hourly_counts)) if hourly_counts else 14
+    hourly_stats = []
+    for h in range(24):
+        c = hourly_counts[h]
+        hourly_stats.append({
+            "hour": f"{h:02d}:00",
+            "hourNum": h,
+            "pv": c,
+            "uv": len(hourly_uv_sets[h]),
+            "pct": round((c / total_hourly_pv) * 100, 1)
+        })
+
+    # 6. 최근 접속자 로그 25건
+    recent_visitors = logs[:25]
+
+    return {
+        "summary": {
+            "totalPv": total_pv,
+            "totalUv": total_uv,
+            "todayPv": today_pv,
+            "todayUv": today_uv,
+            "weekPv": week_pv,
+            "weekUv": week_uv,
+            "monthPv": month_pv,
+            "monthUv": month_uv,
+            "peakHour": f"{peak_hour:02d}:00 ~ {peak_hour+1:02d}:00"
+        },
+        "daily": daily_stats,
+        "weekly": weekly_stats,
+        "monthly": monthly_stats,
+        "dayOfWeek": day_of_week_stats,
+        "hourly": hourly_stats,
+        "recentVisitors": recent_visitors
+    }
 
 # 스마트 내장 AI 추천 알고리즘 (API Key가 없거나 오프라인일 때도 완벽 작동)
 def fallback_smart_recommend(user_prompt):
@@ -417,7 +714,27 @@ class LLMProxyRequestHandler(SimpleHTTPRequestHandler):
             self.end_headers()
 
     def do_GET(self):
-        if self.path == '/api/env-info':
+        req_path = self.path.split('?')[0]
+        # 방문자 접속 로깅 (정적 자원 제외)
+        client_ip = self.headers.get('X-Forwarded-For')
+        if client_ip:
+            client_ip = client_ip.split(',')[0].strip()
+        else:
+            client_ip = self.client_address[0] if self.client_address else '127.0.0.1'
+        user_agent = self.headers.get('User-Agent', '')
+        record_visit(client_ip, user_agent, req_path)
+
+        if req_path == '/api/analytics':
+            summary = get_analytics_summary()
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json; charset=utf-8')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.send_header('Cache-Control', 'no-store, no-cache, must-revalidate')
+            self.end_headers()
+            self.wfile.write(json.dumps(summary, ensure_ascii=False).encode('utf-8'))
+            return
+
+        if req_path == '/api/env-info':
             current_env = load_env_file()
             gemini_configured = bool(current_env.get('GEMINI_API_KEY', '').strip())
             openai_configured = bool(current_env.get('OPENAI_API_KEY', '').strip())
