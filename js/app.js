@@ -61,6 +61,11 @@ const VERSION_HISTORY = [
             <li>버전 이력 관리(0.0.1 단위 및 일자별 통합 릴리즈 관리 체계) 모달 신설</li>
           </ul>
         </li>
+        <li><strong>✨ 프리미엄 AI 파비콘(Favicon) 시스템 구축</strong>:
+          <ul>
+            <li>글로벌 AI 및 최저가 가치를 상징하는 AI 회로 브레인 & 보석 젬 디자인의 멀티 해상도 파비콘(SVG, ICO, 16/32 PNG, Apple Touch Icon) 적용</li>
+          </ul>
+        </li>
       </ul>
     `
   },
