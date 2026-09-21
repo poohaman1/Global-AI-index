@@ -5,7 +5,7 @@
  */
 
 const STORAGE_KEY_TIMESTAMP = 'llm_price_last_updated';
-const DEFAULT_TIMESTAMP = '2026.09.16';
+const DEFAULT_TIMESTAMP = '2026.09.21';
 
 export const COUNTRIES = {
   KR: { code: 'KR', name: '한국', flag: '🇰🇷', region: 'Asia' },
@@ -15,7 +15,12 @@ export const COUNTRIES = {
   SG: { code: 'SG', name: '싱가포르', flag: '🇸🇬', region: 'Asia' },
   IN: { code: 'IN', name: '인도', flag: '🇮🇳', region: 'Asia' },
   US: { code: 'US', name: '미국', flag: '🇺🇸', region: 'America' },
-  EU: { code: 'EU', name: '유럽', flag: '🇪🇺', region: 'Europe' }
+  EU: { code: 'EU', name: '유럽', flag: '🇪🇺', region: 'Europe' },
+CA: { code: 'CA', name: '캐나다', flag: '🇨🇦', region: 'America' },
+  BR: { code: 'BR', name: '브라질', flag: '🇧🇷', region: 'America' },
+  CL: { code: 'CL', name: '칠레', flag: '🇨🇱', region: 'America' },
+  LATAM: { code: 'LATAM', name: '라틴아메리카', flag: '🌎', region: 'America' },
+  AMERICA: { code: 'AMERICA', name: '아메리카', flag: '🌎', region: 'America' },
 };
 
 /**
@@ -920,6 +925,246 @@ export const PLATFORMS_INFO = {
     description: '차세대 AI 슈퍼 에이전트 및 멀티 LLM 통합 지능형 리서치 엔진.',
     features: ['Super Agent 리서치', '다중 LLM 통합 라우팅', '고품질 보고서 생성'],
     siteUrl: 'https://www.genspark.ai/'
+  },
+  // =================================================================
+  // [2026 최신 추가 공급 사이트: 초고속 추론 클라우드 & 오픈소스 서빙]
+  // =================================================================
+  cerebras: {
+    id: 'cerebras',
+    name: 'Cerebras Systems',
+    country: 'US',
+    countryLabel: '미국',
+    flag: '🇺🇸',
+    type: 'aggregator',
+    typeLabel: '초고속 WSE 추론 클라우드',
+    badgeClass: 'aggregator',
+    description: '웨이퍼 스케일 엔진(WSE-3) 기반으로 초당 2,000+ 토큰의 전 세계에서 가장 빠른 실시간 LLM 추론 속도를 제공하는 플랫폼.',
+    features: ['초당 2,000+ 토큰 초광속', 'Llama 3.3 70B 실시간 추론', '개발자 전용 빠른 API'],
+    siteUrl: 'https://cerebras.ai/inference'
+  },
+  sambanova: {
+    id: 'sambanova',
+    name: 'SambaNova Systems',
+    country: 'US',
+    countryLabel: '미국',
+    flag: '🇺🇸',
+    type: 'aggregator',
+    typeLabel: 'RDU 초고속 AI 클라우드',
+    badgeClass: 'aggregator',
+    description: '자체 개발 차세대 RDU(Reconfigurable Dataflow Unit) 하드웨어로 DeepSeek-R1과 Llama 3.3을 실시간 초고속 서비스하는 엔터프라이즈 플랫폼.',
+    features: ['SN40L RDU 전용 아키텍처', 'DeepSeek-R1 실시간 추론', '엔터프라이즈 고신뢰성'],
+    siteUrl: 'https://sambanova.ai/'
+  },
+  siliconflow: {
+    id: 'siliconflow',
+    name: 'SiliconFlow (硅基流动)',
+    country: 'CN',
+    countryLabel: '중국/글로벌',
+    flag: '🇨🇳',
+    type: 'aggregator',
+    typeLabel: '통합 오픈소스 호스팅',
+    badgeClass: 'aggregator',
+    description: '아시아 및 글로벌 개발자들에게 DeepSeek V3/R1, Qwen 2.5, FLUX 등 최신 오픈소스 AI 모델을 극단적 최저가로 원클릭 서빙하는 플랫폼.',
+    features: ['DeepSeek R1/V3 최저가', 'Qwen 2.5 전체 라인업', '무료 크레딧 및 고속 서빙'],
+    siteUrl: 'https://siliconflow.cn/'
+  },
+  novita: {
+    id: 'novita',
+    name: 'Novita AI',
+    country: 'US',
+    countryLabel: '미국/글로벌',
+    flag: '🌐',
+    type: 'aggregator',
+    typeLabel: '서버리스 AI 인프라',
+    badgeClass: 'aggregator',
+    description: 'DeepSeek, Llama, FLUX, Stable Diffusion 등 최신 파운데이션 모델을 업계 최저 수준의 토큰 및 GPU 시간제 요금으로 제공하는 클라우드.',
+    features: ['서버리스 종량제', 'DeepSeek R1/V3 지원', '이미지·비디오·텍스트 통합'],
+    siteUrl: 'https://novita.ai/'
+  },
+  perplexity: {
+    id: 'perplexity',
+    name: 'Perplexity AI (Sonar)',
+    country: 'US',
+    countryLabel: '미국',
+    flag: '🇺🇸',
+    type: 'official',
+    typeLabel: '실시간 검색 증강 AI',
+    badgeClass: 'official',
+    description: '실시간 웹 검색과 인용 출처를 LLM에 결합한 Sonar API를 제공하는 글로벌 대화형 검색 대표 플랫폼.',
+    features: ['실시간 웹 검색 연동 (Sonar)', '출처 인용 자동 생성', 'Llama 기반 정밀 파인튜닝'],
+    siteUrl: 'https://docs.perplexity.ai/'
+  },
+  anyscale: {
+    id: 'anyscale',
+    name: 'Anyscale Endpoints',
+    country: 'US',
+    countryLabel: '미국',
+    flag: '🇺🇸',
+    type: 'aggregator',
+    typeLabel: 'Ray 분산 AI 플랫폼',
+    badgeClass: 'aggregator',
+    description: 'Ray 분산 컴퓨팅 프레임워크 창시자들이 구축한 프로덕션급 대규모 오픈소스 LLM 분산 서빙 및 파인튜닝 플랫폼.',
+    features: ['Ray 기반 무중단 분산 서빙', '높은 처리량(Throughput)', '엔터프라이즈 SLA'],
+    siteUrl: 'https://www.anyscale.com/endpoints'
+  },
+  replicate: {
+    id: 'replicate',
+    name: 'Replicate',
+    country: 'US',
+    countryLabel: '미국',
+    flag: '🇺🇸',
+    type: 'aggregator',
+    typeLabel: '오픈소스 모델 API 마켓',
+    badgeClass: 'aggregator',
+    description: '전 세계 수만 명의 머신러닝 엔지니어들이 배포한 수천 개의 오픈소스 생성 AI 모델을 몇 줄의 코드로 실행하는 클라우드.',
+    features: ['수천 개 오픈소스 모델 카탈로그', 'FLUX 및 SD 이미지 호스팅 1위', '서버리스 초단위 과금'],
+    siteUrl: 'https://replicate.com/'
+  },
+  runpod: {
+    id: 'runpod',
+    name: 'RunPod Serverless',
+    country: 'US',
+    countryLabel: '미국',
+    flag: '🇺🇸',
+    type: 'aggregator',
+    typeLabel: 'GPU 클라우드 & vLLM 서빙',
+    badgeClass: 'aggregator',
+    description: '글로벌 GPU 클라우드 인프라와 vLLM 초고속 엔드포인트를 결합하여 커스텀 오픈 모델을 가장 경제적으로 구동하는 플랫폼.',
+    features: ['vLLM 네이티브 지원', '한국어 특화 모델 호스팅', '콜드스타트 없는 상시 인스턴스'],
+    siteUrl: 'https://www.runpod.io/'
+  },
+  lambda: {
+    id: 'lambda',
+    name: 'Lambda Labs',
+    country: 'US',
+    countryLabel: '미국',
+    flag: '🇺🇸',
+    type: 'aggregator',
+    typeLabel: 'NVIDIA GPU AI 클라우드',
+    badgeClass: 'aggregator',
+    description: '최신 NVIDIA H100/H200 클러스터 기반으로 Llama 및 Hermes 계열 모델의 고품질 Chat API를 제공하는 인공지능 인프라.',
+    features: ['순수 NVIDIA H100 인프라', '개발자 친화적 Chat API', '저렴한 시간제/토큰 단가'],
+    siteUrl: 'https://lambdalabs.com/service/gpu-cloud'
+  },
+  scaleway: {
+    id: 'scaleway',
+    name: 'Scaleway Generative APIs',
+    country: 'EU',
+    countryLabel: '유럽(프랑스)',
+    flag: '🇪🇺',
+    type: 'aggregator',
+    typeLabel: '유럽 소버린 클라우드',
+    badgeClass: 'aggregator',
+    description: '프랑스 일리아드(Iliad) 그룹의 대표 클라우드로, 유럽 GDPR 데이터 소버린 규정을 100% 준수하는 엔터프라이즈 AI 서빙.',
+    features: ['유럽 GDPR 및 AI Act 완전 준수', 'Mistral 및 Llama 공식 파트너', '유럽 로컬 데이터센터 서빙'],
+    siteUrl: 'https://www.scaleway.com/en/generative-apis/'
+  },
+  nebius: {
+    id: 'nebius',
+    name: 'Nebius AI Studio',
+    country: 'EU',
+    countryLabel: '유럽(네덜란드)',
+    flag: '🇪🇺',
+    type: 'aggregator',
+    typeLabel: '차세대 대규모 AI 클라우드',
+    badgeClass: 'aggregator',
+    description: '유럽 최대 규모의 최신 AI 전용 데이터센터 인프라를 바탕으로 DeepSeek, Llama 3.3, Qwen을 파괴적 가격에 제공하는 플랫폼.',
+    features: ['유럽 최대 대규모 AI 데이터센터', 'DeepSeek R1/V3 최저가 보장', '초저지연 고효율 추론'],
+    siteUrl: 'https://nebius.ai/'
+  },
+  monsterapi: {
+    id: 'monsterapi',
+    name: 'MonsterAPI',
+    country: 'US',
+    countryLabel: '미국',
+    flag: '🇺🇸',
+    type: 'aggregator',
+    typeLabel: '분산 GPU AI API',
+    badgeClass: 'aggregator',
+    description: '분산형 유휴 GPU 연산망을 통해 오픈소스 LLM 파인튜닝과 추론 API를 최대 80% 저렴한 비용으로 서비스하는 차세대 플랫폼.',
+    features: ['분산 연산망 기반 -80% 비용 절감', '1-클릭 노코드 파인튜닝', 'OpenAI 호환 규격'],
+    siteUrl: 'https://monsterapi.ai/'
+  },
+  // =================================================================
+  // [아메리카 대륙 개발사: 캐나다, 남미(브라질/칠레), 미국 연구소]
+  // =================================================================
+  maritaca: {
+    id: 'maritaca',
+    name: '마리카타 AI (Maritaca AI)',
+    country: 'BR',
+    countryLabel: '브라질/남미',
+    flag: '🇧🇷',
+    type: 'official',
+    typeLabel: '공식 개발사',
+    badgeClass: 'official',
+    description: '브라질 유수의 AI 연구진이 설립한 남미 대륙 1위의 포르투갈어 및 라틴아메리카 파운데이션 모델 플랫폼.',
+    features: ['Sabiá-3 플래그십', '라틴아메리카 언어 1위', '브라질 공공/금융 특화'],
+    siteUrl: 'https://www.maritaca.ai/'
+  },
+  cenia: {
+    id: 'cenia',
+    name: 'CENIA (칠레 국립 AI 센터)',
+    country: 'CL',
+    countryLabel: '칠레/남미',
+    flag: '🇨🇱',
+    type: 'official',
+    typeLabel: '국립 연구기관',
+    badgeClass: 'official',
+    description: '칠레 국립 인공지능 센터가 개발한 중남미 스페인어 및 지역 맥락 특화 오픈 파운데이션 플랫폼.',
+    features: ['Latam-Llama 70B', '중남미 18개국 스페인어', '오픈 사이언스'],
+    siteUrl: 'https://www.cenia.cl/'
+  },
+  nous: {
+    id: 'nous',
+    name: 'Nous Research',
+    country: 'US',
+    countryLabel: '미국/북미',
+    flag: '🇺🇸',
+    type: 'official',
+    typeLabel: '공식 오픈 연구소',
+    badgeClass: 'official',
+    description: '전 세계 AI 개발자들에게 가장 높은 지지를 받는 무검열·뉴트럴 정렬 및 복합 시스템 에이전트 오픈 연구소.',
+    features: ['Hermes 3 시리즈', '다단계 함수 호출 1위', '자율 에이전트 특화'],
+    siteUrl: 'https://nousresearch.com/'
+  },
+  databricks: {
+    id: 'databricks',
+    name: 'Databricks (MosaicML)',
+    country: 'US',
+    countryLabel: '미국/북미',
+    flag: '🇺🇸',
+    type: 'official',
+    typeLabel: '엔터프라이즈 AI 클라우드',
+    badgeClass: 'official',
+    description: '데이터 레이크하우스 선두주자 Databricks가 개발한 초고속 MoE 오픈소스 파운데이션 DBRX 플랫폼.',
+    features: ['DBRX MoE 132B', '초고속 토큰 생성', '엔터프라이즈 코드 추론'],
+    siteUrl: 'https://www.databricks.com/'
+  },
+  ai2: {
+    id: 'ai2',
+    name: '앨런 인공지능 연구소 (Ai2)',
+    country: 'US',
+    countryLabel: '미국/북미',
+    flag: '🇺🇸',
+    type: 'official',
+    typeLabel: '비영리 연구기관',
+    badgeClass: 'official',
+    description: '학습 데이터(Dolma), 코드, 가중치를 100% 완전 투명하게 개방하는 미국의 대표적 오픈 사이언스 AI 연구소.',
+    features: ['OLMo 2 완전 공개', 'Tulu 3 사후학습 1위', '비영리 공공 AI'],
+    siteUrl: 'https://allenai.org/'
+  },
+  snowflake: {
+    id: 'snowflake',
+    name: '스노우플레이크 (Snowflake Cortex)',
+    country: 'US',
+    countryLabel: '미국/북미',
+    flag: '🇺🇸',
+    type: 'official',
+    typeLabel: '엔터프라이즈 데이터 플랫폼',
+    badgeClass: 'official',
+    description: '클라우드 데이터 플랫폼 스노우플레이크가 자체 개발한 비즈니스 인텔리전스 및 SQL 생성 특화 Arctic 플랫폼.',
+    features: ['Arctic 480B MoE', '엔터프라이즈 SQL 1위', '비즈니스 데이터 인텔리전스'],
+    siteUrl: 'https://www.snowflake.com/en/data-cloud/cortex/'
   }
 };
 
@@ -2870,6 +3115,54 @@ export const RAW_MODELS = [
     description: '오픈 소스 추론 모델의 혁신. o1급 추론력을 파격적인 비용으로 제공.',
     offers: [
       {
+        provider: 'SambaNova Systems',
+        providerKey: 'sambanova',
+        isOfficial: false,
+        inputPer1M: 0.70,
+        outputPer1M: 2.50,
+        cacheReadPer1M: 0.15,
+        discountPercent: 0,
+        latency: 'Ultra Fast (RDU)',
+        siteUrl: 'https://sambanova.ai/',
+        note: 'SambaNova RDU 초고속 서빙'
+      },
+      {
+        provider: 'SiliconFlow (硅基流动)',
+        providerKey: 'siliconflow',
+        isOfficial: false,
+        inputPer1M: 0.50,
+        outputPer1M: 2.00,
+        cacheReadPer1M: 0.14,
+        discountPercent: 10,
+        latency: 'Fast',
+        siteUrl: 'https://siliconflow.cn/',
+        note: '실리콘플로우 공식 서빙'
+      },
+      {
+        provider: 'Nebius AI Studio',
+        providerKey: 'nebius',
+        isOfficial: false,
+        inputPer1M: 0.45,
+        outputPer1M: 1.90,
+        cacheReadPer1M: 0.12,
+        discountPercent: 15,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://nebius.ai/',
+        note: '유럽 데이터센터 최저가'
+      },
+      {
+        provider: 'Novita AI',
+        providerKey: 'novita',
+        isOfficial: false,
+        inputPer1M: 0.48,
+        outputPer1M: 1.95,
+        cacheReadPer1M: 0.13,
+        discountPercent: 12,
+        latency: 'Fast',
+        siteUrl: 'https://novita.ai/',
+        note: '서버리스 종량제'
+      },
+      {
         provider: 'DeepSeek (공식)',
         providerKey: 'deepseek',
         isOfficial: true,
@@ -2918,6 +3211,30 @@ export const RAW_MODELS = [
     contextWindow: '64K',
     description: '671B MoE 고성능 범용 언어 모델. 플래그십급 가성비 챔피언.',
     offers: [
+      {
+        provider: 'SiliconFlow (硅基流动)',
+        providerKey: 'siliconflow',
+        isOfficial: false,
+        inputPer1M: 0.14,
+        outputPer1M: 0.28,
+        cacheReadPer1M: 0.035,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://siliconflow.cn/',
+        note: '실리콘플로우 V3 최저가'
+      },
+      {
+        provider: 'Novita AI',
+        providerKey: 'novita',
+        isOfficial: false,
+        inputPer1M: 0.12,
+        outputPer1M: 0.25,
+        cacheReadPer1M: 0.03,
+        discountPercent: 14,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://novita.ai/',
+        note: 'Novita 특가 호스팅'
+      },
       {
         provider: 'DeepSeek (공식)',
         providerKey: 'deepseek',
@@ -3181,6 +3498,78 @@ export const RAW_MODELS = [
     contextWindow: '128K',
     description: 'Meta의 최신 70B 오픈 가중치 모델. 기존 405B급 효율성 달성.',
     offers: [
+      {
+        provider: 'Cerebras Systems',
+        providerKey: 'cerebras',
+        isOfficial: false,
+        inputPer1M: 0.60,
+        outputPer1M: 0.60,
+        cacheReadPer1M: 0.06,
+        discountPercent: 24,
+        latency: 'Ultra Fast (2000+ T/s)',
+        siteUrl: 'https://cerebras.ai/inference',
+        note: '세계 최고속 WSE 추론'
+      },
+      {
+        provider: 'SambaNova Systems',
+        providerKey: 'sambanova',
+        isOfficial: false,
+        inputPer1M: 0.60,
+        outputPer1M: 0.60,
+        cacheReadPer1M: 0.06,
+        discountPercent: 24,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://sambanova.ai/',
+        note: 'RDU 초고속 서빙'
+      },
+      {
+        provider: 'Perplexity AI (Sonar)',
+        providerKey: 'perplexity',
+        isOfficial: false,
+        inputPer1M: 1.00,
+        outputPer1M: 1.00,
+        cacheReadPer1M: 0.10,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://docs.perplexity.ai/',
+        note: '실시간 검색 연동 API'
+      },
+      {
+        provider: 'Scaleway Generative APIs',
+        providerKey: 'scaleway',
+        isOfficial: false,
+        inputPer1M: 0.50,
+        outputPer1M: 0.50,
+        cacheReadPer1M: 0.05,
+        discountPercent: 36,
+        latency: 'Fast',
+        siteUrl: 'https://www.scaleway.com/en/generative-apis/',
+        note: '유럽 소버린 준수 서빙'
+      },
+      {
+        provider: 'Anyscale Endpoints',
+        providerKey: 'anyscale',
+        isOfficial: false,
+        inputPer1M: 0.50,
+        outputPer1M: 0.50,
+        cacheReadPer1M: 0.05,
+        discountPercent: 36,
+        latency: 'Fast',
+        siteUrl: 'https://www.anyscale.com/endpoints',
+        note: 'Ray 기반 분산 호스팅'
+      },
+      {
+        provider: 'Lambda Labs',
+        providerKey: 'lambda',
+        isOfficial: false,
+        inputPer1M: 0.50,
+        outputPer1M: 0.50,
+        cacheReadPer1M: 0.05,
+        discountPercent: 36,
+        latency: 'Fast',
+        siteUrl: 'https://lambdalabs.com/service/gpu-cloud',
+        note: 'NVIDIA H100 기반'
+      },
       {
         provider: 'Groq',
         providerKey: 'groq',
@@ -5997,6 +6386,18 @@ export const RAW_MODELS = [
     description: '전 세계에서 가장 널리 쓰이는 표준 경량 오픈 모델. 빠른 속도와 극저비용 서빙.',
     offers: [
       {
+        provider: 'MonsterAPI',
+        providerKey: 'monsterapi',
+        isOfficial: false,
+        inputPer1M: 0.07,
+        outputPer1M: 0.07,
+        cacheReadPer1M: 0.01,
+        discountPercent: 40,
+        latency: 'Fast',
+        siteUrl: 'https://monsterapi.ai/',
+        note: '분산 GPU 최저가'
+      },
+      {
         provider: 'DeepInfra',
         providerKey: 'deepinfra',
         isOfficial: false,
@@ -6758,6 +7159,30 @@ export const RAW_MODELS = [
     contextWindow: '-',
     description: '전 세계 오픈소스 이미지 생성 분야에서 가장 많이 쓰이는 디테일과 해상도의 1위 모델.',
     offers: [
+      {
+        provider: 'Replicate',
+        providerKey: 'replicate',
+        isOfficial: false,
+        inputPer1M: 0.025,
+        outputPer1M: 0.025,
+        cacheReadPer1M: 0.00,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://replicate.com/',
+        note: '이미지 장당 $0.025'
+      },
+      {
+        provider: 'Novita AI',
+        providerKey: 'novita',
+        isOfficial: false,
+        inputPer1M: 0.02,
+        outputPer1M: 0.02,
+        cacheReadPer1M: 0.00,
+        discountPercent: 20,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://novita.ai/',
+        note: '이미지 장당 $0.020 최저가'
+      },
       {
         provider: 'Black Forest Labs (공식)',
         providerKey: 'bfl',
@@ -8768,6 +9193,1669 @@ export const RAW_MODELS = [
         note: '-56% 최저가 할인'
       }
     ]
+  },
+// =================================================================
+  // [2026 최신 추가 모델: 추론(Reasoning), 멀티모달, 오픈소스, 임베딩]
+  // =================================================================
+  {
+    id: 'qwq-32b',
+    name: 'QwQ 32B (Reasoning)',
+    creator: 'Alibaba',
+    country: 'CN',
+    countryLabel: '중국',
+    flagEmoji: '🇨🇳',
+    category: 'Reasoning & Coding',
+    mediaType: 'Text',
+    contextWindow: '128K',
+    description: '알리바바의 오픈소스 심층 추론(Reasoning) 모델. DeepSeek-R1과 필적하는 수학/과학/복합 코딩 추론 성능 제공.',
+    offers: [
+      {
+        provider: '알리바바 클라우드 (공식 DashScope)',
+        providerKey: 'alibaba',
+        isOfficial: true,
+        inputPer1M: 0.25,
+        outputPer1M: 0.75,
+        cacheReadPer1M: 0.025,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://www.alibabacloud.com/product/dashscope',
+        note: '공식 qwq-32b API'
+      },
+      {
+        provider: 'DeepInfra',
+        providerKey: 'deepinfra',
+        isOfficial: false,
+        inputPer1M: 0.18,
+        outputPer1M: 0.54,
+        cacheReadPer1M: 0.018,
+        discountPercent: 28,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://deepinfra.com/',
+        note: '-28% 가성비 호스팅'
+      },
+      {
+        provider: 'Together AI',
+        providerKey: 'together',
+        isOfficial: false,
+        inputPer1M: 0.20,
+        outputPer1M: 0.60,
+        cacheReadPer1M: 0.02,
+        discountPercent: 20,
+        latency: 'Fast',
+        siteUrl: 'https://www.together.ai/',
+        note: 'Together Serverless 엔드포인트'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.10,
+        outputPer1M: 0.30,
+        cacheReadPer1M: 0.01,
+        discountPercent: 60,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '-60% 최저가 할인 제공'
+      }
+    ]
+  },
+  {
+    id: 'deepseek-r1-distill-qwen-32b',
+    name: 'DeepSeek-R1-Distill-Qwen-32B',
+    creator: 'DeepSeek',
+    country: 'CN',
+    countryLabel: '중국',
+    flagEmoji: '🇨🇳',
+    category: 'Reasoning & Coding',
+    mediaType: 'Text',
+    contextWindow: '128K',
+    description: 'DeepSeek R1의 고난도 추론 능력을 Qwen 2.5 32B 아키텍처에 증류하여 경량화와 압도적 코딩 성능을 양립한 모델.',
+    offers: [
+      {
+        provider: 'DeepSeek (공식)',
+        providerKey: 'deepseek',
+        isOfficial: true,
+        inputPer1M: 0.27,
+        outputPer1M: 0.55,
+        cacheReadPer1M: 0.07,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://platform.deepseek.com/',
+        note: '공식 API 기준'
+      },
+      {
+        provider: 'DeepInfra',
+        providerKey: 'deepinfra',
+        isOfficial: false,
+        inputPer1M: 0.20,
+        outputPer1M: 0.45,
+        cacheReadPer1M: 0.02,
+        discountPercent: 26,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://deepinfra.com/',
+        note: '-26% 할인 호스팅'
+      },
+      {
+        provider: 'Groq',
+        providerKey: 'groq',
+        isOfficial: false,
+        inputPer1M: 0.59,
+        outputPer1M: 0.79,
+        cacheReadPer1M: 0.05,
+        discountPercent: 0,
+        latency: 'Ultra Fast (500+ T/s)',
+        siteUrl: 'https://groq.com/',
+        note: 'LPU 초고속 추론'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.12,
+        outputPer1M: 0.28,
+        cacheReadPer1M: 0.015,
+        discountPercent: 55,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '-55% 최저가 할인'
+      }
+    ]
+  },
+  {
+    id: 'deepseek-r1-distill-llama-70b',
+    name: 'DeepSeek-R1-Distill-Llama-70B',
+    creator: 'DeepSeek',
+    country: 'CN',
+    countryLabel: '중국',
+    flagEmoji: '🇨🇳',
+    category: 'Reasoning & Coding',
+    mediaType: 'Text',
+    contextWindow: '128K',
+    description: 'Llama 3.3 70B 베이스에 DeepSeek R1의 사고 체인(CoT) 데이터를 전이 학습시켜 OpenAI o1급 추론력을 발휘하는 모델.',
+    offers: [
+      {
+        provider: 'DeepSeek (공식)',
+        providerKey: 'deepseek',
+        isOfficial: true,
+        inputPer1M: 0.55,
+        outputPer1M: 2.19,
+        cacheReadPer1M: 0.14,
+        discountPercent: 0,
+        latency: 'Moderate',
+        siteUrl: 'https://platform.deepseek.com/',
+        note: '공식 증류 70B 가중치 기준'
+      },
+      {
+        provider: 'Together AI',
+        providerKey: 'together',
+        isOfficial: false,
+        inputPer1M: 0.88,
+        outputPer1M: 0.88,
+        cacheReadPer1M: 0.10,
+        discountPercent: 35,
+        latency: 'Fast',
+        siteUrl: 'https://www.together.ai/',
+        note: '균일 입출력 요금제'
+      },
+      {
+        provider: 'DeepInfra',
+        providerKey: 'deepinfra',
+        isOfficial: false,
+        inputPer1M: 0.40,
+        outputPer1M: 0.90,
+        cacheReadPer1M: 0.05,
+        discountPercent: 52,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://deepinfra.com/',
+        note: '-52% 절감'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.25,
+        outputPer1M: 0.85,
+        cacheReadPer1M: 0.03,
+        discountPercent: 60,
+        latency: 'Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '-60% 최저가 공급'
+      }
+    ]
+  },
+  {
+    id: 'deepseek-r1-distill-qwen-7b',
+    name: 'DeepSeek-R1-Distill-Qwen-7B',
+    creator: 'DeepSeek',
+    country: 'CN',
+    countryLabel: '중국',
+    flagEmoji: '🇨🇳',
+    category: 'Fast & Lightweight',
+    mediaType: 'Text',
+    contextWindow: '128K',
+    description: '단일 소형 GPU나 온디바이스 환경에서도 수리 및 논리 추론 작업을 초고속으로 수행하는 초경량 R1 증류 모델.',
+    offers: [
+      {
+        provider: 'DeepSeek (공식)',
+        providerKey: 'deepseek',
+        isOfficial: true,
+        inputPer1M: 0.10,
+        outputPer1M: 0.20,
+        cacheReadPer1M: 0.02,
+        discountPercent: 0,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://platform.deepseek.com/',
+        note: '공식 오픈 가중치'
+      },
+      {
+        provider: 'DeepInfra',
+        providerKey: 'deepinfra',
+        isOfficial: false,
+        inputPer1M: 0.07,
+        outputPer1M: 0.14,
+        cacheReadPer1M: 0.01,
+        discountPercent: 30,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://deepinfra.com/',
+        note: '-30% 호스팅'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.04,
+        outputPer1M: 0.08,
+        cacheReadPer1M: 0.008,
+        discountPercent: 60,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '-60% 최저가'
+      }
+    ]
+  },
+  {
+    id: 'gemini-2-0-flash',
+    name: 'Gemini 2.0 Flash',
+    creator: 'Google',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'Fast & Lightweight',
+    mediaType: 'Text',
+    contextWindow: '1M',
+    description: '구글의 2세대 플래그십 초고속 멀티모달 모델. 100만 토큰 컨텍스트와 텍스트/비전/오디오를 네이티브 스트리밍 처리.',
+    offers: [
+      {
+        provider: 'Google AI Studio (공식)',
+        providerKey: 'google',
+        isOfficial: true,
+        inputPer1M: 0.10,
+        outputPer1M: 0.40,
+        cacheReadPer1M: 0.025,
+        discountPercent: 0,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://ai.google.dev/pricing',
+        note: '공식 GA 정식 단가'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.06,
+        outputPer1M: 0.22,
+        cacheReadPer1M: 0.015,
+        discountPercent: 44,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '-44% 할인'
+      }
+    ]
+  },
+  {
+    id: 'gemini-2-0-flash-lite',
+    name: 'Gemini 2.0 Flash Lite',
+    creator: 'Google',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'Fast & Lightweight',
+    mediaType: 'Text',
+    contextWindow: '1M',
+    description: '대규모 실시간 트래픽 처리를 위해 극단적으로 비용과 지연시간을 낮춘 구글의 초저가 초경량 파운데이션 모델.',
+    offers: [
+      {
+        provider: 'Google AI Studio (공식)',
+        providerKey: 'google',
+        isOfficial: true,
+        inputPer1M: 0.075,
+        outputPer1M: 0.30,
+        cacheReadPer1M: 0.01875,
+        discountPercent: 0,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://ai.google.dev/pricing',
+        note: '공식 Lite 단가'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.04,
+        outputPer1M: 0.16,
+        cacheReadPer1M: 0.01,
+        discountPercent: 47,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '-47% 할인'
+      }
+    ]
+  },
+  {
+    id: 'gemini-2-0-pro',
+    name: 'Gemini 2.0 Pro',
+    creator: 'Google',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'Flagship',
+    mediaType: 'Text',
+    contextWindow: '2M',
+    description: '200만 토큰의 초대형 컨텍스트와 복합 코드 생성, 에이전트 다단계 추론에서 최고의 벤치마크를 기록한 최상위 모델.',
+    offers: [
+      {
+        provider: 'Google AI Studio (공식)',
+        providerKey: 'google',
+        isOfficial: true,
+        inputPer1M: 1.25,
+        outputPer1M: 5.00,
+        cacheReadPer1M: 0.3125,
+        discountPercent: 0,
+        latency: 'Moderate',
+        siteUrl: 'https://ai.google.dev/pricing',
+        note: '공식 Pro 티어 요금'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.70,
+        outputPer1M: 2.80,
+        cacheReadPer1M: 0.18,
+        discountPercent: 44,
+        latency: 'Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '-44% 프로모션'
+      }
+    ]
+  },
+  {
+    id: 'gemma-2-9b-it',
+    name: 'Gemma 2 9B IT',
+    creator: 'Google',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'Open Source',
+    mediaType: 'Text',
+    contextWindow: '8K',
+    description: '구글 딥마인드가 공개한 9B 급 최강 가성비 오픈 가중치 모델. 기존 20B+ 급 모델을 능가하는 코딩 및 언어 성능.',
+    offers: [
+      {
+        provider: 'Google Cloud Vertex AI',
+        providerKey: 'google',
+        isOfficial: true,
+        inputPer1M: 0.15,
+        outputPer1M: 0.15,
+        cacheReadPer1M: 0.03,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://cloud.google.com/vertex-ai',
+        note: 'Vertex Model Garden'
+      },
+      {
+        provider: 'DeepInfra',
+        providerKey: 'deepinfra',
+        isOfficial: false,
+        inputPer1M: 0.06,
+        outputPer1M: 0.06,
+        cacheReadPer1M: 0.008,
+        discountPercent: 60,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://deepinfra.com/',
+        note: '-60% 초저가'
+      },
+      {
+        provider: 'Groq',
+        providerKey: 'groq',
+        isOfficial: false,
+        inputPer1M: 0.20,
+        outputPer1M: 0.20,
+        cacheReadPer1M: 0.02,
+        discountPercent: 0,
+        latency: 'Ultra Fast (600+ T/s)',
+        siteUrl: 'https://groq.com/',
+        note: 'Groq 하드웨어 서빙'
+      }
+    ]
+  },
+  {
+    id: 'llama-3-1-70b-instruct',
+    name: 'Llama 3.1 70B Instruct',
+    creator: 'Meta',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'Open Source',
+    mediaType: 'Text',
+    contextWindow: '128K',
+    description: '메타의 128K 컨텍스트 지원 오픈소스 표준 70B 파운데이션 모델. 글로벌 엔터프라이즈 환경에서 가장 널리 검증됨.',
+    offers: [
+      {
+        provider: 'Meta Llama (공식 라이선스)',
+        providerKey: 'meta',
+        isOfficial: true,
+        inputPer1M: 0.79,
+        outputPer1M: 0.79,
+        cacheReadPer1M: 0.10,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://llama.meta.com/',
+        note: '기준 클라우드 호스팅 요금'
+      },
+      {
+        provider: 'DeepInfra',
+        providerKey: 'deepinfra',
+        isOfficial: false,
+        inputPer1M: 0.35,
+        outputPer1M: 0.40,
+        cacheReadPer1M: 0.04,
+        discountPercent: 53,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://deepinfra.com/',
+        note: '-53% 할인'
+      },
+      {
+        provider: 'Together AI',
+        providerKey: 'together',
+        isOfficial: false,
+        inputPer1M: 0.60,
+        outputPer1M: 0.60,
+        cacheReadPer1M: 0.06,
+        discountPercent: 24,
+        latency: 'Fast',
+        siteUrl: 'https://www.together.ai/',
+        note: '서버리스 전용'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.22,
+        outputPer1M: 0.35,
+        cacheReadPer1M: 0.02,
+        discountPercent: 64,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '-64% 최저가'
+      }
+    ]
+  },
+  {
+    id: 'llama-3-2-90b-vision-instruct',
+    name: 'Llama 3.2 90B Vision Instruct',
+    creator: 'Meta',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'Flagship',
+    mediaType: 'Text',
+    contextWindow: '128K',
+    description: '메타의 최상위 멀티모달 오픈 파운데이션 모델. 차트 분석, 이미지 이해, 문서 OCR 및 복합 시각 추론을 128K 컨텍스트로 제공.',
+    offers: [
+      {
+        provider: 'Meta Llama (공식 라이선스)',
+        providerKey: 'meta',
+        isOfficial: true,
+        inputPer1M: 1.20,
+        outputPer1M: 1.20,
+        cacheReadPer1M: 0.20,
+        discountPercent: 0,
+        latency: 'Moderate',
+        siteUrl: 'https://llama.meta.com/',
+        note: '공식 권장 호스팅 기준'
+      },
+      {
+        provider: 'DeepInfra',
+        providerKey: 'deepinfra',
+        isOfficial: false,
+        inputPer1M: 0.65,
+        outputPer1M: 0.65,
+        cacheReadPer1M: 0.08,
+        discountPercent: 46,
+        latency: 'Fast',
+        siteUrl: 'https://deepinfra.com/',
+        note: '-46% 절감'
+      },
+      {
+        provider: 'Together AI',
+        providerKey: 'together',
+        isOfficial: false,
+        inputPer1M: 0.90,
+        outputPer1M: 0.90,
+        cacheReadPer1M: 0.10,
+        discountPercent: 25,
+        latency: 'Fast',
+        siteUrl: 'https://www.together.ai/',
+        note: '멀티모달 API'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.45,
+        outputPer1M: 0.55,
+        cacheReadPer1M: 0.05,
+        discountPercent: 58,
+        latency: 'Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '-58% 최저가'
+      }
+    ]
+  },
+  {
+    id: 'qwen-2-5-coder-7b',
+    name: 'Qwen 2.5 Coder 7B',
+    creator: 'Alibaba',
+    country: 'CN',
+    countryLabel: '중국',
+    flagEmoji: '🇨🇳',
+    category: 'Reasoning & Coding',
+    mediaType: 'Text',
+    contextWindow: '128K',
+    description: '단일 소형 GPU에서도 온프레미스로 구동 가능한 초고효율 코드 생성 및 자동완성(Autocomplete) 특화 7B 모델.',
+    offers: [
+      {
+        provider: '알리바바 클라우드 (공식 DashScope)',
+        providerKey: 'alibaba',
+        isOfficial: true,
+        inputPer1M: 0.10,
+        outputPer1M: 0.20,
+        cacheReadPer1M: 0.01,
+        discountPercent: 0,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://www.alibabacloud.com/product/dashscope',
+        note: '공식가'
+      },
+      {
+        provider: 'DeepInfra',
+        providerKey: 'deepinfra',
+        isOfficial: false,
+        inputPer1M: 0.06,
+        outputPer1M: 0.12,
+        cacheReadPer1M: 0.008,
+        discountPercent: 40,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://deepinfra.com/',
+        note: '-40% 호스팅'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.035,
+        outputPer1M: 0.07,
+        cacheReadPer1M: 0.005,
+        discountPercent: 65,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '-65% 최저가'
+      }
+    ]
+  },
+  {
+    id: 'qwen-2-5-14b-instruct',
+    name: 'Qwen 2.5 14B Instruct',
+    creator: 'Alibaba',
+    country: 'CN',
+    countryLabel: '중국',
+    flagEmoji: '🇨🇳',
+    category: 'Fast & Lightweight',
+    mediaType: 'Text',
+    contextWindow: '128K',
+    description: '7B와 72B 사이에서 성능과 VRAM 효율성의 완벽한 황금비를 갖춘 알리바바의 차세대 오픈 파운데이션 모델.',
+    offers: [
+      {
+        provider: '알리바바 클라우드 (공식 DashScope)',
+        providerKey: 'alibaba',
+        isOfficial: true,
+        inputPer1M: 0.14,
+        outputPer1M: 0.28,
+        cacheReadPer1M: 0.014,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://www.alibabacloud.com/product/dashscope',
+        note: '공식 14B 단가'
+      },
+      {
+        provider: 'DeepInfra',
+        providerKey: 'deepinfra',
+        isOfficial: false,
+        inputPer1M: 0.10,
+        outputPer1M: 0.18,
+        cacheReadPer1M: 0.01,
+        discountPercent: 33,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://deepinfra.com/',
+        note: '-33% 할인'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.055,
+        outputPer1M: 0.12,
+        cacheReadPer1M: 0.007,
+        discountPercent: 58,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '-58% 최저가'
+      }
+    ]
+  },
+  {
+    id: 'pixtral-12b',
+    name: 'Pixtral 12B (Vision)',
+    creator: 'Mistral AI',
+    country: 'EU',
+    countryLabel: '유럽(프랑스)',
+    flagEmoji: '🇫🇷',
+    category: 'Fast & Lightweight',
+    mediaType: 'Text',
+    contextWindow: '128K',
+    description: 'Mistral NeMo를 기반으로 한 12B 네이티브 멀티모달 비전 모델. 임의 크기와 종횡비의 이미지를 자연스럽게 처리.',
+    offers: [
+      {
+        provider: 'Mistral (공식)',
+        providerKey: 'mistral',
+        isOfficial: true,
+        inputPer1M: 0.15,
+        outputPer1M: 0.15,
+        cacheReadPer1M: 0.02,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://console.mistral.ai/',
+        note: '공식 pixtral-12b-2409'
+      },
+      {
+        provider: 'Together AI',
+        providerKey: 'together',
+        isOfficial: false,
+        inputPer1M: 0.15,
+        outputPer1M: 0.15,
+        cacheReadPer1M: 0.02,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://www.together.ai/',
+        note: '서버리스 호스팅'
+      },
+      {
+        provider: 'DeepInfra',
+        providerKey: 'deepinfra',
+        isOfficial: false,
+        inputPer1M: 0.08,
+        outputPer1M: 0.08,
+        cacheReadPer1M: 0.01,
+        discountPercent: 47,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://deepinfra.com/',
+        note: '-47% 최저가'
+      }
+    ]
+  },
+  {
+    id: 'codestral-mamba-7b',
+    name: 'Codestral Mamba 7B',
+    creator: 'Mistral AI',
+    country: 'EU',
+    countryLabel: '유럽(프랑스)',
+    flagEmoji: '🇫🇷',
+    category: 'Reasoning & Coding',
+    mediaType: 'Text',
+    contextWindow: '256K',
+    description: 'Mamba 2 아키텍처를 채택하여 256K의 초장문 코드베이스도 선형 시간복잡도로 초고속 처리하는 혁신적 코딩 모델.',
+    offers: [
+      {
+        provider: 'Mistral (공식)',
+        providerKey: 'mistral',
+        isOfficial: true,
+        inputPer1M: 0.15,
+        outputPer1M: 0.15,
+        cacheReadPer1M: 0.00,
+        discountPercent: 0,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://console.mistral.ai/',
+        note: '공식 mamba-codestral'
+      },
+      {
+        provider: 'Hugging Face Endpoint',
+        providerKey: 'huggingface',
+        isOfficial: false,
+        inputPer1M: 0.00,
+        outputPer1M: 0.00,
+        cacheReadPer1M: 0.00,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://huggingface.co/mistralai/mamba-codestral-7B-v0.1',
+        note: '오픈 가중치 직접 호스팅'
+      }
+    ]
+  },
+  {
+    id: 'bllossom-8b',
+    name: 'Bllossom 8B (Llama 3.1 Ko)',
+    creator: 'MLP-KULLM / Teddyum',
+    country: 'KR',
+    countryLabel: '한국',
+    flagEmoji: '🇰🇷',
+    category: 'Fast & Lightweight',
+    mediaType: 'Text',
+    contextWindow: '128K',
+    description: '한국어 말뭉치와 지시 튜닝 데이터를 집약해 Llama 3.1을 미세조정한 국내 오픈소스 커뮤니티 대표 한국어 모델.',
+    offers: [
+      {
+        provider: 'RunPod Serverless',
+        providerKey: 'runpod',
+        isOfficial: false,
+        inputPer1M: 0.07,
+        outputPer1M: 0.07,
+        cacheReadPer1M: 0.01,
+        discountPercent: 30,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://www.runpod.io/',
+        note: 'vLLM 엔드포인트 서빙'
+      },
+      {
+        provider: 'Hugging Face Endpoint',
+        providerKey: 'huggingface',
+        isOfficial: false,
+        inputPer1M: 0.00,
+        outputPer1M: 0.00,
+        cacheReadPer1M: 0.00,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://huggingface.co/Bllossom/llama-3.1-Korean-Bllossom-8B',
+        note: '오픈 가중치 무료 배포'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.05,
+        outputPer1M: 0.09,
+        cacheReadPer1M: 0.005,
+        discountPercent: 50,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '한국어 엔드포인트 지원'
+      }
+    ]
+  },
+  {
+    id: 'text-embedding-3-large',
+    name: 'Text-Embedding-3-Large',
+    creator: 'OpenAI',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'Embedding & RAG',
+    mediaType: 'Embedding',
+    contextWindow: '8K',
+    description: '3072차원 고정밀 벡터 임베딩을 지원하며 다국어 검색, 검색 증강 생성(RAG) 정확도에서 업계 최상위 성능을 기록.',
+    offers: [
+      {
+        provider: 'OpenAI (공식)',
+        providerKey: 'openai',
+        isOfficial: true,
+        inputPer1M: 0.13,
+        outputPer1M: 0.00,
+        cacheReadPer1M: 0.00,
+        discountPercent: 0,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://openai.com/api/pricing/',
+        note: '공식 3072차원 단가'
+      },
+      {
+        provider: 'Microsoft (Azure AI)',
+        providerKey: 'microsoft',
+        isOfficial: true,
+        inputPer1M: 0.13,
+        outputPer1M: 0.00,
+        cacheReadPer1M: 0.00,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://azure.microsoft.com/en-us/solutions/ai',
+        note: 'Azure 엔터프라이즈 SLA'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.065,
+        outputPer1M: 0.00,
+        cacheReadPer1M: 0.00,
+        discountPercent: 50,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '-50% 최저가 할인'
+      }
+    ]
+  },
+  {
+    id: 'text-embedding-3-small',
+    name: 'Text-Embedding-3-Small',
+    creator: 'OpenAI',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'Embedding & RAG',
+    mediaType: 'Embedding',
+    contextWindow: '8K',
+    description: '1536차원 벡터를 1M당 $0.02의 극단적으로 저렴한 단가로 생성하여 대규모 지식 베이스 구축에 최적화된 임베딩 모델.',
+    offers: [
+      {
+        provider: 'OpenAI (공식)',
+        providerKey: 'openai',
+        isOfficial: true,
+        inputPer1M: 0.02,
+        outputPer1M: 0.00,
+        cacheReadPer1M: 0.00,
+        discountPercent: 0,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://openai.com/api/pricing/',
+        note: '공식 가성비 임베딩 단가'
+      },
+      {
+        provider: 'Microsoft (Azure AI)',
+        providerKey: 'microsoft',
+        isOfficial: true,
+        inputPer1M: 0.02,
+        outputPer1M: 0.00,
+        cacheReadPer1M: 0.00,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://azure.microsoft.com/en-us/solutions/ai',
+        note: 'Azure 엔터프라이즈 SLA'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.01,
+        outputPer1M: 0.00,
+        cacheReadPer1M: 0.00,
+        discountPercent: 50,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '-50% 최저가 할인 ($0.01/1M)'
+      }
+    ]
+  },
+  {
+    id: 'o3-full',
+    name: 'OpenAI o3 (Full)',
+    creator: 'OpenAI',
+    country: 'US',
+    countryLabel: '미국',
+    flagEmoji: '🇺🇸',
+    category: 'Reasoning & Coding',
+    mediaType: 'Text',
+    contextWindow: '200K',
+    description: 'OpenAI의 차세대 최고봉 심층 추론 AI. 국제 과학 올림피아드 및 최고난도 시스템 소프트웨어 디버깅 만점급 성능.',
+    offers: [
+      {
+        provider: 'OpenAI (공식)',
+        providerKey: 'openai',
+        isOfficial: true,
+        inputPer1M: 15.00,
+        outputPer1M: 60.00,
+        cacheReadPer1M: 3.75,
+        discountPercent: 0,
+        latency: 'Deliberate Reasoning',
+        siteUrl: 'https://openai.com/api/pricing/',
+        note: '공식 플래그십 추론 티어'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 8.50,
+        outputPer1M: 34.00,
+        cacheReadPer1M: 2.10,
+        discountPercent: 43,
+        latency: 'Fast Reasoning',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '-43% 프로모션'
+      }
+    ]
+  },
+  {
+    id: 'falcon-2-11b',
+    name: 'Falcon 2 11B VLM',
+    creator: 'TII (Technology Innovation Institute)',
+    country: 'ASIA',
+    countryLabel: '중동(아랍에미리트)',
+    flagEmoji: '🇦🇪',
+    category: 'Open Source',
+    mediaType: 'Text',
+    contextWindow: '32K',
+    description: '아부다비 TII에서 개발한 비전-언어 멀티모달 파운데이션 모델. 문서 변환, 시각 분석 및 아랍어/다국어 처리 우수.',
+    offers: [
+      {
+        provider: 'Hugging Face Endpoint',
+        providerKey: 'huggingface',
+        isOfficial: false,
+        inputPer1M: 0.00,
+        outputPer1M: 0.00,
+        cacheReadPer1M: 0.00,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://huggingface.co/tiiuae/falcon-11B-vlm',
+        note: '오픈 가중치 무료 배포'
+      },
+      {
+        provider: 'Together AI',
+        providerKey: 'together',
+        isOfficial: false,
+        inputPer1M: 0.18,
+        outputPer1M: 0.18,
+        cacheReadPer1M: 0.02,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://www.together.ai/',
+        note: 'Together 호스팅'
+      }
+    ]
+  },
+  {
+    id: 'starcoder-2-15b',
+    name: 'StarCoder 2 15B',
+    creator: 'BigCode (ServiceNow & Hugging Face)',
+    country: 'EU',
+    countryLabel: '글로벌/유럽',
+    flagEmoji: '🇪🇺',
+    category: 'Reasoning & Coding',
+    mediaType: 'Text',
+    contextWindow: '16K',
+    description: '600여 개 프로그래밍 언어의 허가된 오픈소스 코드로 정제 학습된 엔터프라이즈 코딩 & 라이선스 준수 1위 모델.',
+    offers: [
+      {
+        provider: 'Hugging Face Endpoint',
+        providerKey: 'huggingface',
+        isOfficial: false,
+        inputPer1M: 0.00,
+        outputPer1M: 0.00,
+        cacheReadPer1M: 0.00,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://huggingface.co/bigcode/starcoder2-15b',
+        note: '투명한 데이터셋 오픈 가중치'
+      },
+      {
+        provider: 'DeepInfra',
+        providerKey: 'deepinfra',
+        isOfficial: false,
+        inputPer1M: 0.10,
+        outputPer1M: 0.10,
+        cacheReadPer1M: 0.01,
+        discountPercent: 0,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://deepinfra.com/',
+        note: '서버리스 코드 추론'
+      }
+    ]
+  },
+// =================================================================
+  // [아메리카 대륙 개발 모델: 캐나다, 남미(브라질/칠레), 미국 오픈 연구소]
+  // =================================================================
+  {
+    id: 'aya-expanse-32b',
+    name: 'Aya Expanse 32B',
+    creator: 'Cohere For AI',
+    country: 'CA',
+    countryLabel: '캐나다/북미',
+    flagEmoji: '🇨🇦',
+    region: 'America',
+    category: 'Open Source',
+    mediaType: 'Text',
+    contextWindow: '128K',
+    description: '캐나다 토론토의 Cohere For AI 연구소가 전 세계 23개 언어를 균형 있게 사전 학습시킨 글로벌 다국어 1위 오픈 파운데이션 모델.',
+    offers: [
+      {
+        provider: 'Cohere (공식)',
+        providerKey: 'cohere',
+        isOfficial: true,
+        inputPer1M: 0.50,
+        outputPer1M: 1.50,
+        cacheReadPer1M: 0.10,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://cohere.com/pricing',
+        note: '공식 C4AI API'
+      },
+      {
+        provider: 'DeepInfra',
+        providerKey: 'deepinfra',
+        isOfficial: false,
+        inputPer1M: 0.25,
+        outputPer1M: 0.60,
+        cacheReadPer1M: 0.03,
+        discountPercent: 53,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://deepinfra.com/',
+        note: '-53% 가성비 호스팅'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.15,
+        outputPer1M: 0.45,
+        cacheReadPer1M: 0.02,
+        discountPercent: 70,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '-70% 최저가 할인'
+      }
+    ]
+  },
+  {
+    id: 'aya-expanse-8b',
+    name: 'Aya Expanse 8B',
+    creator: 'Cohere For AI',
+    country: 'CA',
+    countryLabel: '캐나다/북미',
+    flagEmoji: '🇨🇦',
+    region: 'America',
+    category: 'Fast & Lightweight',
+    mediaType: 'Text',
+    contextWindow: '8K',
+    description: '단일 소형 GPU에서도 원활히 구동되며 23개국 언어의 뉘앙스를 탁월하게 이해하는 초경량 다국어 파운데이션 모델.',
+    offers: [
+      {
+        provider: 'Cohere (공식)',
+        providerKey: 'cohere',
+        isOfficial: true,
+        inputPer1M: 0.15,
+        outputPer1M: 0.30,
+        cacheReadPer1M: 0.02,
+        discountPercent: 0,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://cohere.com/pricing',
+        note: '공식 오픈 가중치 서빙'
+      },
+      {
+        provider: 'DeepInfra',
+        providerKey: 'deepinfra',
+        isOfficial: false,
+        inputPer1M: 0.08,
+        outputPer1M: 0.15,
+        cacheReadPer1M: 0.01,
+        discountPercent: 49,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://deepinfra.com/',
+        note: '-49% 할인'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.045,
+        outputPer1M: 0.09,
+        cacheReadPer1M: 0.008,
+        discountPercent: 70,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '-70% 최저가'
+      }
+    ]
+  },
+  {
+    id: 'command-r7b',
+    name: 'Command R7B',
+    creator: 'Cohere',
+    country: 'CA',
+    countryLabel: '캐나다/북미',
+    flagEmoji: '🇨🇦',
+    region: 'America',
+    category: 'Fast & Lightweight',
+    mediaType: 'Text',
+    contextWindow: '128K',
+    description: '기업용 RAG(검색 증강 생성)과 도구 호출(Tool Calling)에 특화되어 지연시간과 토큰 비용을 최소화한 코히어의 최신 7B 모델.',
+    offers: [
+      {
+        provider: 'Cohere (공식)',
+        providerKey: 'cohere',
+        isOfficial: true,
+        inputPer1M: 0.15,
+        outputPer1M: 0.60,
+        cacheReadPer1M: 0.0375,
+        discountPercent: 0,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://cohere.com/pricing',
+        note: '공식 R7B API 단가'
+      },
+      {
+        provider: 'Microsoft (Azure AI)',
+        providerKey: 'microsoft',
+        isOfficial: true,
+        inputPer1M: 0.15,
+        outputPer1M: 0.60,
+        cacheReadPer1M: 0.0375,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://azure.microsoft.com/en-us/solutions/ai',
+        note: 'Azure AI Models'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.075,
+        outputPer1M: 0.30,
+        cacheReadPer1M: 0.018,
+        discountPercent: 50,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '-50% 최저가'
+      }
+    ]
+  },
+  {
+    id: 'command-a',
+    name: 'Command A (Enterprise Agent)',
+    creator: 'Cohere',
+    country: 'CA',
+    countryLabel: '캐나다/북미',
+    flagEmoji: '🇨🇦',
+    region: 'America',
+    category: 'Flagship',
+    mediaType: 'Text',
+    contextWindow: '256K',
+    description: '256K 초대형 컨텍스트를 기반으로 복잡한 기업 엔터프라이즈 워크플로우와 자율 에이전트 작업을 완벽히 조율하는 코히어 최상위 모델.',
+    offers: [
+      {
+        provider: 'Cohere (공식)',
+        providerKey: 'cohere',
+        isOfficial: true,
+        inputPer1M: 2.50,
+        outputPer1M: 10.00,
+        cacheReadPer1M: 0.50,
+        discountPercent: 0,
+        latency: 'Moderate',
+        siteUrl: 'https://cohere.com/pricing',
+        note: '공식 플래그십 요금'
+      },
+      {
+        provider: 'Amazon (AWS Bedrock Nova)',
+        providerKey: 'amazon',
+        isOfficial: true,
+        inputPer1M: 2.50,
+        outputPer1M: 10.00,
+        cacheReadPer1M: 0.50,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://aws.amazon.com/bedrock/',
+        note: 'AWS Bedrock 엔드포인트'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 1.25,
+        outputPer1M: 5.00,
+        cacheReadPer1M: 0.25,
+        discountPercent: 50,
+        latency: 'Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '-50% 최저가'
+      }
+    ]
+  },
+  {
+    id: 'sabia-3',
+    name: 'Sabiá-3 (MariTalk)',
+    creator: 'Maritaca AI',
+    country: 'BR',
+    countryLabel: '브라질/남미',
+    flagEmoji: '🇧🇷',
+    region: 'America',
+    category: 'Flagship',
+    mediaType: 'Text',
+    contextWindow: '64K',
+    description: '남미 대륙 최대 AI 연구 기업 Maritaca AI가 개발한 포르투갈어 및 라틴아메리카 1위 파운데이션 LLM. 브라질 변호사/공무원 시험 최고점 달성.',
+    offers: [
+      {
+        provider: '마리카타 AI (Maritaca AI)',
+        providerKey: 'maritaca',
+        isOfficial: true,
+        inputPer1M: 2.00,
+        outputPer1M: 6.00,
+        cacheReadPer1M: 0.50,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://www.maritaca.ai/',
+        note: '공식 MariTalk API'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 1.10,
+        outputPer1M: 3.30,
+        cacheReadPer1M: 0.28,
+        discountPercent: 45,
+        latency: 'Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '-45% 최저가 공급'
+      }
+    ]
+  },
+  {
+    id: 'sabia-2-medium',
+    name: 'Sabiá-2 Medium',
+    creator: 'Maritaca AI',
+    country: 'BR',
+    countryLabel: '브라질/남미',
+    flagEmoji: '🇧🇷',
+    region: 'America',
+    category: 'Fast & Lightweight',
+    mediaType: 'Text',
+    contextWindow: '32K',
+    description: '라틴아메리카 금융 및 공공 행정 문서 분석을 위해 최적화된 고속·가성비 포르투갈어 파운데이션 모델.',
+    offers: [
+      {
+        provider: '마리카타 AI (Maritaca AI)',
+        providerKey: 'maritaca',
+        isOfficial: true,
+        inputPer1M: 0.50,
+        outputPer1M: 1.50,
+        cacheReadPer1M: 0.10,
+        discountPercent: 0,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://www.maritaca.ai/',
+        note: '공식 미디엄 티어'
+      },
+      {
+        provider: 'Hugging Face Endpoint',
+        providerKey: 'huggingface',
+        isOfficial: false,
+        inputPer1M: 0.30,
+        outputPer1M: 0.90,
+        cacheReadPer1M: 0.05,
+        discountPercent: 40,
+        latency: 'Fast',
+        siteUrl: 'https://huggingface.co/maritaca-ai',
+        note: 'HF 엔드포인트 호스팅'
+      }
+    ]
+  },
+  {
+    id: 'latam-llama-70b',
+    name: 'Latam-Llama 70B',
+    creator: 'CENIA (칠레 국립 AI 센터)',
+    country: 'CL',
+    countryLabel: '칠레/남미',
+    flagEmoji: '🇨🇱',
+    region: 'America',
+    category: 'Open Source',
+    mediaType: 'Text',
+    contextWindow: '128K',
+    description: '칠레 국립 AI 연구센터(CENIA)가 주도하여 중남미 18개국 스페인어 방언과 남미 문화 맥락을 대규모 파인튜닝한 오픈 파운데이션 모델.',
+    offers: [
+      {
+        provider: 'CENIA (칠레 국립 AI 센터)',
+        providerKey: 'cenia',
+        isOfficial: true,
+        inputPer1M: 0.70,
+        outputPer1M: 0.80,
+        cacheReadPer1M: 0.10,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://www.cenia.cl/',
+        note: '공식 연구 오픈 라이선스'
+      },
+      {
+        provider: 'DeepInfra',
+        providerKey: 'deepinfra',
+        isOfficial: false,
+        inputPer1M: 0.35,
+        outputPer1M: 0.40,
+        cacheReadPer1M: 0.04,
+        discountPercent: 50,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://deepinfra.com/',
+        note: '-50% 최저가 호스팅'
+      }
+    ]
+  },
+  {
+    id: 'cenia-instruct-8b',
+    name: 'CENIA Instruct 8B',
+    creator: 'CENIA (칠레 국립 AI 센터)',
+    country: 'CL',
+    countryLabel: '칠레/남미',
+    flagEmoji: '🇨🇱',
+    region: 'America',
+    category: 'Fast & Lightweight',
+    mediaType: 'Text',
+    contextWindow: '8K',
+    description: '남미 대륙 내 로컬 온프레미스 및 공공 서비스 구축을 위해 경량화된 고효율 스페인어 지시 튜닝 모델.',
+    offers: [
+      {
+        provider: 'Hugging Face Endpoint',
+        providerKey: 'huggingface',
+        isOfficial: false,
+        inputPer1M: 0.00,
+        outputPer1M: 0.00,
+        cacheReadPer1M: 0.00,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://huggingface.co/Cenia',
+        note: '오픈 가중치 무료 배포'
+      },
+      {
+        provider: 'Together AI',
+        providerKey: 'together',
+        isOfficial: false,
+        inputPer1M: 0.10,
+        outputPer1M: 0.10,
+        cacheReadPer1M: 0.01,
+        discountPercent: 0,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://www.together.ai/',
+        note: 'Together 서버리스 호스팅'
+      }
+    ]
+  },
+  {
+    id: 'hermes-3-70b',
+    name: 'Hermes 3 Llama 3.1 70B',
+    creator: 'Nous Research',
+    country: 'US',
+    countryLabel: '미국/북미',
+    flagEmoji: '🇺🇸',
+    region: 'America',
+    category: 'Reasoning & Coding',
+    mediaType: 'Text',
+    contextWindow: '128K',
+    description: '미국 Nous Research가 개발한 무검열·뉴트럴 정렬 및 복합 시스템 에이전트 분야 전 세계 1위 오픈 파운데이션 모델.',
+    offers: [
+      {
+        provider: 'Nous Research',
+        providerKey: 'nous',
+        isOfficial: true,
+        inputPer1M: 0.80,
+        outputPer1M: 0.80,
+        cacheReadPer1M: 0.10,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://nousresearch.com/',
+        note: '공식 모델 가중치 기준'
+      },
+      {
+        provider: 'Lambda Labs',
+        providerKey: 'lambda',
+        isOfficial: false,
+        inputPer1M: 0.50,
+        outputPer1M: 0.50,
+        cacheReadPer1M: 0.05,
+        discountPercent: 37,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://lambdalabs.com/service/gpu-cloud',
+        note: 'NVIDIA H100 서빙'
+      },
+      {
+        provider: 'Together AI',
+        providerKey: 'together',
+        isOfficial: false,
+        inputPer1M: 0.60,
+        outputPer1M: 0.60,
+        cacheReadPer1M: 0.06,
+        discountPercent: 25,
+        latency: 'Fast',
+        siteUrl: 'https://www.together.ai/',
+        note: 'Together 엔드포인트'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.30,
+        outputPer1M: 0.40,
+        cacheReadPer1M: 0.03,
+        discountPercent: 56,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '-56% 최저가 할인'
+      }
+    ]
+  },
+  {
+    id: 'hermes-3-8b',
+    name: 'Hermes 3 Llama 3.1 8B',
+    creator: 'Nous Research',
+    country: 'US',
+    countryLabel: '미국/북미',
+    flagEmoji: '🇺🇸',
+    region: 'America',
+    category: 'Fast & Lightweight',
+    mediaType: 'Text',
+    contextWindow: '128K',
+    description: '경량 8B 환경에서 창작, 롤플레잉, 복합 구조화 데이터 생성에 있어 플래그십급 유연성을 보여주는 오픈 에이전트 모델.',
+    offers: [
+      {
+        provider: 'Together AI',
+        providerKey: 'together',
+        isOfficial: false,
+        inputPer1M: 0.15,
+        outputPer1M: 0.15,
+        cacheReadPer1M: 0.02,
+        discountPercent: 0,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://www.together.ai/',
+        note: '서버리스 호스팅'
+      },
+      {
+        provider: 'DeepInfra',
+        providerKey: 'deepinfra',
+        isOfficial: false,
+        inputPer1M: 0.07,
+        outputPer1M: 0.07,
+        cacheReadPer1M: 0.009,
+        discountPercent: 53,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://deepinfra.com/',
+        note: '-53% 가성비'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.04,
+        outputPer1M: 0.08,
+        cacheReadPer1M: 0.008,
+        discountPercent: 60,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '-60% 최저가'
+      }
+    ]
+  },
+  {
+    id: 'dbrx-instruct',
+    name: 'DBRX Instruct (132B MoE)',
+    creator: 'Databricks (MosaicML)',
+    country: 'US',
+    countryLabel: '미국/북미',
+    flagEmoji: '🇺🇸',
+    region: 'America',
+    category: 'Open Source',
+    mediaType: 'Text',
+    contextWindow: '32K',
+    description: '16개 전문가 중 4개를 활성화하는 36B 활성 MoE 아키텍처로 고속 코드 생성과 논리적 분석에서 최고 수준을 달성한 모델.',
+    offers: [
+      {
+        provider: 'Databricks (MosaicML)',
+        providerKey: 'databricks',
+        isOfficial: true,
+        inputPer1M: 0.75,
+        outputPer1M: 2.25,
+        cacheReadPer1M: 0.20,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://www.databricks.com/',
+        note: '공식 Databricks Model Serving'
+      },
+      {
+        provider: 'Together AI',
+        providerKey: 'together',
+        isOfficial: false,
+        inputPer1M: 0.60,
+        outputPer1M: 0.60,
+        cacheReadPer1M: 0.06,
+        discountPercent: 60,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://www.together.ai/',
+        note: '균일 입출력 요금제'
+      },
+      {
+        provider: 'DeepInfra',
+        providerKey: 'deepinfra',
+        isOfficial: false,
+        inputPer1M: 0.50,
+        outputPer1M: 0.50,
+        cacheReadPer1M: 0.05,
+        discountPercent: 66,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://deepinfra.com/',
+        note: '-66% 최저가 서빙'
+      }
+    ]
+  },
+  {
+    id: 'olmo-2-13b',
+    name: 'OLMo 2 13B (Open Science)',
+    creator: 'Allen Institute for AI (Ai2)',
+    country: 'US',
+    countryLabel: '미국/북미',
+    flagEmoji: '🇺🇸',
+    region: 'America',
+    category: 'Open Source',
+    mediaType: 'Text',
+    contextWindow: '4K',
+    description: '학습 데이터셋(Dolma)과 체크포인트, 학습 코드를 100% 투명하게 전면 개방한 미국 비영리 과학 연구소의 공공 파운데이션 모델.',
+    offers: [
+      {
+        provider: '앨런 인공지능 연구소 (Ai2)',
+        providerKey: 'ai2',
+        isOfficial: true,
+        inputPer1M: 0.00,
+        outputPer1M: 0.00,
+        cacheReadPer1M: 0.00,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://allenai.org/olmo',
+        note: '완전 오픈 사이언스 무료 배포'
+      },
+      {
+        provider: 'Together AI',
+        providerKey: 'together',
+        isOfficial: false,
+        inputPer1M: 0.15,
+        outputPer1M: 0.15,
+        cacheReadPer1M: 0.02,
+        discountPercent: 0,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://www.together.ai/',
+        note: 'Together 서버리스 서빙'
+      }
+    ]
+  },
+  {
+    id: 'tulu-3-70b',
+    name: 'Tulu 3 70B (DPO/RLVR)',
+    creator: 'Allen Institute for AI (Ai2)',
+    country: 'US',
+    countryLabel: '미국/북미',
+    flagEmoji: '🇺🇸',
+    region: 'America',
+    category: 'Reasoning & Coding',
+    mediaType: 'Text',
+    contextWindow: '8K',
+    description: '완전 공개된 강화학습 및 사후 튜닝 기법으로 Llama 3.1 70B 순정 대비 수학, 과학, 코딩 능력을 대폭 증강시킨 Ai2의 플래그십.',
+    offers: [
+      {
+        provider: '앨런 인공지능 연구소 (Ai2)',
+        providerKey: 'ai2',
+        isOfficial: true,
+        inputPer1M: 0.70,
+        outputPer1M: 0.70,
+        cacheReadPer1M: 0.08,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://allenai.org/',
+        note: '오픈 연구 가중치'
+      },
+      {
+        provider: 'DeepInfra',
+        providerKey: 'deepinfra',
+        isOfficial: false,
+        inputPer1M: 0.35,
+        outputPer1M: 0.40,
+        cacheReadPer1M: 0.04,
+        discountPercent: 46,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://deepinfra.com/',
+        note: '-46% 최저가 호스팅'
+      }
+    ]
+  },
+  {
+    id: 'snowflake-arctic',
+    name: 'Snowflake Arctic (480B MoE)',
+    creator: 'Snowflake',
+    country: 'US',
+    countryLabel: '미국/북미',
+    flagEmoji: '🇺🇸',
+    region: 'America',
+    category: 'Reasoning & Coding',
+    mediaType: 'Text',
+    contextWindow: '4K',
+    description: '총 480B 파라미터 중 17B만 활성화하여 극강의 엔터프라이즈 SQL 쿼리 생성과 비즈니스 인텔리전스 처리를 수행하는 MoE 모델.',
+    offers: [
+      {
+        provider: '스노우플레이크 (Snowflake Cortex)',
+        providerKey: 'snowflake',
+        isOfficial: true,
+        inputPer1M: 0.24,
+        outputPer1M: 2.40,
+        cacheReadPer1M: 0.12,
+        discountPercent: 0,
+        latency: 'Fast',
+        siteUrl: 'https://www.snowflake.com/en/data-cloud/cortex/',
+        note: 'Snowflake Cortex 공식'
+      },
+      {
+        provider: 'Together AI',
+        providerKey: 'together',
+        isOfficial: false,
+        inputPer1M: 0.24,
+        outputPer1M: 0.24,
+        cacheReadPer1M: 0.03,
+        discountPercent: 80,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://www.together.ai/',
+        note: '-80% Together 서버리스 특가'
+      }
+    ]
+  },
+  {
+    id: 'openelm-3b',
+    name: 'OpenELM 3B (On-Device)',
+    creator: 'Apple',
+    country: 'US',
+    countryLabel: '미국/북미',
+    flagEmoji: '🇺🇸',
+    region: 'America',
+    category: 'Fast & Lightweight',
+    mediaType: 'Text',
+    contextWindow: '2K',
+    description: '애플이 공개한 레이어별 불균일 파라미터 배분 구조의 초경량 온디바이스 모델. 모바일 기기에서의 추론 지연시간 극소화.',
+    offers: [
+      {
+        provider: 'Hugging Face Endpoint',
+        providerKey: 'huggingface',
+        isOfficial: false,
+        inputPer1M: 0.00,
+        outputPer1M: 0.00,
+        cacheReadPer1M: 0.00,
+        discountPercent: 0,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://huggingface.co/apple/OpenELM-3B',
+        note: '오픈 가중치 무료 배포 (MLX 구동)'
+      },
+      {
+        provider: 'KIE API',
+        providerKey: 'kie',
+        isOfficial: false,
+        inputPer1M: 0.03,
+        outputPer1M: 0.06,
+        cacheReadPer1M: 0.005,
+        discountPercent: 50,
+        latency: 'Ultra Fast',
+        siteUrl: 'https://kie.ai/pricing',
+        note: '온디바이스 경량 엔드포인트'
+      }
+    ]
   }
 ];
 
@@ -8778,15 +10866,17 @@ export function getLastUpdatedTimestamp() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY_TIMESTAMP);
     if (saved) {
-      // 날짜 형태만 추출 (예: 2026.09.15 또는 2026-09-15)
+      // 날짜 형태만 추출 (예: 2026.09.21 또는 2026-09-21)
       const match = saved.match(/(\d{4})[.-](\d{2})[.-](\d{2})/);
       if (match) {
         const cleanDate = `${match[1]}.${match[2]}.${match[3]}`;
-        return cleanDate;
+        if (cleanDate >= DEFAULT_TIMESTAMP) {
+          return cleanDate;
+        }
       }
     }
   } catch (e) {}
-  return DEFAULT_TIMESTAMP || '2026.09.15';
+  return DEFAULT_TIMESTAMP || '2026.09.21';
 }
 
 /**

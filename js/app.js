@@ -255,6 +255,7 @@ function applyTheme(theme) {
 function updateHeroStats() {
   const activeCountry = state.activeCountry || 'ALL';
   const asianCountries = ['KR', 'CN', 'JP', 'SG', 'IN', 'ASIA'];
+  const americanCountries = ['US', 'CA', 'BR', 'CL', 'LATAM', 'AMERICA'];
   
   let countryName = '전체 🌐';
   let targetModels = state.models;
@@ -265,6 +266,9 @@ function updateHeroStats() {
   } else if (activeCountry === 'ASIA') {
     countryName = '아시아 🌏';
     targetModels = state.models.filter(m => asianCountries.includes(m.country) || m.region === 'Asia');
+  } else if (activeCountry === 'US' || activeCountry === 'AMERICA') {
+    countryName = '아메리카 🌎';
+    targetModels = state.models.filter(m => americanCountries.includes(m.country) || m.region === 'America');
   } else {
     const countryInfo = COUNTRIES[activeCountry];
     countryName = countryInfo ? `${countryInfo.name} ${countryInfo.flag}` : activeCountry;
@@ -457,7 +461,7 @@ function getFilteredModels() {
       return false;
     }
 
-    // 1. 국가 / 아시아 / 유럽 필터
+    // 1. 국가 / 아시아 / 유럽 / 아메리카 필터
     if (state.activeCountry !== 'ALL') {
       if (state.activeCountry === 'ASIA') {
         if (!asianCountries.includes(model.country) && model.region !== 'Asia') {
@@ -468,6 +472,11 @@ function getFilteredModels() {
         if (!euCountries.includes(model.country) && model.region !== 'Europe' && !(model.countryLabel && model.countryLabel.includes('유럽'))) {
           return false;
         }
+      } else if (state.activeCountry === 'US' || state.activeCountry === 'AMERICA') {
+        const americanCountries = ['US', 'CA', 'BR', 'CL', 'LATAM', 'AMERICA'];
+        if (!americanCountries.includes(model.country) && model.region !== 'America' && !(model.countryLabel && (model.countryLabel.includes('미국') || model.countryLabel.includes('캐나다') || model.countryLabel.includes('남미') || model.countryLabel.includes('아메리카')))) {
+          return false;
+        }
       } else if (model.country !== state.activeCountry) {
         return false;
       }
@@ -476,6 +485,8 @@ function getFilteredModels() {
     // 2. 텍스트 검색
     const isModelAsian = asianCountries.includes(model.country) || model.region === 'Asia';
     const matchAsia = (query === '아시아' || query === 'asia') && isModelAsian;
+    const isModelAmerican = ['US', 'CA', 'BR', 'CL', 'LATAM', 'AMERICA'].includes(model.country) || model.region === 'America';
+    const matchAmerica = (query === '아메리카' || query === 'america' || query === '캐나다' || query === '남미' || query === '브라질' || query === '칠레') && isModelAmerican;
 
     const matchName = model.name.toLowerCase().includes(query);
     const matchCreator = model.creator.toLowerCase().includes(query);
@@ -483,7 +494,7 @@ function getFilteredModels() {
     const matchProvider = model.offers.some(o => o.provider.toLowerCase().includes(query));
     const matchCategory = model.category.toLowerCase().includes(query);
     const matchMedia = modelMediaType.toLowerCase().includes(query);
-    const matchesSearch = !query || matchName || matchCreator || matchCountry || matchProvider || matchCategory || matchMedia || matchAsia;
+    const matchesSearch = !query || matchName || matchCreator || matchCountry || matchProvider || matchCategory || matchMedia || matchAsia || matchAmerica;
 
     if (!matchesSearch) return false;
 

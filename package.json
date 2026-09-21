@@ -1,0 +1,22 @@
+{
+  "name": "llm-lowprice-global-ai-index",
+  "version": "2.0.0",
+  "type": "module",
+  "description": "글로벌 AI 최저가 실시간 가격 비교 & 맞춤 추천 플랫폼",
+  "scripts": {
+    "dev": "python server.py 8088",
+    "start": "python server.py 8088",
+    "serve": "python -m http.server 8088"
+  },
+  "keywords": [
+    "llm",
+    "ai",
+    "price-comparison",
+    "deepseek",
+    "openai",
+    "gemini",
+    "claude"
+  ],
+  "author": "Global AI Index Team",
+  "license": "MIT"
+}

@@ -47,9 +47,9 @@
             <span class="flag-emoji">🇨🇳</span>
             <span class="flag-label">중국</span>
           </button>
-          <button class="flag-btn us" data-country="US" title="미국 프론티어 AI 모델만 보기">
-            <span class="flag-emoji">🇺🇸</span>
-            <span class="flag-label">미국</span>
+          <button class="flag-btn us" data-country="US" title="미국 및 아메리카 대륙(캐나다, 브라질, 칠레 등) AI 모델 보기">
+            <span class="flag-emoji">🌎</span>
+            <span class="flag-label">아메리카</span>
           </button>
           <button class="flag-btn eu" data-country="EU" title="유럽 AI 모델만 보기">
             <span class="flag-emoji">🇪🇺</span>
@@ -60,7 +60,7 @@
         <!-- 데이터 기준 일시 및 새로고침 -->
         <div class="status-pill" id="lastUpdatedContainer" title="가격 데이터 등록 기준일입니다.">
           <span class="status-dot"></span>
-          <span>기준: <strong id="lastUpdatedText" class="mono">2026.09.15</strong></span>
+          <span>기준: <strong id="lastUpdatedText" class="mono">2026.09.21</strong></span>
         </div>
 
         <button id="btnSyncData" class="btn-action" title="최신 가격 시세 데이터 동기화">
@@ -93,7 +93,7 @@
     <!-- Hero Section -->
     <section class="hero-section">
       <div class="hero-content">
-        <div class="hero-badge">⚡ 아시아 🌏 · 한국 🇰🇷 · 중국 🇨🇳 · 글로벌 🇺🇸🇪🇺 152+ AI 모델 실시간 인덱스</div>
+        <div class="hero-badge">⚡ 아시아 🌏 · 한국 🇰🇷 · 중국 🇨🇳 · 아메리카 🌎 · 유럽 🇪🇺 226+ AI 모델 실시간 인덱스</div>
         <h2 class="hero-title">글로벌 AI 최저가 비교</h2>
         <p class="hero-subtitle">
           공식 개발사 및 오픈 호스팅·KIE API 등 전 세계 주요 플랫폼의 실시간 단가와 할인율을 투명하게 비교합니다.
@@ -101,25 +101,25 @@
 
         <!-- Quick Summary Stats -->
         <div class="hero-stats">
-          <div class="stat-card clickable-stat" id="cardStatModels" role="button" tabindex="0" title="클릭하여 152개 전체 LLM 모델을 로고와 함께 확인합니다.">
+          <div class="stat-card clickable-stat" id="cardStatModels" role="button" tabindex="0" title="클릭하여 226+개 전체 LLM 모델을 로고와 함께 확인합니다.">
             <div class="stat-card-top">
               <div class="stat-label" id="statModelLabel">비교 모델 수 (전체 🌐)</div>
               <span class="stat-badge-hint">모델 보기 ↗</span>
             </div>
-            <div id="statTotalModels" class="stat-val mono">152</div>
+            <div id="statTotalModels" class="stat-val mono">226</div>
           </div>
-          <div class="stat-card clickable-stat" id="cardStatProviders" role="button" tabindex="0" title="클릭하여 57개 등록 공급 사이트를 로고와 함께 확인합니다.">
+          <div class="stat-card clickable-stat" id="cardStatProviders" role="button" tabindex="0" title="클릭하여 78개 등록 공급 사이트를 로고와 함께 확인합니다.">
             <div class="stat-card-top">
               <div class="stat-label" id="statProviderLabel">등록 공급 사이트</div>
               <span class="stat-badge-hint">사이트 보기 ↗</span>
             </div>
-            <div id="statTotalProviders" class="stat-val mono">57개 사이트</div>
+            <div id="statTotalProviders" class="stat-val mono">78개 사이트</div>
           </div>
           <div class="stat-card">
             <div class="stat-card-top">
               <div class="stat-label" id="statDiscountLabel">최대 할인율 (KIE)</div>
             </div>
-            <div id="statMaxDiscount" class="stat-val green mono">72% OFF</div>
+            <div id="statMaxDiscount" class="stat-val green mono">80% OFF</div>
           </div>
         </div>
       </div>
@@ -316,7 +316,7 @@
     <section id="modelsTableContainer" class="full-table-view active" style="display: block;">
       <div id="tableToolbar" class="table-toolbar">
         <div class="table-toolbar-left">
-          <span class="table-count-info" id="tableCountInfo">비교 모델 총 <strong>152개</strong></span>
+          <span class="table-count-info" id="tableCountInfo">비교 모델 총 <strong>226개</strong></span>
           <span class="table-lowest-notice" id="tableLowestNotice" style="display: none;">⭐ 각 모델별 단일 최저가(Best Offer) 제공처만 표시 중</span>
         </div>
         <div class="table-toolbar-right">
@@ -361,7 +361,7 @@
     <div class="app-container footer-inner">
       <div class="footer-note">
         <p><strong>글로벌 AI 최저가 인덱스 (Global AI Price Index)</strong></p>
-        <p>Text(LLM), Image, Video, Music/Audio — 152+ 모델 × 57+ 사이트의 가격 비교. 아시아 🌏(한국 🇰🇷: 네이버, 업스테이지, 카카오, LG, KT / 중국 🇨🇳: 알리바바, 지푸AI, DeepSeek, PixVerse, 바이두, 텐센트, 문샷 Kimi, 상탕, 바이트댄스, 미니맥스 / 일본 🇯🇵: 후가쿠, 라쿠텐, 사이버에이전트, NEC / 싱가포르 🇸🇬: SEA-LION / 인도 🇮🇳: Krutrim, Sarvam), 미국 🇺🇸(OpenAI, Anthropic, Google, xAI, Meta), 유럽 🇪🇺(Mistral, Black Forest Labs) 및 KIE API 등 통합 플랫폼의 공개 가격 정책을 수집합니다.</p>
+        <p>Text(LLM), Image, Video, Music/Audio — 226+ 모델 × 78+ 사이트의 가격 비교. 아시아 🌏(한국 🇰🇷: 네이버, 업스테이지, 카카오, LG, KT / 중국 🇨🇳: 알리바바, 지푸AI, DeepSeek, PixVerse, 바이두, 텐센트, 문샷 Kimi, 상탕, 바이트댄스, 미니맥스, SiliconFlow / 일본 🇯🇵: 후가쿠, 라쿠텐, 사이버에이전트, NEC / 싱가포르 🇸🇬: SEA-LION / 인도 🇮🇳: Krutrim, Sarvam), 아메리카 🌎(미국 🇺🇸: OpenAI, Anthropic, Google, xAI, Meta, Cerebras, SambaNova, Perplexity, Replicate, RunPod, Lambda, Nous, Databricks, Ai2, Snowflake / 캐나다 🇨🇦: Cohere / 브라질 🇧🇷: Maritaca / 칠레 🇨🇱: CENIA), 유럽 🇪🇺(Mistral, Black Forest Labs, Scaleway, Nebius) 및 KIE API 등 통합 플랫폼의 공개 가격 정책을 수집합니다.</p>
       </div>
       <div>
         <p class="mono" style="font-size: 0.8rem;">아시아·국가별 맞춤 필터 • 실시간 단가 연동</p>
@@ -370,7 +370,7 @@
   </footer>
 
   <!-- ================================================================= -->
-  <!-- 1. LLM 공급 사이트 목록 모달 (57개 사이트 로고 & 사이트명) -->
+  <!-- 1. LLM 공급 사이트 목록 모달 (72개 사이트 로고 & 사이트명) -->
   <!-- ================================================================= -->
   <div id="modalProviders" class="site-modal" role="dialog" aria-modal="true" aria-labelledby="modalProvidersTitle" style="display: none;">
     <div class="modal-backdrop" id="backdropProviders"></div>
@@ -380,7 +380,7 @@
           <div class="modal-icon-badge">🌐</div>
           <div>
             <h3 class="modal-title" id="modalProvidersTitle">LLM 공급 사이트 목록</h3>
-            <p class="modal-subtitle" id="modalProvidersSubtitle">총 57개 공식 개발사, 오픈소스 호스팅 및 할인 공급 사이트</p>
+            <p class="modal-subtitle" id="modalProvidersSubtitle">총 72개 공식 개발사, 오픈소스 호스팅 및 할인 공급 사이트</p>
           </div>
         </div>
         <button type="button" class="btn-modal-close" id="btnCloseProvidersModal" aria-label="모달 닫기">&times;</button>
@@ -390,14 +390,14 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <input type="text" id="inputFilterProvidersModal" placeholder="사이트명, 국가, 특징 검색 (예: OpenAI, 알리바바, 네이버, KIE)..." autocomplete="off">
         </div>
-        <span class="modal-count-badge" id="modalProvidersCountBadge">57개</span>
+        <span class="modal-count-badge" id="modalProvidersCountBadge">78개</span>
       </div>
-      <!-- 지역/국가 선택 필터 탭 (전체, 아시아, 유럽, 미국, 중국, 한국) -->
+      <!-- 지역/국가 선택 필터 탭 (전체, 아시아, 유럽, 미국/아메리카, 중국, 한국) -->
       <div class="modal-country-tabs" id="modalProvidersCountryTabs" role="tablist" aria-label="공급 사이트 지역 선택">
         <button type="button" class="modal-country-btn active" data-country="ALL" role="tab" aria-selected="true">🌐 전체</button>
         <button type="button" class="modal-country-btn asia" data-country="ASIA" role="tab" aria-selected="false">🌏 아시아</button>
         <button type="button" class="modal-country-btn eu" data-country="EU" role="tab" aria-selected="false">🇪🇺 유럽</button>
-        <button type="button" class="modal-country-btn us" data-country="US" role="tab" aria-selected="false">🇺🇸 미국</button>
+        <button type="button" class="modal-country-btn us" data-country="US" role="tab" aria-selected="false">🌎 아메리카</button>
         <button type="button" class="modal-country-btn cn" data-country="CN" role="tab" aria-selected="false">🇨🇳 중국</button>
         <button type="button" class="modal-country-btn kr" data-country="KR" role="tab" aria-selected="false">🇰🇷 한국</button>
       </div>
@@ -428,14 +428,14 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <input type="text" id="inputFilterModelsModal" placeholder="LLM 모델명, 제작사, 국가 검색 (예: Claude, GPT, Qwen, Solar, DeepSeek)..." autocomplete="off">
         </div>
-        <span class="modal-count-badge" id="modalModelsCountBadge">184개</span>
+        <span class="modal-count-badge" id="modalModelsCountBadge">226개</span>
       </div>
-      <!-- 지역/국가 선택 필터 탭 (전체, 아시아, 유럽, 미국, 중국, 한국) -->
+      <!-- 지역/국가 선택 필터 탭 (전체, 아시아, 유럽, 미국/아메리카, 중국, 한국) -->
       <div class="modal-country-tabs" id="modalModelsCountryTabs" role="tablist" aria-label="LLM 모델 지역 선택">
         <button type="button" class="modal-country-btn active" data-country="ALL" role="tab" aria-selected="true">🌐 전체</button>
         <button type="button" class="modal-country-btn asia" data-country="ASIA" role="tab" aria-selected="false">🌏 아시아</button>
         <button type="button" class="modal-country-btn eu" data-country="EU" role="tab" aria-selected="false">🇪🇺 유럽</button>
-        <button type="button" class="modal-country-btn us" data-country="US" role="tab" aria-selected="false">🇺🇸 미국</button>
+        <button type="button" class="modal-country-btn us" data-country="US" role="tab" aria-selected="false">🌎 아메리카</button>
         <button type="button" class="modal-country-btn cn" data-country="CN" role="tab" aria-selected="false">🇨🇳 중국</button>
         <button type="button" class="modal-country-btn kr" data-country="KR" role="tab" aria-selected="false">🇰🇷 한국</button>
       </div>
