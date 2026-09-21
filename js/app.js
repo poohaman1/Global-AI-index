@@ -510,24 +510,167 @@ function getFilteredModels() {
     return model.category === state.activeFilter;
   });
 
-  // 브랜드별 최상위 모델만 보기 필터 적용
+  // 브랜드별 최상위 모델만 보기 필터 적용 (LLM 브랜드별 최상위버전 1개만 표시)
   if (state.onlyTopTier) {
-    const creatorMap = new Map();
-    filtered.forEach(model => {
-      const creator = model.creator;
-      const comp = compareProvidersForModel(model, state.calcInputM, state.calcOutputM, state.calcCacheM);
-      const cost = comp.bestOffer && typeof comp.bestOffer.totalCost === 'number' ? comp.bestOffer.totalCost : 0;
+    const PREFERRED_BRAND_TOP_TIER = {
+      'OpenAI': ['o3-full', 'o1-full', 'gpt-4o', 'gpt-6-astra', 'gpt-4-5-orion'],
+      'Anthropic': ['claude-3-7-sonnet', 'claude-opus-5', 'claude-opus-4-8', 'claude-3-opus'],
+      'Google': ['gemini-2-0-pro', 'gemini-3-8-flash', 'gemini-2-5-pro', 'gemini-3-pro'],
+      'DeepSeek': ['deepseek-r1', 'deepseek-v3'],
+      'xAI': ['grok-4-6', 'grok-2'],
+      'Meta': ['llama-3-1-405b', 'llama-4-maverick', 'llama-3-3-70b'],
+      'Alibaba': ['qwq-32b', 'qwen-2-5-72b', 'qwen-max'],
+      'Mistral AI': ['mistral-large-3', 'mixtral-8x22b'],
+      'Naver': ['hyperclova-x', 'hyperclova-x-dash'],
+      'Upstage': ['upstage-solar-pro', 'solar-pro'],
+      'Kakao': ['kanana-f'],
+      'LG': ['lg-exaone-3-5', 'exaone-3-5-7-8b'],
+      'Cohere': ['command-a', 'command-r-plus-08-2024'],
+      'Baidu': ['ernie-5-1', 'ernie-4-turbo'],
+      'Tencent': ['hunyuan-t1', 'hunyuan-turbo'],
+      'ByteDance': ['doubao-1-5-pro'],
+      'Moonshot AI': ['kimi-k1-5', 'moonshot-kimi-k1-5'],
+      'Zhipu AI': ['glm-4-plus', 'zhipu-glm-4-plus'],
+      '01.AI': ['yi-lightning', 'yi-large'],
+      'Microsoft': ['phi-4-14b'],
+      'Databricks': ['dbrx-instruct'],
+      'Nous Research': ['hermes-3-70b'],
+      'Ai2': ['tulu-3-70b', 'olmo-2-13b'],
+      'Maritaca AI': ['sabia-3'],
+      'CENIA': ['latam-llama-70b', 'cenia-instruct-8b'],
+      'KT': ['kt-mideum-k25-pro'],
+      'SK Telecom': ['skt-a-x'],
+      'NCSOFT': ['varco-llm'],
+      'Yanolja': ['eeve-korean-instruct-10-8b'],
+      'Korea Univ. / goorm': ['kullm3'],
+      'Bllossom': ['bllossom-70b', 'bllossom-8b'],
+      'RIKEN / Fugaku': ['fugaku-llm-16b'],
+      'Rakuten': ['rakuten-ai-7b'],
+      'CyberAgent': ['cyberagent-calm3-22b'],
+      'NEC': ['nec-cotomi'],
+      'AI Singapore': ['sea-lion-v3-7b'],
+      'Krutrim (Ola)': ['krutrim-pro'],
+      'Sarvam AI': ['sarvam-2b'],
+      'Snowflake': ['snowflake-arctic'],
+      'Apple': ['openelm-3b'],
+      'Amazon': ['amazon-nova-pro'],
+      'TII': ['falcon-2-11b'],
+      'BigCode': ['starcoder-2-15b'],
+      'Aleph Alpha': ['pharia-1-llm-7b'],
+      'Kyutai': ['moshi'],
+      'SenseTime': ['sensenova-5-5', 'sensechat-5-5'],
+      'StepFun': ['step-2-trillion'],
+      'iFLYTEK': ['spark-4-ultra'],
+      'Xiaomi': ['milm-mobile'],
+      'Arena.ai': ['arena-pareto-router'],
+      'Genspark': ['genspark-super-agent']
+    };
+
+    function getNormalizedBrand(model) {
+      const c = (model.creator || '').toLowerCase();
+      const mid = (model.id || '').toLowerCase();
       
-      if (!creatorMap.has(creator)) {
-        creatorMap.set(creator, { model, cost });
-      } else {
-        if (cost > creatorMap.get(creator).cost) {
-          creatorMap.set(creator, { model, cost });
+      if (c.includes('openai') || mid.startsWith('gpt') || mid.startsWith('o1') || mid.startsWith('o3') || mid.startsWith('chatgpt')) return 'OpenAI';
+      if (c.includes('anthropic') || mid.includes('claude')) return 'Anthropic';
+      if (c.includes('google') || mid.includes('gemini') || mid.includes('gemma')) return 'Google';
+      if (c.includes('deepseek') || mid.includes('deepseek')) return 'DeepSeek';
+      if (c.includes('xai') || mid.includes('grok')) return 'xAI';
+      if (c.includes('meta') || mid.includes('llama')) return 'Meta';
+      if (c.includes('alibaba') || mid.includes('qwen') || mid.includes('qwq')) return 'Alibaba';
+      if (c.includes('mistral') || mid.includes('codestral') || mid.includes('pixtral') || mid.includes('mixtral')) return 'Mistral AI';
+      if (c.includes('naver') || mid.includes('hyperclova') || mid.includes('hcx')) return 'Naver';
+      if (c.includes('upstage') || mid.includes('solar')) return 'Upstage';
+      if (c.includes('kakao') || mid.includes('kanana')) return 'Kakao';
+      if (c.includes('lg') || mid.includes('exaone')) return 'LG';
+      if (c.includes('cohere') || mid.includes('command') || mid.includes('aya')) return 'Cohere';
+      if (c.includes('bytedance') || mid.includes('doubao')) return 'ByteDance';
+      if (c.includes('baidu') || mid.includes('ernie')) return 'Baidu';
+      if (c.includes('tencent') || mid.includes('hunyuan')) return 'Tencent';
+      if (c.includes('moonshot') || mid.includes('kimi')) return 'Moonshot AI';
+      if (c.includes('zhipu') || mid.includes('glm')) return 'Zhipu AI';
+      if (c.includes('01.ai') || mid.includes('yi')) return '01.AI';
+      if (c.includes('microsoft') || mid.includes('phi')) return 'Microsoft';
+      if (c.includes('databricks') || mid.includes('dbrx')) return 'Databricks';
+      if (c.includes('nous') || mid.includes('hermes')) return 'Nous Research';
+      if (c.includes('ai2') || c.includes('allen') || mid.includes('olmo') || mid.includes('tulu')) return 'Ai2';
+      if (c.includes('maritaca') || mid.includes('sabia') || mid.includes('maritalk')) return 'Maritaca AI';
+      if (c.includes('cenia') || mid.includes('latam-llama')) return 'CENIA';
+      if (c.includes('kt') || mid.includes('mideum')) return 'KT';
+      if (c.includes('skt') || mid.includes('a.x') || mid.includes('a-x')) return 'SK Telecom';
+      if (c.includes('ncsoft') || mid.includes('varco')) return 'NCSOFT';
+      if (c.includes('yanolja') || mid.includes('eeve')) return 'Yanolja';
+      if (c.includes('kullm')) return 'Korea Univ. / goorm';
+      if (c.includes('bllossom') || mid.includes('bllossom')) return 'Bllossom';
+      if (c.includes('fugaku') || c.includes('riken')) return 'RIKEN / Fugaku';
+      if (c.includes('rakuten')) return 'Rakuten';
+      if (c.includes('cyberagent')) return 'CyberAgent';
+      if (c.includes('nec')) return 'NEC';
+      if (c.includes('singapore') || mid.includes('sea-lion')) return 'AI Singapore';
+      if (c.includes('krutrim')) return 'Krutrim (Ola)';
+      if (c.includes('sarvam')) return 'Sarvam AI';
+      if (c.includes('snowflake') || mid.includes('arctic')) return 'Snowflake';
+      if (c.includes('apple') || mid.includes('openelm')) return 'Apple';
+      if (c.includes('amazon') || mid.includes('nova')) return 'Amazon';
+      if (c.includes('tii') || mid.includes('falcon')) return 'TII';
+      if (c.includes('bigcode') || mid.includes('starcoder')) return 'BigCode';
+      if (c.includes('aleph')) return 'Aleph Alpha';
+      if (c.includes('kyutai')) return 'Kyutai';
+      if (c.includes('sensetime') || mid.includes('sensenova')) return 'SenseTime';
+      if (c.includes('stepfun') || mid.includes('step')) return 'StepFun';
+      if (c.includes('iflytek') || mid.includes('spark')) return 'iFLYTEK';
+      if (c.includes('xiaomi') || mid.includes('milm')) return 'Xiaomi';
+      
+      return model.creator || 'Other';
+    }
+
+    // 1. LLM / 텍스트 및 오디오 계열 모델만 브랜드 그룹화
+    const brandMap = new Map();
+    filtered.forEach(model => {
+      const media = model.mediaType || 'Text';
+      // 순수 비디오/이미지 전용 모델은 LLM 최상위 비교에서 제외
+      if (media === 'Image' || media === 'Video') return;
+      
+      const brand = getNormalizedBrand(model);
+      if (!brandMap.has(brand)) {
+        brandMap.set(brand, []);
+      }
+      brandMap.get(brand).push(model);
+    });
+
+    // 2. 각 브랜드별로 정확히 최상위 모델 1개씩만 선정
+    const selectedTopTierIds = new Set();
+    brandMap.forEach((modelsInBrand, brand) => {
+      let chosen = null;
+      const prefList = PREFERRED_BRAND_TOP_TIER[brand] || [];
+      
+      for (const prefId of prefList) {
+        const found = modelsInBrand.find(m => m.id === prefId);
+        if (found) {
+          chosen = found;
+          break;
         }
       }
+
+      if (!chosen) {
+        // 우선순위가 정의되지 않은 브랜드는 플래그십/고성능/추론 카테고리 우선 선택
+        const sorted = [...modelsInBrand].sort((a, b) => {
+          const catRank = (cat) => {
+            if (cat === 'Flagship') return 4;
+            if (cat === 'Reasoning' || cat === 'Reasoning & Coding') return 3;
+            if (cat === 'High Performance') return 2;
+            return 1;
+          };
+          return catRank(b.category) - catRank(a.category);
+        });
+        chosen = sorted[0];
+      }
+
+      if (chosen) {
+        selectedTopTierIds.add(chosen.id);
+      }
     });
-    const topTierModelIds = new Set(Array.from(creatorMap.values()).map(v => v.model.id));
-    filtered = filtered.filter(m => topTierModelIds.has(m.id));
+
+    filtered = filtered.filter(m => selectedTopTierIds.has(m.id));
   }
 
   // 4. 가격 정렬 (없음: none / 최저가 순: lowest / 최고가 순: highest)
